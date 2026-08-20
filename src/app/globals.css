@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Edunline pixel/arcade font family (self-hosted, from /public/fonts) */
+/* .fon files are legacy Windows bitmap fonts and are NOT usable on    */
+/* the web — only the .ttf files are referenced here.                 */
+/* ------------------------------------------------------------------ */
+@font-face {
+  font-family: "Edunline";
+  src: url("/fonts/edunline.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Edunline Outline";
+  src: url("/fonts/editundo.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Edunline Dot";
+  src: url("/fonts/edundot.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-pixel: "Edunline Outline", var(--font-pixel-fallback, monospace);
+  --font-pixel-solid: "Edunline", var(--font-pixel-fallback, monospace);
+  --font-pixel-dot: "Edunline Dot", var(--font-pixel-fallback, monospace);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-pixel {
+    font-family: var(--font-pixel);
+  }
+
+  .font-pixel-solid {
+    font-family: var(--font-pixel-solid);
+  }
+
+  .font-pixel-dot {
+    font-family: var(--font-pixel-dot);
+  }
+}
