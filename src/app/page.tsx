@@ -8,8 +8,6 @@ import { About } from "@/components/About";
 // import { Preloader } from "@/components/ui/Preloader";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = React.useState(true);
-
   return (
     <main className="relative min-h-screen w-full flex flex-col pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-32 md:pb-20 overflow-hidden">
       {/* Preloader

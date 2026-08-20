@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useEffect, useRef, useState, useMemo } from "react";
-import { gsap } from "gsap";
 import { CarouselCard, CarouselCardProps } from "./CarouselCard";
 
 interface CarouselProps {
