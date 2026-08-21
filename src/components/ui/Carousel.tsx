@@ -153,7 +153,7 @@ export function Carousel({ items }: CarouselProps) {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-[clamp(380px,90vw,680px)] flex items-center justify-center overflow-hidden cursor-grab touch-pan-y select-none"
+      className="relative w-full h-full min-h-[300px] md:h-[420px] lg:h-[500px] flex items-center justify-center overflow-hidden cursor-grab touch-pan-y select-none"
       style={{ perspective: "1000px" }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}

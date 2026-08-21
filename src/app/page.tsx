@@ -9,7 +9,7 @@ import { About } from "@/components/About";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen w-full flex flex-col pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-32 md:pb-20 overflow-hidden">
+    <main className="relative w-full overflow-x-hidden">
       {/* Preloader
       {isLoading && (
         <Preloader
@@ -17,15 +17,19 @@ export default function Home() {
         />
       )} */}
 
-      <GridBackground />
+      {/* ── HERO SECTION ── fills exactly one viewport height ── */}
+      <section className="relative min-h-[100dvh] w-full flex flex-col pt-24 sm:pt-28 md:pt-32 overflow-hidden">
+        <GridBackground />
+        <Navbar />
+        {/* Hero waits for Preloader */}
+        <Hero/>
+        {/* <Hero startAnimation={!isLoading} /> */}
+      </section>
 
-      <Navbar />
-
-      {/* Hero waits for Preloader */}
-      <Hero/>
-      {/* <Hero startAnimation={!isLoading} /> */}
-
-      <About />
+      {/* ── CONTENT BELOW FOLD ── */}
+      <section className="relative w-full pt-10 md:pt-15">
+        <About />
+      </section>
     </main>
   );
 }

@@ -89,7 +89,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <div className="relative z-20 flex flex-col items-center justify-center">
             <p
               className="
-                m-0 p-0 font-pixel text-sm sm:text-base md:text-xl font-medium
+                m-0 p-0 font-pixel text-base sm:text-base md:text-xl font-medium
                 tracking-wide text-green-neon
               "
               style={{

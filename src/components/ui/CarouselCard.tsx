@@ -12,7 +12,7 @@ export function CarouselCard({ src, alt, setRef }: CarouselCardProps) {
   return (
     <div
       ref={setRef}
-      className="absolute top-1/2 left-1/2 w-[clamp(220px,58vw,420px)] h-[clamp(330px,87vw,630px)] rounded-3xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-white/10 transition-opacity duration-100 ease-out"
+      className="absolute top-1/2 left-1/2 w-[clamp(200px,52vw,360px)] h-[clamp(300px,90vw,580px)] rounded-3xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-white/10 transition-opacity duration-100 ease-out"
       style={{
         backfaceVisibility: "hidden",
       }}

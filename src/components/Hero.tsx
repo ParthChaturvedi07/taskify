@@ -342,13 +342,13 @@ export function Hero() {
   return (
     <div
       ref={heroRef}
-      className="z-10 flex w-full flex-1 flex-col items-center justify-start pt-6 md:justify-center md:pt-0"
+      className="z-10 flex w-full flex-1 flex-col items-center pt-6 pb-6 md:justify-center md:gap-4 md:pt-0 md:pb-0"
     >
       {/* HEADLINE */}
       <div className="flex flex-col items-center text-center">
         <div
           ref={headlineRef}
-          className="flex flex-wrap items-center justify-center gap-2 px-3 text-[clamp(1.75rem,4vw+1.25rem,3.75rem)] font-bold tracking-tight text-white"
+          className="flex flex-wrap items-center justify-center gap-2 px-3 text-[clamp(2rem,9vw,3.75rem)] font-bold tracking-tight text-white leading-none"
           style={{
             textShadow: "0px 4px 10px rgba(0,0,0,0.8)",
             fontFamily: '"Darker Grotesque", sans-serif',
@@ -358,7 +358,7 @@ export function Hero() {
 
           <div
             ref={clockRef}
-            className="relative flex h-[clamp(1.75rem,4vw+1rem,4rem)] w-[clamp(1.75rem,4vw+1rem,4rem)] items-center justify-center overflow-hidden rounded-full"
+            className="relative flex h-[clamp(2.5rem,9vw,4rem)] w-[clamp(2.5rem,9vw,4rem)] items-center justify-center overflow-hidden rounded-full"
             style={{
               transformStyle: "preserve-3d",
             }}
@@ -378,11 +378,11 @@ export function Hero() {
         {/* REWARDS */}
         <div
           ref={rewardsRef}
-          className="relative font-pixel text-[clamp(2.75rem,11vw+1rem,6rem)]"
+          className="relative font-pixel leading-none text-[clamp(4rem,18vw,6rem)]"
         >
           {/* Main text */}
           <h1
-            className="relative z-10 text-[#3DD5F3]"
+            className="relative z-10 text-[#3DD5F3] leading-none"
             style={{
               textShadow: `
                 0 1px 0 #074254ff,
@@ -445,19 +445,19 @@ export function Hero() {
         </div>
       </div>
 
-      {/* 3D CAROUSEL */}
+      {/* 3D CAROUSEL - flex-1 so it expands to fill remaining mobile viewport */}
       <div
         ref={carouselRef}
-        className="w-full md:-mt-32 lg:-mt-40"
+        className="w-full flex-1 mt-16 md:flex-none md:-mt-16"
       >
         <Carousel items={carouselItems} />
       </div>
 
       {/* CTA */}
-      <div ref={buttonRef}>
+      <div ref={buttonRef} className="pb-20 z-20 md:-mt-12">
         <Button
           variant="glow-pill"
-          className="z-20 font-pixel sm:-mt-12 md:-mt-16 lg:-mt-20"
+          className="h-[54px] w-[220px] sm:h-[46px] sm:w-[200px] md:h-[52px] md:w-[220px] lg:h-[56px] lg:w-[240px]"
         >
           START EARNING
         </Button>
