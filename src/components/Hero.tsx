@@ -339,6 +339,108 @@ export function Hero() {
     };
   }, []);
 
+  /*
+   * -----------------------------------------
+   * CLOCK INFINITE CARTOON ANIMATIONS
+   * -----------------------------------------
+   */
+
+  useEffect(() => {
+    const clock = clockRef.current;
+    if (!clock) return;
+
+    gsap.set(clock, { transformPerspective: 800, transformOrigin: "center center" });
+
+    // 6 distinct cartoonish effects to cycle through
+    const effects = [
+      // 1. Wobbly spin — classic cartoon swirl
+      () =>
+        gsap.timeline().to(clock, {
+          rotateZ: -18,
+          scale: 0.9,
+          duration: 0.18,
+          ease: "power2.in",
+        }).to(clock, {
+          rotateZ: 380,
+          scale: 1.12,
+          duration: 0.55,
+          ease: "back.out(1.7)",
+        }).to(clock, {
+          rotateZ: 360,
+          scale: 1,
+          duration: 0.35,
+          ease: "elastic.out(1, 0.5)",
+        }),
+
+      // 2. Squash & stretch bounce
+      () =>
+        gsap.timeline()
+          .to(clock, { scaleY: 0.65, scaleX: 1.3, duration: 0.14, ease: "power2.in" })
+          .to(clock, { scaleY: 1.35, scaleX: 0.75, y: -22, duration: 0.22, ease: "power3.out" })
+          .to(clock, { scaleY: 0.8, scaleX: 1.15, y: 0, duration: 0.14, ease: "power2.in" })
+          .to(clock, { scaleY: 1.1, scaleX: 0.94, y: -8, duration: 0.14, ease: "power2.out" })
+          .to(clock, { scaleY: 1, scaleX: 1, y: 0, duration: 0.2, ease: "elastic.out(1, 0.45)" }),
+
+      // 3. Tilt shimmy — side-to-side head-shake
+      () =>
+        gsap.timeline()
+          .to(clock, { rotateZ: -25, x: -6, duration: 0.1, ease: "power2.out" })
+          .to(clock, { rotateZ: 22, x: 6, duration: 0.1, ease: "power2.inOut" })
+          .to(clock, { rotateZ: -18, x: -5, duration: 0.1, ease: "power2.inOut" })
+          .to(clock, { rotateZ: 14, x: 4, duration: 0.1, ease: "power2.inOut" })
+          .to(clock, { rotateZ: -8, x: -2, duration: 0.1, ease: "power2.inOut" })
+          .to(clock, { rotateZ: 0, x: 0, duration: 0.18, ease: "elastic.out(1, 0.4)" }),
+
+      // 4. Full 3-D barrel roll flip
+      () =>
+        gsap.timeline()
+          .to(clock, { rotateY: -90, scale: 0.8, duration: 0.22, ease: "power2.in" })
+          .to(clock, { rotateY: -200, scale: 1.18, duration: 0.3, ease: "power3.out" })
+          .to(clock, { rotateY: -360, scale: 0.92, duration: 0.25, ease: "power2.inOut" })
+          .to(clock, { rotateY: 0, scale: 1, duration: 0.3, ease: "elastic.out(1, 0.55)" }),
+
+      // 5. Rubber-band pulse — heartbeat throb
+      () =>
+        gsap.timeline()
+          .to(clock, { scale: 1.28, duration: 0.15, ease: "power2.out" })
+          .to(clock, { scale: 0.88, duration: 0.12, ease: "power2.in" })
+          .to(clock, { scale: 1.14, duration: 0.12, ease: "power2.out" })
+          .to(clock, { scale: 0.95, duration: 0.1, ease: "power2.in" })
+          .to(clock, { scale: 1, duration: 0.18, ease: "elastic.out(1, 0.4)" }),
+
+      // 6. Float drift — lazy levitation with rotateX
+      () =>
+        gsap.timeline()
+          .to(clock, { y: -16, rotateX: 20, scale: 1.08, duration: 0.4, ease: "sine.out" })
+          .to(clock, { y: 4, rotateX: -10, scale: 0.96, duration: 0.35, ease: "sine.inOut" })
+          .to(clock, { y: 0, rotateX: 0, scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" }),
+    ];
+
+    let effectIndex = 0;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const scheduleNext = () => {
+      // Randomise interval between 1.4s–2.8s
+      const delay = 1400 + Math.random() * 1400;
+      timer = setTimeout(() => {
+        const tl = effects[effectIndex % effects.length]();
+        effectIndex++;
+        // Wait for the timeline to finish, then schedule again
+        tl.eventCallback("onComplete", scheduleNext);
+      }, delay);
+    };
+
+    // Kick off after entrance animation finishes (~2s)
+    const kickoff = setTimeout(scheduleNext, 2000);
+
+    return () => {
+      clearTimeout(kickoff);
+      clearTimeout(timer);
+      gsap.killTweensOf(clock);
+    };
+  }, []);
+
+
   return (
     <div
       ref={heroRef}
