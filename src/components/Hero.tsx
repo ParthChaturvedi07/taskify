@@ -378,7 +378,7 @@ export function Hero() {
         {/* REWARDS */}
         <div
           ref={rewardsRef}
-          className="relative font-pixel leading-none text-[clamp(4rem,18vw,6rem)]"
+          className="relative mt-6 md:mt-0 font-pixel leading-none text-[clamp(4rem,18vw,6rem)]"
         >
           {/* Main text */}
           <h1
