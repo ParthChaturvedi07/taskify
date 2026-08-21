@@ -11,9 +11,35 @@ const mobileLinks = ["About", "Reviews", "FAQs", "Contact"];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isVisible, setIsVisible] = React.useState(true);
+  const [isScrolled, setIsScrolled] = React.useState(false);
 
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuLinksRef = React.useRef<HTMLDivElement>(null);
+  const lastScrollY = React.useRef(0);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > 50) {
+        setIsScrolled(true);
+        if (currentScrollY > lastScrollY.current) {
+          setIsVisible(false); // scrolling down
+        } else {
+          setIsVisible(true); // scrolling up
+        }
+      } else {
+        setIsScrolled(false);
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   React.useEffect(() => {
     if (!menuRef.current || !menuLinksRef.current) return;
@@ -61,7 +87,15 @@ export function Navbar() {
   }, [isOpen]);
 
   return (
-    <nav className="absolute left-0 right-0 top-0 z-50 px-6 py-6 md:px-12">
+    <nav
+      className={`fixed left-0 right-0 top-0 z-50 px-6 py-6 md:px-12 transition-all duration-300 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      } ${
+        isScrolled
+          ? "bg-[#050d1a]/80 backdrop-blur-xl py-4 md:py-4 shadow-lg"
+          : "bg-transparent py-6 md:py-6"
+      }`}
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Logo />
 
@@ -157,9 +191,9 @@ export function Navbar() {
           overflow-hidden
           rounded-2xl
           border border-white/[0.12]
-          bg-black/45
+          bg-[#050d1a]/95
           p-4
-          shadow-[0_20px_60px_rgba(0,0,0,0.45)]
+          shadow-[0_20px_60px_rgba(0,0,0,0.65)]
           backdrop-blur-2xl
           md:hidden
         "

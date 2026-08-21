@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { GridBackground } from "@/components/ui/GridBackground";
 import { About } from "@/components/About";
+import { Footer } from "@/components/Footer";
 // import { Preloader } from "@/components/ui/Preloader";
 
 export default function Home() {
@@ -27,9 +28,12 @@ export default function Home() {
       </section>
 
       {/* ── CONTENT BELOW FOLD ── */}
-      <section className="relative w-full pt-10 md:pt-15">
+      <section className="relative w-full pt-10 md:pt-15 pb-10 md:pb-15">
         <About />
       </section>
+
+      {/* ── FOOTER ── */}
+      <Footer />
     </main>
   );
 }
