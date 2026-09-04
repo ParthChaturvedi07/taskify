@@ -5,15 +5,13 @@ import * as React from "react";
 export function GridBackground() {
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden bg-black pointer-events-none">
-      {/* Video background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
+      {/* Tunnel grid canvas animation via iframe */}
+      <iframe
+        src="/tunnel-grid.html"
         aria-hidden="true"
-        className="absolute h-full w-full object-cover"
-        src="/videos/grid.mp4"
+        tabIndex={-1}
+        className="absolute inset-0 h-full w-full border-0"
+        style={{ pointerEvents: "none" }}
       />
 
       {/* Dark vignette */}
