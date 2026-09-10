@@ -1,287 +1,261 @@
 "use client";
 
 import * as React from "react";
-import { Logo } from "./ui/Logo";
-import { Button } from "./ui/Button";
-import { PlayBadge } from "./ui/PlayBadge";
-import { Menu, X } from "lucide-react";
-import gsap from "gsap";
 
-const mobileLinks = ["About", "Reviews", "FAQs", "Contact"];
+const NAV_LINKS = ["About", "Reviews", "FAQs", "Contact"];
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isVisible, setIsVisible] = React.useState(true);
-  const [isScrolled, setIsScrolled] = React.useState(false);
-
-  const menuRef = React.useRef<HTMLDivElement>(null);
-  const menuLinksRef = React.useRef<HTMLDivElement>(null);
-  const lastScrollY = React.useRef(0);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > 50) {
-        setIsScrolled(true);
-        if (currentScrollY > lastScrollY.current) {
-          setIsVisible(false); // scrolling down
-        } else {
-          setIsVisible(true); // scrolling up
-        }
-      } else {
-        setIsScrolled(false);
-        setIsVisible(true);
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  React.useEffect(() => {
-    if (!menuRef.current || !menuLinksRef.current) return;
-
-    const menu = menuRef.current;
-    const links = menuLinksRef.current.children;
-
-    if (isOpen) {
-      gsap.to(menu, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 0.55,
-        ease: "power3.out",
-        pointerEvents: "auto",
-      });
-
-      gsap.fromTo(
-        links,
-        {
-          opacity: 0,
-          y: 18,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          stagger: 0.07,
-          delay: 0.12,
-          ease: "power3.out",
-        }
-      );
-    } else {
-      gsap.to(menu, {
-        opacity: 0,
-        y: -12,
-        scale: 0.98,
-        filter: "blur(6px)",
-        duration: 0.3,
-        ease: "power2.inOut",
-        pointerEvents: "none",
-      });
-    }
-  }, [isOpen]);
+  const [open, setOpen] = React.useState(false);
 
   return (
-    <nav
-      className={`fixed left-0 right-0 top-0 z-50 px-6 py-6 md:px-12 transition-all duration-300 ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
-      } ${
-        isScrolled
-          ? "bg-[#050d1a]/80 backdrop-blur-xl py-4 md:py-4 shadow-lg"
-          : "bg-transparent py-6 md:py-6"
-      }`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
-        <Logo />
-
-        {/* Desktop Links */}
-        <div className="hidden items-center gap-8 font-medium text-white/80 md:flex">
-          <a
-            href="#"
-            className="transition-colors duration-300 hover:text-white"
-          >
-            About
-          </a>
-
-          <a
-            href="#"
-            className="transition-colors duration-300 hover:text-white"
-          >
-            Reviews
-          </a>
-
-          <a
-            href="#"
-            className="transition-colors duration-300 hover:text-white"
-          >
-            FAQs
-          </a>
-
-          <a
-            href="#"
-            className="transition-colors duration-300 hover:text-white"
-          >
-            Contact
-          </a>
+    <>
+      <nav className="tg-nav">
+        {/* Logo */}
+        <div className="tg-logo">
+          <div className="tg-logo-mark">T</div>
+          <div className="tg-logo-text">
+            TASKIFY
+            <span>GAMES</span>
+          </div>
         </div>
+
+        {/* Desktop links */}
+        <ul className="tg-nav-links">
+          {NAV_LINKS.map((link) => (
+            <li key={link}>
+              <a href="#">{link}</a>
+            </li>
+          ))}
+        </ul>
 
         {/* Desktop CTA */}
-        <div className="hidden md:block">
-          <Button variant="outline" className="gap-2">
-            EXPLORE APPS
-            <PlayBadge className="h-4 w-4" />
-          </Button>
-        </div>
+        <a href="#" className="tg-nav-cta tg-nav-cta--desktop">
+          Explore apps
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </a>
 
-        {/* Mobile Toggle */}
+        {/* Mobile hamburger */}
         <button
-          type="button"
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isOpen}
-          onClick={() => setIsOpen((prev) => !prev)}
-          className="
-            relative z-[60]
-            flex h-11 w-11 items-center justify-center
-            rounded-full
-            border border-white/10
-            bg-white/[0.06]
-            text-white
-            backdrop-blur-xl
-            transition-all duration-300
-            hover:bg-white/[0.1]
-            active:scale-90
-            md:hidden
-          "
+          className="tg-hamburger"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
         >
-          <span
-            className={`absolute transition-all duration-300 ${
-              isOpen
-                ? "rotate-90 scale-100 opacity-100"
-                : "rotate-0 scale-100 opacity-100"
-            }`}
-          >
-            {isOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </span>
+          <span className={`tg-ham-bar ${open ? "tg-ham-bar--top-open" : ""}`} />
+          <span className={`tg-ham-bar ${open ? "tg-ham-bar--mid-open" : ""}`} />
+          <span className={`tg-ham-bar ${open ? "tg-ham-bar--bot-open" : ""}`} />
         </button>
+      </nav>
+
+      {/* Mobile drawer */}
+      <div className={`tg-mobile-menu ${open ? "tg-mobile-menu--open" : ""}`}>
+        {NAV_LINKS.map((link) => (
+          <a key={link} href="#" onClick={() => setOpen(false)} className="tg-mobile-link">
+            {link}
+          </a>
+        ))}
+        <a href="#" className="tg-nav-cta tg-nav-cta--mobile" onClick={() => setOpen(false)}>
+          Explore apps
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </a>
       </div>
 
-      {/* =====================================================
-          MOBILE GLASS MENU
-      ===================================================== */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap');
 
-      <div
-        ref={menuRef}
-        className="
-          pointer-events-none
-          absolute left-4 right-4 top-[76px]
-          z-50
-          origin-top
-          opacity-0
-          -translate-y-3
-          scale-[0.98]
-          overflow-hidden
-          rounded-2xl
-          border border-white/[0.12]
-          bg-[#050d1a]/95
-          p-4
-          shadow-[0_20px_60px_rgba(0,0,0,0.65)]
-          backdrop-blur-2xl
-          md:hidden
-        "
-      >
-        {/* Glass highlight */}
-        <div
-          className="
-            pointer-events-none
-            absolute inset-x-8 top-0
-            h-px
-            bg-gradient-to-r
-            from-transparent
-            via-[#3DD5F3]/60
-            to-transparent
-          "
-        />
+        /* ── NAV CONTAINER ── */
+        .tg-nav {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 50;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 28px 56px;
+          max-width: 1360px;
+          margin: 0 auto;
+          /* full-width fixed needs left/right 0 but content centred */
+        }
 
-        {/* Subtle cyan ambient glow */}
-        <div
-          className="
-            pointer-events-none
-            absolute -right-20 -top-20
-            h-40 w-40
-            rounded-full
-            bg-[#3DD5F3]/10
-            blur-3xl
-          "
-        />
+        /* make the fixed bar span full width, centre content */
+        .tg-nav {
+          left: 0;
+          right: 0;
+          max-width: none;
+          padding: 28px max(24px, calc((100vw - 1360px) / 2 + 56px));
+        }
 
-        <div
-          ref={menuLinksRef}
-          className="relative flex flex-col items-center gap-1"
-        >
-          {mobileLinks.map((link) => (
-            <a
-              key={link}
-              href="#"
-              onClick={() => setIsOpen(false)}
-              className="
-                group
-                flex items-center justify-between
-                rounded-xl
-                px-4 py-3.5
-                text-[15px]
-                font-medium
-                text-white/80
-                transition-all duration-300
-                hover:bg-white/[0.06]
-                hover:text-white
-                active:scale-[0.98]
-              "
-            >
-              <span>{link}</span>
+        /* ── LOGO ── */
+        .tg-logo {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          text-decoration: none;
+          flex-shrink: 0;
+        }
 
-              <span
-                className="
-                  h-1.5 w-1.5
-                  rounded-full
-                  bg-[#3DD5F3]
-                  opacity-0
-                  shadow-[0_0_10px_#3DD5F3]
-                  transition-all duration-300
-                  group-hover:opacity-100
-                "
-              />
-            </a>
-          ))}
+        .tg-logo-mark {
+          width: 34px;
+          height: 34px;
+          border: 1.5px solid #ffffff;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Chakra Petch', sans-serif;
+          font-weight: 700;
+          font-size: 16px;
+          color: #ffffff;
+          flex-shrink: 0;
+        }
 
-          {/* Divider */}
-          <div className="my-2 h-px bg-white/[0.08]" />
+        .tg-logo-text {
+          font-family: 'Chakra Petch', sans-serif;
+          font-weight: 600;
+          font-size: 14.5px;
+          line-height: 1.15;
+          letter-spacing: 0.02em;
+          color: #ffffff;
+        }
 
-          {/* Mobile CTA */}
-          <Button
-            variant="outline"
-            className="
-              mt-1
-              w-full
-              justify-center
-              gap-2
-              rounded-xl
-            "
-            onClick={() => setIsOpen(false)}
-          >
-            EXPLORE APPS
-            <PlayBadge className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-    </nav>
+        .tg-logo-text span {
+          display: block;
+          color: #6b6b6b;
+          font-weight: 500;
+        }
+
+        /* ── DESKTOP LINKS ── */
+        .tg-nav-links {
+          display: flex;
+          gap: 40px;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        .tg-nav-links a {
+          color: #b4b4b4;
+          text-decoration: none;
+          font-size: 14.5px;
+          font-weight: 500;
+          transition: color 0.25s ease;
+          font-family: 'Inter', sans-serif;
+        }
+
+        .tg-nav-links a:hover { color: #ffffff; }
+
+        /* ── CTA PILL ── */
+        .tg-nav-cta {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          border: 1px solid #2a2a2a;
+          background: #101010;
+          color: #ffffff;
+          padding: 11px 20px;
+          border-radius: 999px;
+          font-size: 13.5px;
+          font-weight: 500;
+          font-family: 'Inter', sans-serif;
+          text-decoration: none;
+          transition: border-color 0.25s ease, background 0.25s ease;
+          white-space: nowrap;
+          cursor: pointer;
+        }
+
+        .tg-nav-cta:hover {
+          border-color: #6b6b6b;
+          background: #151515;
+        }
+
+        .tg-nav-cta svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+        /* ── HAMBURGER (mobile only) ── */
+        .tg-hamburger {
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          gap: 5px;
+          width: 40px;
+          height: 40px;
+          background: none;
+          border: 1px solid #2a2a2a;
+          border-radius: 8px;
+          cursor: pointer;
+          padding: 0 10px;
+        }
+
+        .tg-ham-bar {
+          display: block;
+          width: 100%;
+          height: 1.5px;
+          background: #ffffff;
+          border-radius: 2px;
+          transition: transform 0.25s ease, opacity 0.25s ease;
+          transform-origin: center;
+        }
+
+        .tg-ham-bar--top-open { transform: translateY(6.5px) rotate(45deg); }
+        .tg-ham-bar--mid-open { opacity: 0; transform: scaleX(0); }
+        .tg-ham-bar--bot-open { transform: translateY(-6.5px) rotate(-45deg); }
+
+        /* ── MOBILE MENU ── */
+        .tg-mobile-menu {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 49;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          background: rgba(7, 7, 7, 0.97);
+          border-bottom: 1px solid #1c1c1c;
+          padding: 96px 24px 28px;
+          backdrop-filter: blur(12px);
+          transform: translateY(-110%);
+          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tg-mobile-menu--open { transform: translateY(0); }
+
+        .tg-mobile-link {
+          color: #b4b4b4;
+          text-decoration: none;
+          font-size: 16px;
+          font-weight: 500;
+          font-family: 'Inter', sans-serif;
+          padding: 14px 4px;
+          border-bottom: 1px solid #1c1c1c;
+          transition: color 0.2s ease;
+        }
+        .tg-mobile-link:last-of-type { border-bottom: none; }
+        .tg-mobile-link:hover { color: #ffffff; }
+
+        .tg-nav-cta--mobile {
+          margin-top: 16px;
+          justify-content: center;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 860px) {
+          .tg-nav { padding: 24px 24px; }
+          .tg-nav-links { display: none; }
+          .tg-nav-cta--desktop { display: none; }
+          .tg-hamburger { display: flex; }
+        }
+
+        @media (min-width: 861px) {
+          .tg-mobile-menu { display: none; }
+          .tg-hamburger { display: none; }
+        }
+      `}} />
+    </>
   );
 }

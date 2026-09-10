@@ -2,31 +2,41 @@
 
 import * as React from "react";
 
+/**
+ * Full-page fixed background matching the taskify-games-redesign:
+ *  • Void black base (#070707)
+ *  • Subtle SVG grain overlay (opacity 0.035)
+ *
+ * The animated dot-field canvas is rendered inside Hero.tsx (also fixed)
+ * and sits above this layer at z-index 0.
+ */
 export function GridBackground() {
   return (
-    <div className="fixed inset-0 z-[-1] overflow-hidden bg-black pointer-events-none">
-      {/* Tunnel grid canvas animation via iframe */}
-      <iframe
-        src="/tunnel-grid.html"
+    <>
+      {/* Void black base */}
+      <div
         aria-hidden="true"
-        tabIndex={-1}
-        className="absolute inset-0 h-full w-full border-0"
-        style={{ pointerEvents: "none" }}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: -2,
+          background: "#070707",
+          pointerEvents: "none",
+        }}
       />
 
-      {/* Dark vignette */}
+      {/* SVG grain overlay */}
       <div
-        className="
-          pointer-events-none
-          absolute inset-0
-          bg-[radial-gradient(
-            ellipse_at_center,
-            transparent_15%,
-            rgba(0,0,0,0.15)_95%,
-            rgba(0,0,0,0.75)_100%
-          )]
-        "
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: -1,
+          opacity: 0.035,
+          pointerEvents: "none",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        }}
       />
-    </div>
+    </>
   );
 }

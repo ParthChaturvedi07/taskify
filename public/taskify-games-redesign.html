@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taskify Games — Turn Free Time Into Rewards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#070707;
+    --panel:#101010;
+    --panel-2:#151515;
+    --line:#2a2a2a;
+    --line-soft:#1c1c1c;
+    --white:#ffffff;
+    --grey-1:#b4b4b4;
+    --grey-2:#6b6b6b;
+    --grey-3:#3d3d3d;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html,body{
+    background:var(--void);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+
+  body{
+    position:relative;
+    min-height:100vh;
+  }
+
+  canvas#dots{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    opacity:0.55;
+  }
+
+  .glow{
+    position:fixed;
+    top:-10%;
+    left:50%;
+    transform:translateX(-50%);
+    width:1100px;
+    height:700px;
+    background:radial-gradient(ellipse at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 40%, transparent 70%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .grain{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{
+    position:relative;
+    z-index:2;
+    max-width:1360px;
+    margin:0 auto;
+    padding:0 56px;
+  }
+
+  /* NAV */
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:34px 0 0;
+  }
+
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .logo-mark{
+    width:34px;
+    height:34px;
+    border:1.5px solid var(--white);
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:700;
+    font-size:16px;
+  }
+
+  .logo-text{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    line-height:1.15;
+    letter-spacing:0.02em;
+  }
+
+  .logo-text span{
+    display:block;
+    color:var(--grey-2);
+    font-weight:500;
+  }
+
+  .nav-links{
+    display:flex;
+    gap:40px;
+    list-style:none;
+  }
+
+  .nav-links a{
+    color:var(--grey-1);
+    text-decoration:none;
+    font-size:14.5px;
+    font-weight:500;
+    transition:color 0.25s ease;
+  }
+
+  .nav-links a:hover{ color:var(--white); }
+
+  .nav-cta{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--white);
+    padding:11px 20px;
+    border-radius:999px;
+    font-size:13.5px;
+    font-weight:500;
+    text-decoration:none;
+    transition:border-color 0.25s ease, background 0.25s ease;
+  }
+
+  .nav-cta:hover{
+    border-color:var(--grey-2);
+    background:var(--panel-2);
+  }
+
+  .nav-cta svg{ width:13px; height:13px; }
+
+  /* HERO */
+  .hero{
+    text-align:center;
+    padding:118px 0 0;
+  }
+
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--grey-2);
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:0.01em;
+    margin-bottom:26px;
+  }
+
+  .kicker::before{
+    content:'';
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--white);
+    box-shadow:0 0 10px rgba(255,255,255,0.7);
+  }
+
+  h1{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:52px;
+    line-height:1.12;
+    letter-spacing:-0.01em;
+    color:var(--grey-1);
+  }
+
+  h1 .accent-line{
+    display:block;
+    font-weight:700;
+    font-size:98px;
+    color:var(--white);
+    letter-spacing:0.01em;
+    margin-top:6px;
+    text-shadow:0 0 60px rgba(255,255,255,0.18);
+  }
+
+  .sub{
+    max-width:480px;
+    margin:26px auto 0;
+    color:var(--grey-2);
+    font-size:15.5px;
+    line-height:1.65;
+  }
+
+  .cta-row{
+    margin-top:44px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .cta-primary{
+    background:var(--white);
+    color:#0a0a0a;
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.01em;
+    border:none;
+    padding:17px 38px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.0), 0 10px 40px rgba(255,255,255,0.12);
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .cta-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 50px rgba(255,255,255,0.2);
+  }
+
+  /* CARD FAN */
+  .fan-section{
+    margin-top:88px;
+    padding-bottom:0;
+    position:relative;
+  }
+
+  .fan{
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    gap:0;
+    padding:0 0 0;
+    perspective:1400px;
+  }
+
+  .card{
+    width:172px;
+    height:240px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    position:relative;
+    margin:0 -20px;
+    overflow:hidden;
+    background:var(--panel);
+    transition:transform 0.4s ease, filter 0.4s ease, margin 0.4s ease;
+    flex-shrink:0;
+  }
+
+  .card::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+    opacity:0.5;
+    pointer-events:none;
+  }
+
+  .card-figure{
+    position:absolute;
+    inset:0;
+  }
+
+  .card-tag{
+    position:absolute;
+    left:14px;
+    bottom:14px;
+    z-index:3;
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--white);
+  }
+
+  .card-tag span{
+    display:block;
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    font-size:9.5px;
+    color:var(--grey-2);
+    letter-spacing:0.04em;
+    margin-top:2px;
+  }
+
+  .card-shade{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85) 100%);
+    z-index:2;
+  }
+
+  .card:nth-child(1){ transform:rotate(-14deg) translateY(26px); z-index:1; }
+  .card:nth-child(2){ transform:rotate(-9deg) translateY(12px); z-index:2; }
+  .card:nth-child(3){ transform:rotate(-4deg) translateY(2px); z-index:3; }
+  .card:nth-child(4){ transform:rotate(0deg) translateY(-6px); z-index:4; }
+  .card:nth-child(5){ transform:rotate(4deg) translateY(2px); z-index:3; }
+  .card:nth-child(6){ transform:rotate(9deg) translateY(12px); z-index:2; }
+  .card:nth-child(7){ transform:rotate(14deg) translateY(26px); z-index:1; }
+
+  .card:hover{ filter:brightness(1.18); }
+
+  .fan-fade{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    height:140px;
+    background:linear-gradient(180deg, transparent, var(--void) 88%);
+    z-index:5;
+    pointer-events:none;
+  }
+
+  .footer-space{ height:70px; }
+
+  @media (max-width: 860px){
+    .wrap{ padding:0 24px; }
+    nav{ flex-wrap:wrap; row-gap:18px; }
+    .nav-links{ order:3; width:100%; justify-content:center; gap:26px; }
+    h1{ font-size:34px; }
+    h1 .accent-line{ font-size:60px; }
+    .hero{ padding-top:70px; }
+    .card{ width:112px; height:164px; margin:0 -30px; }
+  }
+</style>
+</head>
+<body>
+
+  <canvas id="dots"></canvas>
+  <div class="glow"></div>
+  <div class="grain"></div>
+
+  <div class="wrap">
+
+    <nav>
+      <div class="logo">
+        <div class="logo-mark">T</div>
+        <div class="logo-text">TASKIFY<span>GAMES</span></div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Reviews</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+
+      <a href="#" class="nav-cta">
+        Explore apps
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </a>
+    </nav>
+
+    <section class="hero">
+      <div class="kicker">Idle time, converted</div>
+      <h1>
+        Turn free time into
+        <span class="accent-line">REWARDS</span>
+      </h1>
+      <p class="sub">Complete short tasks inside the apps you already use, earn points automatically, and cash out for real rewards — no grinding required.</p>
+      <div class="cta-row">
+        <button class="cta-primary">Start earning</button>
+      </div>
+    </section>
+
+    <section class="fan-section">
+      <div class="fan" id="fan">
+        <div class="card"><div class="card-figure"></div><div class="card-shade"></div><div class="card-tag">NOCTURNE<span>Focus mode</span></div></div>
+        <div class="card"><div class="card-figure"></div><div class="card-shade"></div><div class="card-tag">CIPHER<span>Daily streak</span></div></div>
+        <div class="card"><div class="card-figure"></div><div class="card-shade"></div><div class="card-tag">RELAY<span>Quick tasks</span></div></div>
+        <div class="card"><div class="card-figure"></div><div class="card-shade"></div><div class="card-tag">AERO<span>Featured</span></div></div>
+        <div class="card"><div class="card-figure"></div><div class="card-shade"></div><div class="card-tag">SIGNAL<span>New drop</span></div></div>
+        <div class="card"><div class="card-figure"></div><div class="card-shade"></div><div class="card-tag">VANTAGE<span>Top earner</span></div></div>
+        <div class="card"><div class="card-figure"></div><div class="card-shade"></div><div class="card-tag">PULSE<span>Live now</span></div></div>
+      </div>
+      <div class="fan-fade"></div>
+    </section>
+
+    <div class="footer-space"></div>
+
+  </div>
+
+<script>
+  // Slow drifting dot field
+  const canvas = document.getElementById('dots');
+  const ctx = canvas.getContext('2d');
+  let w, h, dots;
+  const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    const spacing = 46;
+    dots = [];
+    for(let y = 0; y < h + spacing; y += spacing){
+      for(let x = 0; x < w + spacing; x += spacing){
+        dots.push({
+          baseX: x + (Math.random()-0.5)*10,
+          baseY: y + (Math.random()-0.5)*10,
+          x: x, y: y,
+          vx: 0, vy: 0,
+          phase: Math.random()*Math.PI*2,
+          speed: 0.15 + Math.random()*0.25,
+          r: 0.9 + Math.random()*0.7
+        });
+      }
+    }
+  }
+
+  // Mouse state — dots gently push away from the cursor and glow brighter nearby
+  const mouse = { x: -9999, y: -9999, active: false };
+  const RADIUS = 150;
+  const PUSH = 34;
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+  });
+  window.addEventListener('mouseleave', () => { mouse.active = false; });
+  window.addEventListener('touchmove', e => {
+    if(e.touches[0]){
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+      mouse.active = true;
+    }
+  }, {passive:true});
+  window.addEventListener('touchend', () => { mouse.active = false; });
+
+  function draw(t){
+    ctx.clearRect(0,0,w,h);
+    for(const d of dots){
+      const drift = REDUCE_MOTION ? 0 : Math.sin(t*0.00025*d.speed + d.phase) * 14;
+      const targetX0 = d.baseX;
+      const targetY0 = d.baseY + drift;
+
+      // spring toward the drifting base position
+      let tx = targetX0, ty = targetY0;
+
+      if(mouse.active){
+        const dx = targetX0 - mouse.x;
+        const dy = targetY0 - mouse.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < RADIUS){
+          const force = (1 - dist/RADIUS);
+          const angle = Math.atan2(dy, dx);
+          tx += Math.cos(angle) * force * PUSH;
+          ty += Math.sin(angle) * force * PUSH;
+        }
+      }
+
+      // ease current position toward target (adds a light trailing feel)
+      d.x += (tx - d.x) * 0.12;
+      d.y += (ty - d.y) * 0.12;
+
+      const distToMouse = mouse.active ? Math.hypot(d.x - mouse.x, d.y - mouse.y) : Infinity;
+      const proximityGlow = distToMouse < RADIUS ? (1 - distToMouse/RADIUS) * 0.6 : 0;
+      const flicker = REDUCE_MOTION ? 0.4 : 0.25 + 0.35 * (0.5 + 0.5*Math.sin(t*0.0006 + d.phase*3));
+      const alpha = Math.min(1, flicker + proximityGlow);
+      const radius = d.r + proximityGlow * 1.6;
+
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, radius, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+
+  // Grayscale duotone figures for each card, generated on canvas so no external assets are needed
+  const figureSeeds = [
+    {c1:'#e9e9e9', c2:'#050505', blob:[0.3,0.35,0.55]},
+    {c1:'#cfcfcf', c2:'#020202', blob:[0.5,0.3,0.6]},
+    {c1:'#dedede', c2:'#0a0a0a', blob:[0.4,0.5,0.5]},
+    {c1:'#f2f2f2', c2:'#050505', blob:[0.5,0.42,0.65]},
+    {c1:'#c9c9c9', c2:'#000000', blob:[0.35,0.55,0.55]},
+    {c1:'#e0e0e0', c2:'#080808', blob:[0.55,0.4,0.6]},
+    {c1:'#d6d6d6', c2:'#030303', blob:[0.42,0.32,0.55]}
+  ];
+
+  document.querySelectorAll('.card-figure').forEach((el, i) => {
+    const s = figureSeeds[i % figureSeeds.length];
+    el.style.background = `
+      radial-gradient(circle at ${s.blob[0]*100}% ${s.blob[1]*100}%, ${s.c1} 0%, transparent ${s.blob[2]*100}%),
+      linear-gradient(160deg, #1a1a1a 0%, #050505 70%)
+    `;
+  });
+</script>
+
+</body>
+</html>

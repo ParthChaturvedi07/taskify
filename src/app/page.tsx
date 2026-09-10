@@ -6,25 +6,22 @@ import { Hero } from "@/components/Hero";
 import { GridBackground } from "@/components/ui/GridBackground";
 import { About } from "@/components/About";
 import { Footer } from "@/components/Footer";
-// import { Preloader } from "@/components/ui/Preloader";
 
 export default function Home() {
   return (
-    <main className="relative w-full overflow-x-hidden">
-      {/* Preloader
-      {isLoading && (
-        <Preloader
-          onComplete={() => setIsLoading(false)}
-        />
-      )} */}
+    <main
+      className="relative w-full"
+      style={{ background: "#070707", overflowX: "clip" }}
+    >
+      {/* Fixed background: void black + grain */}
+      <GridBackground />
 
-      {/* ── HERO SECTION ── fills exactly one viewport height ── */}
-      <section className="relative min-h-[100dvh] w-full flex flex-col pt-24 sm:pt-28 md:pt-32 overflow-hidden">
-        <GridBackground />
-        <Navbar />
-        {/* Hero waits for Preloader */}
-        <Hero/>
-        {/* <Hero startAnimation={!isLoading} /> */}
+      {/* Fixed navbar */}
+      <Navbar />
+
+      {/* ── HERO SECTION ── */}
+      <section className="relative w-full min-h-[100dvh]">
+        <Hero />
       </section>
 
       {/* ── CONTENT BELOW FOLD ── */}

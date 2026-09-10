@@ -12,7 +12,7 @@ export function Carousel({ items }: CarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [radius, setRadius] = useState(1200);
+  const [radius, setRadius] = useState(50);
 
   // Duplicate items to form a continuous loop
   const duplicatedItems = useMemo(() => {
