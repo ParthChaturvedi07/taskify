@@ -46,7 +46,7 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="relative w-full overflow-hidden" style={{ backgroundColor: "#050d1a" }}>
+    <footer className="relative w-full overflow-hidden" style={{ backgroundColor: "#000000" }}>
       {/* Background image */}
       <div className="pointer-events-none absolute inset-0">
         <Image
@@ -57,7 +57,7 @@ export function Footer() {
           priority={false}
         />
         {/* Subtle dark overlay to keep text readable */}
-        <div className="absolute inset-0 bg-[#050d1a]/40" />
+        <div className="absolute inset-0 bg-[#202020]/40" />
       </div>
 
       {/* Content */}
@@ -71,7 +71,7 @@ export function Footer() {
               alt="Taskify logo"
               width={130}
               height={130}
-              className="object-contain drop-shadow-[0_0_24px_rgba(61,213,243,0.25)]"
+              className="object-contain drop-shadow-[0_0_24px_rgba(255,255,255,0.35)]"
             />
           </div>
 
@@ -101,11 +101,11 @@ export function Footer() {
                     flex h-9 w-9 items-center justify-center
                     rounded-full
                     border border-white/10
-                    bg-[#0d1f3a]
+                    bg-[#202020]
                     text-white/70
                     transition-all duration-300
                     hover:border-white/25
-                    hover:bg-[#112547]
+                    hover:bg-[#2a2a2a]
                     hover:text-white
                     hover:shadow-[0_0_14px_rgba(61,213,243,0.18)]
                   "

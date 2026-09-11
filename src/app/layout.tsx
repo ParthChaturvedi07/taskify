@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Chakra_Petch } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const chakraPetch = Chakra_Petch({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-chakra",
+});
 
 export const metadata: Metadata = {
   title: "Taskify Games",
@@ -21,7 +26,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${inter.variable} antialiased bg-black text-white font-sans overflow-x-hidden min-h-screen`}>
+      <body className={`${inter.variable} ${chakraPetch.variable} antialiased bg-black text-white font-sans overflow-x-hidden min-h-screen`}>
         {children}
       </body>
     </html>

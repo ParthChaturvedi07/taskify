@@ -9,8 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)"],
-        pixel: ["var(--font-pixel)"],
+        sans:   ["var(--font-inter)", "system-ui", "sans-serif"],
+        chakra: ["var(--font-chakra)", "sans-serif"],
+        pixel:  ["var(--font-pixel)", "monospace"],
       },
       colors: {
         background: "var(--background)",

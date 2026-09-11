@@ -11,7 +11,7 @@ interface CarouselProps {
 export function Carousel({ items }: CarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const cardsRef = useRef<(HTMLImageElement | null)[]>([]);
   const [radius, setRadius] = useState(50);
 
   // Duplicate items to form a continuous loop

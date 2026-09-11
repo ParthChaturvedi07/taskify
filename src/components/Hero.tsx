@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
+import gsap from "gsap";
 
 /* ─────────────────────────────────────────────
    Card data
@@ -9,38 +10,28 @@ import { useEffect, useRef } from "react";
 const FAN_CARDS = [
   {
     name: "NOCTURNE", sub: "Focus mode",
-    src: "https://images.unsplash.com/photo-1654859869130-fd0a2aa5539b?q=80&w=1228&auto=format&fit=crop",
+    src: "/images/card1.png",
     alt: "Gaming setup",
   },
   {
     name: "CIPHER", sub: "Daily streak",
-    src: "https://images.unsplash.com/photo-1635336969656-0e63e076904f?w=600&auto=format&fit=crop&q=60",
+    src: "/images/card2.png",
     alt: "VR Headset",
   },
   {
     name: "RELAY", sub: "Quick tasks",
-    src: "https://plus.unsplash.com/premium_photo-1682124752476-40db22034a58?q=80&w=880&auto=format&fit=crop",
+    src: "/images/card3.png",
     alt: "Arcade",
   },
   {
     name: "AERO", sub: "Featured",
-    src: "https://images.unsplash.com/photo-1625314887424-9f190599bd56?q=80&w=687&auto=format&fit=crop",
+    src: "/images/card4.png",
     alt: "Esports",
   },
   {
     name: "SIGNAL", sub: "New drop",
-    src: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=647&auto=format&fit=crop",
+    src: "/images/card5.png",
     alt: "Arcade 2",
-  },
-  {
-    name: "VANTAGE", sub: "Top earner",
-    src: "https://images.unsplash.com/photo-1590642956346-d2c9095f0bf1?q=80&w=763&auto=format&fit=crop",
-    alt: "VR Headset 2",
-  },
-  {
-    name: "PULSE", sub: "Live now",
-    src: "https://images.unsplash.com/photo-1742745181459-815e9815ac05?q=80&w=880&auto=format&fit=crop",
-    alt: "Gaming setup 2",
   },
 ] as const;
 
@@ -48,13 +39,13 @@ const FAN_CARDS = [
    Fan carousel constants
 ───────────────────────────────────────────── */
 const N           = FAN_CARDS.length; // 7
-const CARD_W      = 250;   // px — card width
-const CARD_H      = 350;   // px — card height
+const CARD_W      = 440;   // px — card width
+const CARD_H      = 500;   // px — card height
 const SLOT_COUNT  = 7;     // visible slots: offsets -3 … +3
 const HALF        = 3;     // Math.floor(SLOT_COUNT / 2)
 // Arc radius: cards follow a circular path, centre = top, edges dip down
 const ARC_R       = 680;   // px — radius of the arc
-const X_STEP      = 190;   // horizontal spread per offset (px)
+const X_STEP      = 240;   // horizontal spread per offset (px)
 const SCALE_STEP  = 0.07;  // scale decrease per offset
 const AUTO_SPEED  = 0.22 / 60; // cards per frame (≈ 0.22 card/sec)
 const DRAG_SENSE  = 190;   // px drag = 1 card
@@ -172,8 +163,108 @@ export function Hero() {
   /* ── Fan carousel refs ── */
   const slotRefs = useRef<(HTMLDivElement    | null)[]>([]);
   const imgRefs  = useRef<(HTMLImageElement  | null)[]>([]);
-  const nameRefs = useRef<(HTMLSpanElement   | null)[]>([]);
-  const subRefs  = useRef<(HTMLSpanElement   | null)[]>([]);
+  const rewardsRef = useRef<HTMLSpanElement | null>(null);
+
+  /* ── Pixel glitch effect for REWARDS ── */
+  useLayoutEffect(() => {
+    const el = rewardsRef.current;
+    if (!el) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const ctx = gsap.context(() => {
+      // Reset the animated CSS variables before the timeline starts.
+      gsap.set(el, {
+        "--glitch-x": 0,
+        "--glitch-y": 0,
+        "--glitch-skew": 0,
+        "--glitch-top-1": "0%",
+        "--glitch-bottom-1": "100%",
+        "--glitch-top-2": "0%",
+        "--glitch-bottom-2": "100%",
+        "--glitch-opacity": 0,
+      });
+
+      // Short bursts rather than a constant shake: this keeps the heading readable
+      // while still giving it a convincing digital/pixel-glitch character.
+      const glitch = gsap.timeline({ repeat: -1, repeatDelay: 2.8 });
+
+      glitch
+        .to(el, {
+          duration: 0.035,
+          "--glitch-x": -3,
+          "--glitch-y": 1,
+          "--glitch-skew": -3,
+          "--glitch-opacity": 1,
+          ease: "steps(1)",
+        })
+        .to(el, {
+          duration: 0.035,
+          "--glitch-x": 4,
+          "--glitch-y": -1,
+          "--glitch-skew": 2,
+          "--glitch-opacity": 0.8,
+          ease: "steps(1)",
+        })
+        .to(el, {
+          duration: 0.035,
+          "--glitch-x": -7,
+          "--glitch-y": 0,
+          "--glitch-skew": 6,
+          "--glitch-opacity": 1,
+          ease: "steps(1)",
+        })
+        .to(el, {
+          duration: 0.035,
+          "--glitch-x": 2,
+          "--glitch-y": 2,
+          "--glitch-skew": -5,
+          "--glitch-opacity": 0.65,
+          ease: "steps(1)",
+        })
+        .to(el, {
+          duration: 0.035,
+          "--glitch-x": 0,
+          "--glitch-y": 0,
+          "--glitch-skew": 0,
+          "--glitch-opacity": 0,
+          ease: "steps(1)",
+        })
+        // A second, larger pixel slice during the same burst.
+        .to(el, {
+          duration: 0.045,
+          "--glitch-top-1": "18%",
+          "--glitch-bottom-1": "43%",
+          "--glitch-top-2": "61%",
+          "--glitch-bottom-2": "78%",
+          "--glitch-x": -5,
+          "--glitch-skew": 4,
+          "--glitch-opacity": 0.9,
+          ease: "steps(1)",
+        })
+        .to(el, {
+          duration: 0.045,
+          "--glitch-top-1": "0%",
+          "--glitch-bottom-1": "100%",
+          "--glitch-top-2": "0%",
+          "--glitch-bottom-2": "100%",
+          "--glitch-x": 6,
+          "--glitch-skew": -4,
+          "--glitch-opacity": 0.8,
+          ease: "steps(1)",
+        })
+        .to(el, {
+          duration: 0.04,
+          "--glitch-x": 0,
+          "--glitch-skew": 0,
+          "--glitch-opacity": 0,
+          ease: "steps(1)",
+        });
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
 
   /* ── Drag state (all in refs → no re-renders) ── */
   const posRef      = useRef(0);     // current position in card units (float)
@@ -202,7 +293,9 @@ export function Hero() {
         const absVis      = Math.abs(visualOff);
 
         /* ── Geometric transforms: arc path, no rotation ── */
-        const tx      = visualOff * X_STEP;
+        // Scale step to viewport so cards don't spread apart on small screens
+        const xStep = Math.min(X_STEP, window.innerWidth * 0.38);
+        const tx      = visualOff * xStep;
         // Circular arc: centre card sits at top (y=0), edges dip downward.
         // arcDip = R − √(R² − x²), clamped so x never exceeds R.
         const clampedX = Math.min(Math.abs(tx), ARC_R - 1);
@@ -220,16 +313,12 @@ export function Hero() {
         const cardIdx = ((base + offset) % N + N) % N;
         const card    = FAN_CARDS[cardIdx];
         const img     = imgRefs.current[si];
-        const nameEl  = nameRefs.current[si];
-        const subEl   = subRefs.current[si];
 
         if (img && img.dataset.loaded !== card.src) {
           img.src = card.src;
           img.alt = card.alt;
           img.dataset.loaded = card.src;
         }
-        if (nameEl && nameEl.textContent !== card.name) nameEl.textContent = card.name;
-        if (subEl  && subEl.textContent  !== card.sub)  subEl.textContent  = card.sub;
       });
     }
 
@@ -314,16 +403,30 @@ export function Hero() {
         }}
       />
 
+      {/* ── Top-right white glow ── */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-15%", right: "-10%",
+          width: "700px", height: "700px",
+          background:
+            "radial-gradient(ellipse at center, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 35%, transparent 65%)",
+          pointerEvents: "none", zIndex: 0,
+          borderRadius: "50%",
+          filter: "blur(40px)",
+        }}
+      />
+
       {/* ── Hero wrapper ── */}
       <div className="hero-root">
 
         {/* ── Text block ── */}
         <section className="hero-section">
-          <div className="hero-kicker">Idle time, converted</div>
 
           <h1 className="hero-h1">
-            Turn free time into
-            <span className="hero-accent">REWARDS</span>
+            TURN FREE TIME
+            <span ref={rewardsRef} data-text="REWARDS" className="hero-accent font-pixel tracking-wide ">REWARDS</span>
           </h1>
 
           <p className="hero-sub">
@@ -357,27 +460,13 @@ export function Hero() {
                 className="fan-slot"
                 ref={el => { slotRefs.current[i] = el; }}
               >
-                <div className="fan-inner">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    ref={el => { imgRefs.current[i] = el; }}
-                    className="fan-img"
-                    alt=""
-                    draggable={false}
-                  />
-                  <div className="fan-shade" />
-                  <div className="fan-grain" />
-                  <div className="fan-tag">
-                    <span
-                      ref={el => { nameRefs.current[i] = el; }}
-                      className="fan-tag-name"
-                    />
-                    <span
-                      ref={el => { subRefs.current[i] = el; }}
-                      className="fan-tag-sub"
-                    />
-                  </div>
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  ref={el => { imgRefs.current[i] = el; }}
+                  className="fan-img"
+                  alt=""
+                  draggable={false}
+                />
               </div>
             ))}
           </div>
@@ -391,7 +480,8 @@ export function Hero() {
       </div>
 
       {/* ── Scoped styles ── */}
-      <style>{`
+      {/* suppressHydrationWarning prevents the SSR/client mismatch on CSS string encoding */}
+      <style suppressHydrationWarning>{`
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap');
 
         /* ─── Root ─── */
@@ -429,7 +519,7 @@ export function Hero() {
         }
 
         .hero-h1 {
-          font-family: 'Chakra Petch', sans-serif;
+          font-family: var(--font-chakra);
           font-weight: 600;
           font-size: clamp(28px, 7vw, 52px);
           line-height: 1.12;
@@ -439,15 +529,65 @@ export function Hero() {
         }
 
         .hero-accent {
+          --glitch-x: 0px;
+          --glitch-y: 0px;
+          --glitch-skew: 0deg;
+          --glitch-top-1: 0%;
+          --glitch-bottom-1: 100%;
+          --glitch-top-2: 0%;
+          --glitch-bottom-2: 100%;
+          --glitch-opacity: 0;
+          position: relative;
           display: block;
-          font-family: 'Chakra Petch', sans-serif;
+          width: fit-content;
+          margin-left: auto;
+          margin-right: auto;
           font-weight: 700;
           font-size: clamp(56px, 16vw, 98px);
           color: #ffffff;
-          letter-spacing: 0.01em;
+          letter-spacing: 0.12em;
           margin-top: 6px;
           text-shadow: 0 0 60px rgba(255,255,255,0.18);
           line-height: 1.05;
+          isolation: isolate;
+        }
+
+        /* Two clipped duplicate layers create the hard, pixel-sliced glitch. */
+        .hero-accent::before,
+        .hero-accent::after {
+          content: attr(data-text);
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: -1;
+          color: #ffffff;
+          opacity: var(--glitch-opacity);
+          mix-blend-mode: screen;
+          will-change: transform, clip-path, opacity;
+        }
+
+        .hero-accent::before {
+          transform: translate3d(calc(var(--glitch-x) * -1), var(--glitch-y), 0)
+            skewX(var(--glitch-skew));
+          clip-path: polygon(
+            0 var(--glitch-top-1),
+            100% var(--glitch-top-1),
+            100% var(--glitch-bottom-1),
+            0 var(--glitch-bottom-1)
+          );
+          text-shadow: -3px 0 rgba(255,255,255,0.7);
+        }
+
+        .hero-accent::after {
+          transform: translate3d(var(--glitch-x), calc(var(--glitch-y) * -1), 0)
+            skewX(calc(var(--glitch-skew) * -1));
+          clip-path: polygon(
+            0 var(--glitch-top-2),
+            100% var(--glitch-top-2),
+            100% var(--glitch-bottom-2),
+            0 var(--glitch-bottom-2)
+          );
+          text-shadow: 3px 0 rgba(255,255,255,0.55);
         }
 
         .hero-sub {
@@ -467,7 +607,7 @@ export function Hero() {
         .hero-cta-btn {
           background: #ffffff;
           color: #0a0a0a;
-          font-family: 'Chakra Petch', sans-serif;
+          font-family: var(--font-chakra);
           font-weight: 600;
           font-size: 15px;
           letter-spacing: 0.01em;
@@ -529,76 +669,20 @@ export function Hero() {
           left: ${-CARD_W / 2}px;
           width: ${CARD_W}px;
           height: ${CARD_H}px;
-          /* Cards always upright — transform-origin at centre */
           transform-origin: center center;
           will-change: transform, opacity;
-          opacity: 0;  /* JS reveals on first frame */
-        }
-
-        /* ── Card face ── */
-        .fan-inner {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          border-radius: 18px;
-          border: 1px solid #2a2a2a;
-          overflow: hidden;
-          background: #101010;
-          /* subtle ring glow on hover */
-          transition: border-color 0.3s ease;
-        }
-        .fan-slot:hover .fan-inner {
-          border-color: #444;
+          opacity: 0;
         }
 
         .fan-img {
-          position: absolute;
-          inset: 0;
           width: 100%;
           height: 100%;
-          object-fit: cover;
-          object-position: center;
+          object-fit: contain;
+          object-position: center bottom;
           display: block;
           pointer-events: none;
           user-select: none;
-        }
-
-        .fan-shade {
-          position: absolute; inset: 0;
-          background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.9) 100%);
-          z-index: 2;
-        }
-
-        .fan-grain {
-          position: absolute; inset: 0;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-          mix-blend-mode: overlay;
-          opacity: 0.45;
-          pointer-events: none;
-          z-index: 3;
-        }
-
-        .fan-tag {
-          position: absolute;
-          left: 14px; bottom: 14px;
-          z-index: 4;
-        }
-        .fan-tag-name {
-          display: block;
-          font-family: 'Chakra Petch', sans-serif;
-          font-weight: 600;
-          font-size: 11px;
-          letter-spacing: 0.08em;
-          color: #ffffff;
-        }
-        .fan-tag-sub {
-          display: block;
-          font-family: 'Inter', sans-serif;
-          font-weight: 400;
-          font-size: 9.5px;
-          color: #6b6b6b;
-          letter-spacing: 0.04em;
-          margin-top: 2px;
+          filter: drop-shadow(0 8px 32px rgba(0,0,0,0.55));
         }
 
         /* ── Edge + bottom fades ── */

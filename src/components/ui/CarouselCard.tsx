@@ -5,26 +5,19 @@ export interface CarouselCardProps {
   src: string;
   alt: string;
   index: number;
-  setRef?: (el: HTMLDivElement | null) => void;
+  setRef?: (el: HTMLImageElement | null) => void;
 }
 
 export function CarouselCard({ src, alt, setRef }: CarouselCardProps) {
   return (
-    <div
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       ref={setRef}
-      className=" absolute top-1/2 left-1/2 w-[clamp(200px,52vw,360px)] h-[clamp(300px,90vw,580px)] rounded-3xl overflow-hidden transition-opacity duration-100 ease-out"
-      style={{
-        backfaceVisibility: "hidden",
-      }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-full object-cover pointer-events-none select-none"
-        draggable={false}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
-    </div>
+      src={src}
+      alt={alt}
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(240px,38vw,460px)] h-[clamp(380px,38vw,800px)] object-contain pointer-events-none select-none drop-shadow-2xl transition-opacity duration-100 ease-out"
+      style={{ backfaceVisibility: "hidden" }}
+      draggable={false}
+    />
   );
 }

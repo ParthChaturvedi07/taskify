@@ -32,9 +32,10 @@
 }
 
 :root {
-  --font-pixel: "Edunline Outline", var(--font-pixel-fallback, monospace);
-  --font-pixel-solid: "Edunline", var(--font-pixel-fallback, monospace);
-  --font-pixel-dot: "Edunline Dot", var(--font-pixel-fallback, monospace);
+  --font-pixel:       "Edunline Outline", monospace;
+  --font-pixel-solid: "Edunline", monospace;
+  --font-pixel-dot:   "Edunline Dot", monospace;
+  --font-chakra:      "Chakra Petch", sans-serif; /* fallback if next/font fails */
 }
 
 @layer utilities {
