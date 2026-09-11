@@ -46,7 +46,7 @@ export function Carousel({ items }: CarouselProps) {
       // width/breakpoint values from CarouselCard's CSS. This keeps the
       // radius in sync with the card's real size at any viewport width,
       // including the continuous clamp() scaling used in CarouselCard.
-      const firstCard = cardsRef.current.find((el): el is HTMLDivElement => !!el);
+      const firstCard = cardsRef.current.find((el): el is HTMLImageElement => !!el);
       if (!firstCard) return;
 
       const cardWidth = firstCard.offsetWidth;
