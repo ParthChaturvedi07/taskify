@@ -6,6 +6,7 @@ import { Hero } from "@/components/Hero";
 import { GridBackground } from "@/components/ui/GridBackground";
 import { About } from "@/components/About";
 import { Footer } from "@/components/Footer";
+import { FeaturesGrid } from "@/components/FeaturesGrid";
 
 export default function Home() {
   return (
@@ -29,6 +30,12 @@ export default function Home() {
         <About />
       </section>
 
+
+      {/* ── FEATURES GRID ── */}
+      <section className="relative w-full">
+        <FeaturesGrid />
+      </section>
+      
       {/* ── FOOTER ── */}
       <Footer />
     </main>

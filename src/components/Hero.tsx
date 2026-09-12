@@ -692,6 +692,7 @@ export function Hero() {
           pointer-events: none;
           z-index: 20;
         }
+          
         .fan-fade-l {
           top: 0; left: 0; bottom: 0;
           width: clamp(60px, 10vw, 180px);
@@ -702,11 +703,11 @@ export function Hero() {
           width: clamp(60px, 10vw, 180px);
           background: linear-gradient(to left, #070707 0%, transparent 100%);
         }
-        .fan-fade-b {
+        .fan-fade-b{
           bottom: 0; left: 0; right: 0;
           height: 90px;
           background: linear-gradient(180deg, transparent 0%, #070707 100%);
-        }
+      }
 
         @media (max-width: 860px) {
           .hero-section { padding-top: 96px; }
