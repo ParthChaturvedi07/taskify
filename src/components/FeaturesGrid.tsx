@@ -181,7 +181,7 @@ export function FeaturesGrid() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ─── Google Fonts ─── */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -460,7 +460,7 @@ export function FeaturesGrid() {
           .fg-section { padding: 60px 20px 70px; }
           .fg-heading { font-size: 1.5rem; }
         }
-      `}</style>
+      `}} />
 
       <section className="fg-section" id="features">
         {/* ambient particles */}

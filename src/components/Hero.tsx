@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useRef, useLayoutEffect } from "react";
+import { useEffect, useRef, useLayoutEffect, useCallback } from "react";
 import gsap from "gsap";
 
 /* ─────────────────────────────────────────────
@@ -175,12 +175,68 @@ function getFlowerTransform(index: number, total: number, isMobile: boolean) {
   return { x, y, rotation, scale, zIndex };
 }
 
-export function Hero() {
+interface HeroProps {
+  /** Called externally to trigger the text-reveal sweep (after intro overlay). */
+  onRevealReady?: (triggerFn: () => void) => void;
+  /** Called externally to trigger the flower bloom (after intro overlay). */
+  onFlowerReady?: (triggerFn: () => void) => void;
+}
+
+export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useDotField(canvasRef);
 
   const rewardsRef = useRef<HTMLHeadingElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Refs for reveal animation targets
+  const h1Ref        = useRef<HTMLHeadingElement | null>(null);
+  const subRef       = useRef<HTMLParagraphElement | null>(null);
+  const ctaRef       = useRef<HTMLDivElement | null>(null);
+  const revealFiredRef = useRef(false);
+
+  /* ── Hero text reveal (called by parent after intro overlay) ── */
+  const triggerReveal = useCallback(() => {
+    if (revealFiredRef.current) return;
+    revealFiredRef.current = true;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targets = [
+      h1Ref.current,
+      rewardsRef.current,
+      subRef.current,
+      ctaRef.current,
+    ].filter(Boolean);
+
+    if (reduceMotion) {
+      gsap.set(targets, { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" });
+      return;
+    }
+
+    gsap.fromTo(
+      targets,
+      {
+        opacity: 0,
+        y: 50,
+        clipPath: "inset(100% 0% 0% 0%)",
+      },
+      {
+        opacity: 1,
+        y: 0,
+        clipPath: "inset(0% 0% 0% 0%)",
+        duration: 0.9,
+        stagger: 0.12,
+        ease: "power3.out",
+        clearProps: "clipPath",
+      }
+    );
+  }, []);
+
+  // Register triggerReveal with the parent
+  useEffect(() => {
+    if (onRevealReady) onRevealReady(triggerReveal);
+    else triggerReveal(); // no overlay — fire immediately
+  }, [onRevealReady, triggerReveal]);
 
   /* ── Pixel glitch effect for REWARDS ── */
   useLayoutEffect(() => {
@@ -279,28 +335,16 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
-  /* ── Initial Load Stack & Flower Bloom Animation ── */
-  useEffect(() => {
+  const flowerFiredRef = useRef(false);
+
+  /* ── Flower bloom trigger (called by parent after intro overlay) ── */
+  const triggerFlower = useCallback(() => {
+    if (flowerFiredRef.current) return;
+    flowerFiredRef.current = true;
+
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.innerWidth < 768;
     const total = FLOWER_CARDS.length;
-
-    // Set initial stacked state for all cards
-    cardRefs.current.forEach((cardEl, i) => {
-      if (!cardEl) return;
-      const centerIndex = (total - 1) / 2;
-      const absOffset = Math.abs(i - centerIndex);
-
-      gsap.set(cardEl, {
-        x: 0,
-        y: 45 + absOffset * 3,
-        rotation: 0,
-        scale: 0.82 - absOffset * 0.02,
-        opacity: 0,
-        transformOrigin: "50% 90%",
-        zIndex: 10 - absOffset,
-      });
-    });
 
     if (reduceMotion) {
       cardRefs.current.forEach((cardEl, i) => {
@@ -318,48 +362,71 @@ export function Hero() {
       return;
     }
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        delay: 0.2,
-      });
+    const tl = gsap.timeline({ delay: 0.1 });
 
-      // 1. Smoothly fade in stacked deck
-      tl.to(cardRefs.current.filter(Boolean), {
-        opacity: 1,
-        duration: 0.4,
-        stagger: 0.04,
-        ease: "power2.out",
-      });
+    // 1. Smoothly fade in stacked deck
+    tl.to(cardRefs.current.filter(Boolean), {
+      opacity: 1,
+      duration: 0.4,
+      stagger: 0.04,
+      ease: "power2.out",
+    });
 
-      // 2. Open cards outwards in semi-circular flower bloom (staggered from center)
-      const centerIndex = (total - 1) / 2;
-      const sortedByDistance = Array.from({ length: total }, (_, i) => i).sort(
-        (a, b) => Math.abs(a - centerIndex) - Math.abs(b - centerIndex)
+    // 2. Open cards outwards in semi-circular flower bloom (staggered from center)
+    const centerIndex = (total - 1) / 2;
+    const sortedByDistance = Array.from({ length: total }, (_, i) => i).sort(
+      (a, b) => Math.abs(a - centerIndex) - Math.abs(b - centerIndex)
+    );
+
+    sortedByDistance.forEach((index, step) => {
+      const cardEl = cardRefs.current[index];
+      if (!cardEl) return;
+      const target = getFlowerTransform(index, total, isMobile);
+
+      tl.to(
+        cardEl,
+        {
+          x: target.x,
+          y: target.y,
+          rotation: target.rotation,
+          scale: target.scale,
+          zIndex: target.zIndex,
+          duration: 1.15,
+          ease: "back.out(1.35)",
+        },
+        step === 0 ? ">" : "<+=0.1"
       );
+    });
+  }, []);
 
-      sortedByDistance.forEach((index, step) => {
-        const cardEl = cardRefs.current[index];
-        if (!cardEl) return;
-        const target = getFlowerTransform(index, total, isMobile);
+  /* ── Set initial stacked state on mount & register flower trigger ── */
+  useEffect(() => {
+    const total = FLOWER_CARDS.length;
 
-        tl.to(
-          cardEl,
-          {
-            x: target.x,
-            y: target.y,
-            rotation: target.rotation,
-            scale: target.scale,
-            zIndex: target.zIndex,
-            duration: 1.15,
-            ease: "back.out(1.35)",
-          },
-          step === 0 ? ">" : "<+=0.1"
-        );
+    // Set initial stacked state for all cards (hidden, centred stack)
+    cardRefs.current.forEach((cardEl, i) => {
+      if (!cardEl) return;
+      const centerIndex = (total - 1) / 2;
+      const absOffset = Math.abs(i - centerIndex);
+
+      gsap.set(cardEl, {
+        x: 0,
+        y: 45 + absOffset * 3,
+        rotation: 0,
+        scale: 0.82 - absOffset * 0.02,
+        opacity: 0,
+        transformOrigin: "50% 90%",
+        zIndex: 10 - absOffset,
       });
     });
 
-    return () => ctx.revert();
-  }, []);
+    if (onFlowerReady) {
+      onFlowerReady(triggerFlower);
+    } else {
+      // No overlay — fire immediately
+      triggerFlower();
+    }
+  }, [onFlowerReady, triggerFlower]);
 
   return (
     <>
@@ -418,21 +485,22 @@ export function Hero() {
 
         {/* ── Text block ── */}
         <section className="hero-section">
-          <h1 className="hero-h1">TURN FREE TIME</h1>
+          <h1 ref={h1Ref} className="hero-h1" style={{ opacity: 0 }}>TURN FREE TIME</h1>
           <h1
             ref={rewardsRef}
             data-text="REWARDS"
             className="hero-accent font-pixel tracking-wide"
+            style={{ opacity: 0 }}
           >
             REWARDS
           </h1>
 
-          <p className="hero-sub">
+          <p ref={subRef} className="hero-sub" style={{ opacity: 0 }}>
             Complete short tasks inside the apps you already use, earn points
             automatically, and cash out for real rewards — no grinding required.
           </p>
 
-          <div className="hero-cta-row flex items-center justify-center gap-4">
+          <div ref={ctaRef} className="hero-cta-row flex items-center justify-center gap-4" style={{ opacity: 0 }}>
             <button className="hero-cta-btn">Start earning</button>
             {/* <button
               onClick={replayFlowerBloom}
@@ -491,7 +559,7 @@ export function Hero() {
       </div>
 
       {/* ── Scoped styles ── */}
-      <style suppressHydrationWarning>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap');
 
         .hero-root {
@@ -704,7 +772,7 @@ export function Hero() {
           background: linear-gradient(to left, #070707 0%, transparent 100%);
         }
         .fan-fade-b{
-          bottom: 0; left: 0; right: 0;
+          bottom: -20px; left: 0; right: 0;
           height: 90px;
           background: linear-gradient(180deg, transparent 0%, #070707 100%);
       }
@@ -727,7 +795,7 @@ export function Hero() {
             left: -100px;
           }
         }
-      `}</style>
+      `}} />
     </>
   );
 }
