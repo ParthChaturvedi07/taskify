@@ -7,49 +7,43 @@ import gsap from "gsap";
 /* ─────────────────────────────────────────────
    Card data
 ───────────────────────────────────────────── */
-const FAN_CARDS = [
+const FLOWER_CARDS = [
   {
-    name: "NOCTURNE", sub: "Focus mode",
+    id: "card-1",
+    name: "NOCTURNE",
+    sub: "Focus mode",
     src: "/images/card1.png",
     alt: "Gaming setup",
   },
   {
-    name: "CIPHER", sub: "Daily streak",
+    id: "card-2",
+    name: "CIPHER",
+    sub: "Daily streak",
     src: "/images/card2.png",
     alt: "VR Headset",
   },
   {
-    name: "RELAY", sub: "Quick tasks",
+    id: "card-3",
+    name: "RELAY",
+    sub: "Quick tasks",
     src: "/images/card3.png",
     alt: "Arcade",
   },
   {
-    name: "AERO", sub: "Featured",
+    id: "card-4",
+    name: "AERO",
+    sub: "Featured",
     src: "/images/card4.png",
     alt: "Esports",
   },
   {
-    name: "SIGNAL", sub: "New drop",
+    id: "card-5",
+    name: "SIGNAL",
+    sub: "New drop",
     src: "/images/card5.png",
     alt: "Arcade 2",
   },
 ] as const;
-
-/* ─────────────────────────────────────────────
-   Fan carousel constants
-───────────────────────────────────────────── */
-const N           = FAN_CARDS.length; // 7
-const CARD_W      = 440;   // px — card width
-const CARD_H      = 500;   // px — card height
-const SLOT_COUNT  = 7;     // visible slots: offsets -3 … +3
-const HALF        = 3;     // Math.floor(SLOT_COUNT / 2)
-// Arc radius: cards follow a circular path, centre = top, edges dip down
-const ARC_R       = 680;   // px — radius of the arc
-const X_STEP      = 240;   // horizontal spread per offset (px)
-const SCALE_STEP  = 0.07;  // scale decrease per offset
-const AUTO_SPEED  = 0.22 / 60; // cards per frame (≈ 0.22 card/sec)
-const DRAG_SENSE  = 190;   // px drag = 1 card
-const SNAP_K      = 0.14;  // spring stiffness for snap-to-nearest
 
 /* ─────────────────────────────────────────────
    Dot-field canvas hook
@@ -149,21 +143,44 @@ function useDotField(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
       window.removeEventListener("touchend",   onTouchEnd);
       window.removeEventListener("resize",     resize);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 
 /* ─────────────────────────────────────────────
-   Hero
+   Calculate Semicircular Flower Bloom Target
 ───────────────────────────────────────────── */
+function getFlowerTransform(index: number, total: number, isMobile: boolean) {
+  const centerIndex = (total - 1) / 2; // 2 for 5 items
+  const offset = index - centerIndex;   // -2, -1, 0, 1, 2
+  const absOffset = Math.abs(offset);
+
+  // Angle: tighter fan angle
+  const angleStep = isMobile ? 12 : 16;
+  const rotation = offset * angleStep;
+
+  // Horizontal translation spread (reduced gap)
+  const xStep = isMobile ? 55 : 115;
+  const x = offset * xStep;
+
+  // Vertical curve (flower arch arching upwards)
+  const yCurve = isMobile ? 10 : 16;
+  const y = Math.pow(absOffset, 1.7) * yCurve;
+
+  // Scale: center card is largest, outer cards scale down slightly
+  const scale = Math.max(0.78, 1 - absOffset * 0.04);
+
+  // Stack depth
+  const zIndex = 10 - absOffset * 2;
+
+  return { x, y, rotation, scale, zIndex };
+}
+
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useDotField(canvasRef);
 
-  /* ── Fan carousel refs ── */
-  const slotRefs = useRef<(HTMLDivElement    | null)[]>([]);
-  const imgRefs  = useRef<(HTMLImageElement  | null)[]>([]);
-  const rewardsRef = useRef<HTMLSpanElement | null>(null);
+  const rewardsRef = useRef<HTMLHeadingElement | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   /* ── Pixel glitch effect for REWARDS ── */
   useLayoutEffect(() => {
@@ -174,7 +191,6 @@ export function Hero() {
     if (reduceMotion) return;
 
     const ctx = gsap.context(() => {
-      // Reset the animated CSS variables before the timeline starts.
       gsap.set(el, {
         "--glitch-x": 0,
         "--glitch-y": 0,
@@ -186,8 +202,6 @@ export function Hero() {
         "--glitch-opacity": 0,
       });
 
-      // Short bursts rather than a constant shake: this keeps the heading readable
-      // while still giving it a convincing digital/pixel-glitch character.
       const glitch = gsap.timeline({ repeat: -1, repeatDelay: 2.8 });
 
       glitch
@@ -231,7 +245,6 @@ export function Hero() {
           "--glitch-opacity": 0,
           ease: "steps(1)",
         })
-        // A second, larger pixel slice during the same burst.
         .to(el, {
           duration: 0.045,
           "--glitch-top-1": "18%",
@@ -266,114 +279,87 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
-  /* ── Drag state (all in refs → no re-renders) ── */
-  const posRef      = useRef(0);     // current position in card units (float)
-  const isDragging  = useRef(false);
-  const dragStartX  = useRef(0);
-  const dragStartP  = useRef(0);
-  const velRef      = useRef(0);     // velocity in cards/frame
-  const prevXRef    = useRef(0);
-  const snapping    = useRef(false);
-
-  /* ── Main carousel animation loop ── */
+  /* ── Initial Load Stack & Flower Bloom Animation ── */
   useEffect(() => {
-    const REDUCE_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let rafId: number;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.innerWidth < 768;
+    const total = FLOWER_CARDS.length;
 
-    function applySlots() {
-      const pos  = posRef.current;
-      const base = Math.floor(pos);      // integer floor
-      const frac = pos - base;           // 0 → 1, how far past the last integer
+    // Set initial stacked state for all cards
+    cardRefs.current.forEach((cardEl, i) => {
+      if (!cardEl) return;
+      const centerIndex = (total - 1) / 2;
+      const absOffset = Math.abs(i - centerIndex);
 
-      slotRefs.current.forEach((slot, si) => {
-        if (!slot) return;
-
-        const offset      = si - HALF;             // -3 … +3
-        const visualOff   = offset - frac;          // fractional offset from current center
-        const absVis      = Math.abs(visualOff);
-
-        /* ── Geometric transforms: arc path, no rotation ── */
-        // Scale step to viewport so cards don't spread apart on small screens
-        const xStep = Math.min(X_STEP, window.innerWidth * 0.38);
-        const tx      = visualOff * xStep;
-        // Circular arc: centre card sits at top (y=0), edges dip downward.
-        // arcDip = R − √(R² − x²), clamped so x never exceeds R.
-        const clampedX = Math.min(Math.abs(tx), ARC_R - 1);
-        const arcDip   = ARC_R - Math.sqrt(ARC_R * ARC_R - clampedX * clampedX);
-        const scale    = Math.max(0.60, 1 - absVis * SCALE_STEP);
-        const zIdx     = Math.max(1, Math.round(10 - absVis * 2));
-        // Fade out cards beyond visible range
-        const opacity  = Math.max(0, Math.min(1, 2.8 - absVis));
-
-        slot.style.transform = `translate(${tx.toFixed(1)}px, ${arcDip.toFixed(1)}px) scale(${scale.toFixed(3)})`;
-        slot.style.zIndex    = String(zIdx);
-        slot.style.opacity   = opacity.toFixed(3);
-
-        /* ── Update card content for this slot ── */
-        const cardIdx = ((base + offset) % N + N) % N;
-        const card    = FAN_CARDS[cardIdx];
-        const img     = imgRefs.current[si];
-
-        if (img && img.dataset.loaded !== card.src) {
-          img.src = card.src;
-          img.alt = card.alt;
-          img.dataset.loaded = card.src;
-        }
+      gsap.set(cardEl, {
+        x: 0,
+        y: 45 + absOffset * 3,
+        rotation: 0,
+        scale: 0.82 - absOffset * 0.02,
+        opacity: 0,
+        transformOrigin: "50% 90%",
+        zIndex: 10 - absOffset,
       });
+    });
+
+    if (reduceMotion) {
+      cardRefs.current.forEach((cardEl, i) => {
+        if (!cardEl) return;
+        const target = getFlowerTransform(i, total, isMobile);
+        gsap.set(cardEl, {
+          x: target.x,
+          y: target.y,
+          rotation: target.rotation,
+          scale: target.scale,
+          opacity: 1,
+          zIndex: target.zIndex,
+        });
+      });
+      return;
     }
 
-    function tick() {
-      if (!isDragging.current) {
-        if (snapping.current) {
-          /* Spring snap to nearest integer */
-          const nearest = Math.round(posRef.current);
-          const diff    = nearest - posRef.current;
-          posRef.current += diff * SNAP_K;
-          velRef.current  = 0;
-          if (Math.abs(diff) < 0.003) {
-            posRef.current  = nearest;
-            snapping.current = false;
-          }
-        } else if (!REDUCE_MOTION) {
-          /* Auto-advance (slow clock-like rotation) */
-          posRef.current += AUTO_SPEED;
-        }
-      }
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        delay: 0.2,
+      });
 
-      applySlots();
-      rafId = requestAnimationFrame(tick);
-    }
+      // 1. Smoothly fade in stacked deck
+      tl.to(cardRefs.current.filter(Boolean), {
+        opacity: 1,
+        duration: 0.4,
+        stagger: 0.04,
+        ease: "power2.out",
+      });
 
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
+      // 2. Open cards outwards in semi-circular flower bloom (staggered from center)
+      const centerIndex = (total - 1) / 2;
+      const sortedByDistance = Array.from({ length: total }, (_, i) => i).sort(
+        (a, b) => Math.abs(a - centerIndex) - Math.abs(b - centerIndex)
+      );
+
+      sortedByDistance.forEach((index, step) => {
+        const cardEl = cardRefs.current[index];
+        if (!cardEl) return;
+        const target = getFlowerTransform(index, total, isMobile);
+
+        tl.to(
+          cardEl,
+          {
+            x: target.x,
+            y: target.y,
+            rotation: target.rotation,
+            scale: target.scale,
+            zIndex: target.zIndex,
+            duration: 1.15,
+            ease: "back.out(1.35)",
+          },
+          step === 0 ? ">" : "<+=0.1"
+        );
+      });
+    });
+
+    return () => ctx.revert();
   }, []);
-
-  /* ── Pointer / drag handlers ── */
-  const onPointerDown = (e: React.PointerEvent<HTMLElement>) => {
-    isDragging.current = true;
-    snapping.current   = false;
-    dragStartX.current = e.clientX;
-    dragStartP.current = posRef.current;
-    prevXRef.current   = e.clientX;
-    velRef.current     = 0;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  };
-
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!isDragging.current) return;
-    const dx = e.clientX - prevXRef.current;
-    prevXRef.current   = e.clientX;
-    velRef.current     = -dx / DRAG_SENSE;
-    posRef.current     = dragStartP.current - (e.clientX - dragStartX.current) / DRAG_SENSE;
-  };
-
-  const onPointerUp = () => {
-    if (!isDragging.current) return;
-    isDragging.current = false;
-    /* Small momentum throw, then spring-snap */
-    posRef.current    += velRef.current * 2.5;
-    snapping.current   = true;
-  };
 
   return (
     <>
@@ -382,9 +368,12 @@ export function Hero() {
         ref={canvasRef}
         aria-hidden="true"
         style={{
-          position: "fixed", inset: 0,
-          width: "100%", height: "100%",
-          zIndex: 0, opacity: 0.55,
+          position: "fixed",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          opacity: 0.55,
           pointerEvents: "none",
         }}
       />
@@ -394,12 +383,15 @@ export function Hero() {
         aria-hidden="true"
         style={{
           position: "fixed",
-          top: "-10%", left: "50%",
+          top: "-10%",
+          left: "50%",
           transform: "translateX(-50%)",
-          width: "1100px", height: "700px",
+          width: "1100px",
+          height: "700px",
           background:
             "radial-gradient(ellipse at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 40%, transparent 70%)",
-          pointerEvents: "none", zIndex: 0,
+          pointerEvents: "none",
+          zIndex: 0,
         }}
       />
 
@@ -408,11 +400,14 @@ export function Hero() {
         aria-hidden="true"
         style={{
           position: "fixed",
-          top: "-15%", right: "-10%",
-          width: "700px", height: "700px",
+          top: "-15%",
+          right: "-10%",
+          width: "700px",
+          height: "700px",
           background:
             "radial-gradient(ellipse at center, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 35%, transparent 65%)",
-          pointerEvents: "none", zIndex: 0,
+          pointerEvents: "none",
+          zIndex: 0,
           borderRadius: "50%",
           filter: "blur(40px)",
         }}
@@ -423,10 +418,13 @@ export function Hero() {
 
         {/* ── Text block ── */}
         <section className="hero-section">
-
-          <h1 className="hero-h1">
-            TURN FREE TIME
-            <span ref={rewardsRef} data-text="REWARDS" className="hero-accent font-pixel tracking-wide ">REWARDS</span>
+          <h1 className="hero-h1">TURN FREE TIME</h1>
+          <h1
+            ref={rewardsRef}
+            data-text="REWARDS"
+            className="hero-accent font-pixel tracking-wide"
+          >
+            REWARDS
           </h1>
 
           <p className="hero-sub">
@@ -434,57 +432,68 @@ export function Hero() {
             automatically, and cash out for real rewards — no grinding required.
           </p>
 
-          <div className="hero-cta-row">
+          <div className="hero-cta-row flex items-center justify-center gap-4">
             <button className="hero-cta-btn">Start earning</button>
+            {/* <button
+              onClick={replayFlowerBloom}
+              className="hero-secondary-btn flex items-center gap-2"
+              title="Replay Flower Bloom Animation"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+              </svg>
+              <span>Rebloom</span>
+            </button> */}
           </div>
         </section>
 
-        {/* ── Fan carousel ── */}
+        {/* ── Flower Bloom Card Presentation Section ── */}
         <section
-          className="fan-section"
-          aria-label="App card carousel — drag to explore"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
+          className="flower-section"
+          aria-label="Semicircular card blossom"
         >
-          {/*
-            fan-pivot: a zero-size anchor at the rotation origin.
-            All slots are position:absolute relative to it.
-            Their bottom is at this point → all rotate around the same pivot.
-          */}
-          <div className="fan-pivot">
-            {Array.from({ length: SLOT_COUNT }, (_, i) => (
+          <div className="flower-pivot">
+            {FLOWER_CARDS.map((card, i) => (
               <div
-                key={i}
-                className="fan-slot"
-                ref={el => { slotRefs.current[i] = el; }}
+                key={card.id}
+                ref={(el) => {
+                  cardRefs.current[i] = el;
+                }}
+                className="flower-card-wrapper"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  ref={el => { imgRefs.current[i] = el; }}
-                  className="fan-img"
-                  alt=""
-                  draggable={false}
-                />
+                <div className="flower-card-inner">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={card.src}
+                    alt={card.alt}
+                    className="flower-card-img"
+                    draggable={false}
+                  />
+                </div>
               </div>
             ))}
           </div>
 
-          {/* Edge + bottom fades */}
+          {/* Soft ambient edge & bottom gradients */}
           <div className="fan-fade fan-fade-l" aria-hidden="true" />
           <div className="fan-fade fan-fade-r" aria-hidden="true" />
           <div className="fan-fade fan-fade-b" aria-hidden="true" />
         </section>
-
       </div>
 
       {/* ── Scoped styles ── */}
-      {/* suppressHydrationWarning prevents the SSR/client mismatch on CSS string encoding */}
       <style suppressHydrationWarning>{`
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap');
 
-        /* ─── Root ─── */
         .hero-root {
           position: relative;
           z-index: 2;
@@ -493,39 +502,20 @@ export function Hero() {
           width: 100%;
         }
 
-        /* ─── Text section ─── */
         .hero-section {
           text-align: center;
           padding: 118px 24px 0;
         }
 
-        .hero-kicker {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          color: #6b6b6b;
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.01em;
-          margin-bottom: 26px;
-        }
-        .hero-kicker::before {
-          content: '';
-          width: 6px; height: 6px;
-          border-radius: 50%;
-          background: #fff;
-          box-shadow: 0 0 10px rgba(255,255,255,0.7);
-          flex-shrink: 0;
-        }
-
         .hero-h1 {
           font-family: var(--font-chakra);
           font-weight: 600;
-          font-size: clamp(28px, 7vw, 52px);
-          line-height: 1.12;
-          letter-spacing: -0.01em;
-          color: #b4b4b4;
-          margin: 0;
+          font-size: clamp(20px, 4.5vw, 36px);
+          line-height: 1.2;
+          letter-spacing: 0.08em;
+          color: #a3a3a3;
+          margin: 0 0 6px 0;
+          text-transform: uppercase;
         }
 
         .hero-accent {
@@ -543,16 +533,15 @@ export function Hero() {
           margin-left: auto;
           margin-right: auto;
           font-weight: 700;
-          font-size: clamp(56px, 16vw, 98px);
+          font-size: clamp(64px, 17vw, 116px);
           color: #ffffff;
           letter-spacing: 0.12em;
-          margin-top: 6px;
+          margin-top: 0;
           text-shadow: 0 0 60px rgba(255,255,255,0.18);
-          line-height: 1.05;
+          line-height: 1.0;
           isolation: isolate;
         }
 
-        /* Two clipped duplicate layers create the hard, pixel-sliced glitch. */
         .hero-accent::before,
         .hero-accent::after {
           content: attr(data-text);
@@ -600,8 +589,6 @@ export function Hero() {
 
         .hero-cta-row {
           margin-top: 44px;
-          display: flex;
-          justify-content: center;
         }
 
         .hero-cta-btn {
@@ -623,69 +610,83 @@ export function Hero() {
           transform: translateY(-2px);
           box-shadow: 0 14px 50px rgba(255,255,255,0.2);
         }
-        .hero-cta-btn:active { transform: translateY(0); }
+
+        .hero-secondary-btn {
+          background: rgba(255, 255, 255, 0.06);
+          color: #b4b4b4;
+          font-family: var(--font-chakra);
+          font-weight: 500;
+          font-size: 14px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          padding: 16px 24px;
+          border-radius: 999px;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          transition: all 0.25s ease;
+          outline: none;
+        }
+        .hero-secondary-btn:hover {
+          background: rgba(255, 255, 255, 0.12);
+          color: #ffffff;
+          border-color: rgba(255, 255, 255, 0.25);
+          transform: translateY(-2px);
+        }
 
         /* ─────────────────────────────────────────────
-           FAN CAROUSEL
+           FLOWER BLOOM CARD SECTION
         ───────────────────────────────────────────── */
 
-        .fan-section {
+        .flower-section {
           position: relative;
-          /* Break out of any parent container to span full viewport */
           width: 100vw;
           margin-left: calc(-50vw + 50%);
-          /* tall enough for full center card + rotation swing room */
-          height: ${CARD_H + 120}px;
+          height: 420px;
           overflow: hidden;
-          margin-top: 52px;
-          cursor: grab;
+          margin-top: 36px;
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
           user-select: none;
-          touch-action: pan-y;
         }
-        .fan-section:active { cursor: grabbing; }
 
-        /*
-          Zero-size anchor at bottom-centre of the section.
-          This is the shared rotation pivot for all slots.
-        */
-        .fan-pivot {
+        .flower-pivot {
           position: absolute;
-          bottom: 60px;           /* how high above section bottom the pivot sits */
+          bottom: 30px;
           left: 50%;
           width: 0;
           height: 0;
           overflow: visible;
         }
 
-        /*
-          Each slot is absolute with bottom: 0 → its bottom edge
-          coincides with .fan-pivot, so ALL slots share the same pivot.
-          transform-origin: bottom center → rotation is around that pivot.
-          JS sets: translateX + rotate + scale each frame.
-        */
-        .fan-slot {
+        .flower-card-wrapper {
           position: absolute;
           bottom: 0;
-          left: ${-CARD_W / 2}px;
-          width: ${CARD_W}px;
-          height: ${CARD_H}px;
-          transform-origin: center center;
+          left: -160px;
+          width: 320px;
+          height: 380px;
+          transform-origin: 50% 90%;
           will-change: transform, opacity;
-          opacity: 0;
+          cursor: default;
         }
 
-        .fan-img {
+        .flower-card-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border-radius: 16px;
+          overflow: hidden;
+        }
+
+        .flower-card-img {
           width: 100%;
           height: 100%;
           object-fit: contain;
           object-position: center bottom;
           display: block;
           pointer-events: none;
-          user-select: none;
-          filter: drop-shadow(0 8px 32px rgba(0,0,0,0.55));
+          filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.65));
         }
 
-        /* ── Edge + bottom fades ── */
         .fan-fade {
           position: absolute;
           pointer-events: none;
@@ -707,27 +708,23 @@ export function Hero() {
           background: linear-gradient(180deg, transparent 0%, #070707 100%);
         }
 
-        /* ── Responsive ── */
         @media (max-width: 860px) {
           .hero-section { padding-top: 96px; }
-          .fan-section  { margin-top: 36px; height: ${Math.round(CARD_H * 0.72) + 90}px; }
-          .fan-slot     {
-            width:  ${Math.round(CARD_W * 0.72)}px;
-            height: ${Math.round(CARD_H * 0.72)}px;
-            left:   ${-Math.round((CARD_W * 0.72) / 2)}px;
-          }
-        }
-        @media (max-width: 480px) {
-          .fan-section { height: ${Math.round(CARD_H * 0.58) + 80}px; }
-          .fan-slot     {
-            width:  ${Math.round(CARD_W * 0.58)}px;
-            height: ${Math.round(CARD_H * 0.58)}px;
-            left:   ${-Math.round((CARD_W * 0.58) / 2)}px;
+          .flower-section { height: 340px; margin-top: 24px; }
+          .flower-card-wrapper {
+            width: 250px;
+            height: 300px;
+            left: -125px;
           }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-          .fan-slot { transition: none; }
+        @media (max-width: 480px) {
+          .flower-section { height: 270px; }
+          .flower-card-wrapper {
+            width: 200px;
+            height: 240px;
+            left: -100px;
+          }
         }
       `}</style>
     </>

@@ -111,7 +111,8 @@ export function Navbar() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 14px max(24px, calc((100vw - 1360px) / 2 + 56px));
+          height: 72px;
+          padding: 0 max(24px, calc((100vw - 1360px) / 2 + 56px));
           gap: 16px;
         }
 
@@ -121,13 +122,21 @@ export function Navbar() {
           align-items: center;
           flex-shrink: 0;
           text-decoration: none;
+          height: 100%;
         }
 
         .tg-logo-img {
-          width: 64px;
-          height: 64px;
+          width: 90px;
+          height: 90px;
           object-fit: contain;
           display: block;
+          margin-top: -9px;
+          margin-bottom: -9px;
+          transition: transform 0.25s ease;
+        }
+
+        .tg-logo:hover .tg-logo-img {
+          transform: scale(1.05);
         }
 
         /* ── DESKTOP LINKS ── */
@@ -252,7 +261,16 @@ export function Navbar() {
 
         /* ── RESPONSIVE ── */
         @media (max-width: 860px) {
-          .tg-nav { padding: 14px 20px; }
+          .tg-nav {
+            height: 64px;
+            padding: 0 20px;
+          }
+          .tg-logo-img {
+            width: 58px;
+            height: 58px;
+            margin-top: 0;
+            margin-bottom: 0;
+          }
           .tg-nav-links { display: none; }
           .tg-nav-cta--desktop { display: none; }
           .tg-hamburger { display: flex; }
