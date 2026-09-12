@@ -69,31 +69,6 @@ const rightCards = [
   },
 ];
 
-/* ─────────────────────────────────────────────
-   Premium feature card
-───────────────────────────────────────────── */
-function FeatureCard({
-  icon, title, desc, accent, iconBg,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-  accent: string;
-  iconBg: string;
-}) {
-  return (
-    <div className="fg-card" style={{ "--accent": accent, "--icon-bg": iconBg } as React.CSSProperties}>
-      {/* top accent line */}
-      <div className="fg-card-accent-bar" />
-
-      <div className="fg-icon-box">
-        {icon}
-      </div>
-      <h3 className="fg-card-title">{title}</h3>
-      <p className="fg-card-desc">{desc}</p>
-    </div>
-  );
-}
 
 /* ─────────────────────────────────────────────
    Center phone card

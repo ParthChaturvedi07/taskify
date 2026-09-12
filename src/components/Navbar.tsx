@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import Image from "next/image";
 
 const NAV_LINKS = ["About", "Reviews", "FAQs", "Contact"];
 
@@ -20,10 +21,13 @@ export function Navbar() {
         <nav className="tg-nav">
           {/* Logo */}
           <a href="#" className="tg-logo" aria-label="Taskify home">
-            <img
+            <Image
               src="/images/logo.png"
               alt="Taskify Logo"
+              width={90}
+              height={90}
               className="tg-logo-img"
+              priority
             />
           </a>
 

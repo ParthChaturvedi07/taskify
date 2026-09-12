@@ -143,6 +143,8 @@ function useDotField(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
       window.removeEventListener("touchend",   onTouchEnd);
       window.removeEventListener("resize",     resize);
     };
+  // canvasRef is a stable ref object — safe to omit from deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 
