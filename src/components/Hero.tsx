@@ -556,7 +556,7 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           {/* Soft ambient edge & bottom gradients */}
           {/* <div className="fan-fade fan-fade-l" aria-hidden="true" />
           <div className="fan-fade fan-fade-r" aria-hidden="true" /> */}
-          <div className="fan-fade fan-fade-b" aria-hidden="true" />
+          {/* <div className="fan-fade fan-fade-b" aria-hidden="true" /> */}
         </section>
       </div>
 
@@ -710,18 +710,19 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           position: relative;
           width: 100vw;
           margin-left: calc(-50vw + 50%);
-          height: 420px;
+          height: 600px;
           overflow: hidden;
           margin-top: 36px;
           display: flex;
           justify-content: center;
           align-items: flex-end;
           user-select: none;
+          z-index: 99;
         }
 
         .flower-pivot {
           position: absolute;
-          bottom: 30px;
+          bottom: 170px;
           left: 50%;
           width: 0;
           height: 0;
@@ -781,7 +782,8 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
 
         @media (max-width: 860px) {
           .hero-section { padding-top: 96px; }
-          .flower-section { height: 340px; margin-top: 24px; }
+          .flower-section { height: 460px; margin-top: 24px; }
+          .flower-pivot { bottom: 130px; }
           .flower-card-wrapper {
             width: 250px;
             height: 300px;
@@ -790,7 +792,8 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
         }
 
         @media (max-width: 480px) {
-          .flower-section { height: 270px; }
+          .flower-section { height: 380px; }
+          .flower-pivot { bottom: 110px; }
           .flower-card-wrapper {
             width: 200px;
             height: 240px;

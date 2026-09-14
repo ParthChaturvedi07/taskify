@@ -60,7 +60,7 @@ export function FAQ() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-[1200px] flex flex-col md:flex-row md:items-end justify-between gap-[20px] mb-[80px]"
+        className="relative z-10 w-full max-w-[1200px] flex flex-col items-center text-center md:text-left md:flex-row md:items-end justify-between gap-[20px] mb-[80px]"
       >
         <h2 className="font-pixel text-[clamp(40px,7vw,80px)] font-bold tracking-[-0.02em] uppercase text-white m-0 leading-[0.9] [text-shadow:0_0_60px_rgba(255,255,255,0.15)]">
           FAQ<span className="text-white/20">.</span>
