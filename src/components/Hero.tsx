@@ -702,10 +702,6 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           transform: translateY(-2px);
         }
 
-        /* ─────────────────────────────────────────────
-           FLOWER BLOOM CARD SECTION
-        ───────────────────────────────────────────── */
-
         .flower-section {
           position: relative;
           width: 100vw;

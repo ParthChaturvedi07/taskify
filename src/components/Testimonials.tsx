@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 
 const testimonials = [
@@ -38,11 +38,45 @@ const testimonials = [
 
 export function Testimonials() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const scrollNext = () => {
+    if (containerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+      // If we are at or very near the end, loop back to the start
+      if (scrollLeft + clientWidth >= scrollWidth - 10) {
+        containerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        const firstChild = containerRef.current.children[0] as HTMLElement;
+        const gap = window.innerWidth * 0.05; // 5vw gap
+        containerRef.current.scrollBy({ left: firstChild.clientWidth + gap, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const scrollPrev = () => {
+    if (containerRef.current) {
+      const firstChild = containerRef.current.children[0] as HTMLElement;
+      const gap = window.innerWidth * 0.05;
+      containerRef.current.scrollBy({ left: -(firstChild.clientWidth + gap), behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      scrollNext();
+    }, 1000); // Auto-scroll every 1 sec as requested
+    
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
     <section ref={sectionRef} className="relative w-full min-h-screen py-20 bg-transparent flex flex-col justify-center overflow-hidden">
       
-      <div className="flex flex-col items-start px-10 md:px-20">
+      <div className="flex flex-col md:flex-row md:items-end justify-between px-10 md:px-20">
+        <div className="flex flex-col items-start">
         <span className="font-pixel text-[12px] uppercase tracking-widest text-white/30 mb-2">/ Community Voices</span>
         <div className="flex items-center gap-4 text-white/50">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -51,9 +85,33 @@ export function Testimonials() {
           </svg>
           <span className="font-chakra text-sm font-medium tracking-wider">Swipe or scroll to read more</span>
         </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex items-center gap-4 mt-6 md:mt-0">
+          <button 
+            onClick={() => { scrollPrev(); setIsPaused(true); }}
+            className="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button 
+            onClick={() => { scrollNext(); setIsPaused(true); }}
+            className="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
       </div>
 
-      <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar items-center gap-[5vw] px-[10vw] mt-10 pb-12 w-full">
+      <div 
+        ref={containerRef}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+        className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar items-center gap-[5vw] px-[10vw] mt-10 pb-12 w-full"
+      >
         {testimonials.map((t, i) => (
           <div 
             key={i}
