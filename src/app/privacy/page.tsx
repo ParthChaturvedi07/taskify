@@ -31,7 +31,7 @@ export default function PrivacyPage() {
               <li><a href="#s9" className="hover:text-white transition-colors">09 · VPNs & Misuse</a></li>
               <li><a href="#s10" className="hover:text-white transition-colors">10 · Communications</a></li>
               <li><a href="#s11" className="hover:text-white transition-colors">11 · Data Retention</a></li>
-              <li><a href="#s12" className="hover:text-white transition-colors">12 · Children's Privacy</a></li>
+              <li><a href="#s12" className="hover:text-white transition-colors">12 · Children&apos;s Privacy</a></li>
               <li><a href="#s13" className="hover:text-white transition-colors">13 · Policy Changes</a></li>
               <li><a href="#s14" className="hover:text-white transition-colors">14 · Delete Your Data</a></li>
               <li><a href="#s15" className="hover:text-white transition-colors">15 · Contact Us</a></li>
@@ -43,7 +43,7 @@ export default function PrivacyPage() {
               <span className="font-pixel text-xl text-white/20">01</span> Introduction
             </h2>
             <p className="leading-relaxed mb-4">
-              TaskifyGames ("Company", "we", "us", or "our") respects the privacy of our users ("user", "you") and is committed to protecting it through this Privacy Policy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our mobile application and website, including any other media form, media channel, mobile website, or mobile application related or connected thereto (collectively, the "Platform").
+              TaskifyGames (&quot;Company&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) respects the privacy of our users (&quot;user&quot;, &quot;you&quot;) and is committed to protecting it through this Privacy Policy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our mobile application and website, including any other media form, media channel, mobile website, or mobile application related or connected thereto (collectively, the &quot;Platform&quot;).
             </p>
             <p className="leading-relaxed">
               Please read this Privacy Policy carefully. If you do not agree with the terms of this Privacy Policy, please do not access the Platform.
@@ -177,7 +177,7 @@ export default function PrivacyPage() {
 
           <section id="s12">
             <h2 className="text-3xl font-bold text-white mb-4 flex items-baseline gap-4">
-              <span className="font-pixel text-xl text-white/20">12</span> Children's Privacy
+              <span className="font-pixel text-xl text-white/20">12</span> Children&apos;s Privacy
             </h2>
             <p className="leading-relaxed">
               Our platform is not intended for users under 13. We do not knowingly collect data from children under the age of 13.
@@ -189,7 +189,7 @@ export default function PrivacyPage() {
               <span className="font-pixel text-xl text-white/20">13</span> Changes to This Privacy Policy
             </h2>
             <p className="leading-relaxed">
-              We may update this Privacy Policy from time to time. Changes will be reflected by a revised "Effective Date" at the top. Continued use of the Platform after such changes constitutes your consent to the updated policy.
+              We may update this Privacy Policy from time to time. Changes will be reflected by a revised &quot;Effective Date&quot; at the top. Continued use of the Platform after such changes constitutes your consent to the updated policy.
             </p>
           </section>
 

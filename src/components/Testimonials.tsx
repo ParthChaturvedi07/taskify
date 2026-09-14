@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { motion } from "framer-motion";
+import Image from "next/image";
 
 const testimonials = [
   {
@@ -103,7 +103,7 @@ export function Testimonials() {
             </h3>
             
             <div className="flex items-center gap-4">
-              <img src={t.avatar} alt={t.name} className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white/20" />
+              <Image src={t.avatar} alt={t.name} width={64} height={64} className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white/20" />
               <div className="flex flex-col items-start">
                 <span className="font-chakra text-[16px] md:text-[20px] font-bold text-white leading-none mb-1">{t.name}</span>
                 <span className="font-chakra text-[13px] md:text-[15px] text-[#888888]">{t.handle}</span>

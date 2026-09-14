@@ -52,7 +52,7 @@ export default function TermsPage() {
               <span className="font-pixel text-xl text-white/20">01</span> Agreement to Terms
             </h2>
             <p className="leading-relaxed">
-              These Terms and Conditions ("Terms") constitute a legally binding agreement between you, whether personally or on behalf of an entity ("you") and TaskifyGames ("Company," "we," "us," or "our"), concerning your access to and use of the TaskifyGames mobile application, website, and associated services. You agree that by accessing the Services, you have read, understood, and agree to be bound by all of these Terms.
+              These Terms and Conditions (&quot;Terms&quot;) constitute a legally binding agreement between you, whether personally or on behalf of an entity (&quot;you&quot;) and TaskifyGames (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), concerning your access to and use of the TaskifyGames mobile application, website, and associated services. You agree that by accessing the Services, you have read, understood, and agree to be bound by all of these Terms.
             </p>
           </section>
 
@@ -61,7 +61,7 @@ export default function TermsPage() {
               <span className="font-pixel text-xl text-white/20">02</span> Intellectual Property Rights
             </h2>
             <p className="leading-relaxed">
-              All source code, databases, software, website designs, audio, video, text, photographs, and graphics on the Services ("Content") and the trademarks, service marks, and logos contained therein are owned or licensed by us and are protected by copyright and trademark laws. You may not use, copy, reproduce, aggregate, republish, upload, post, publicly display, encode, translate, transmit, distribute, sell, license, or exploit any Content without our express written permission.
+              All source code, databases, software, website designs, audio, video, text, photographs, and graphics on the Services (&quot;Content&quot;) and the trademarks, service marks, and logos contained therein are owned or licensed by us and are protected by copyright and trademark laws. You may not use, copy, reproduce, aggregate, republish, upload, post, publicly display, encode, translate, transmit, distribute, sell, license, or exploit any Content without our express written permission.
             </p>
           </section>
 
@@ -244,7 +244,7 @@ export default function TermsPage() {
 
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">20. Disclaimer</h3>
-                <p className="leading-relaxed">The Services are provided on an "as-is" and "as-available" basis. We disclaim all warranties, express or implied, including merchantability or fitness for a particular purpose.</p>
+                <p className="leading-relaxed">The Services are provided on an &quot;as-is&quot; and &quot;as-available&quot; basis. We disclaim all warranties, express or implied, including merchantability or fitness for a particular purpose.</p>
               </div>
 
               <div>

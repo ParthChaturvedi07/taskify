@@ -110,7 +110,7 @@ export function About() {
             <div className="flex items-center gap-5 border border-white/10 bg-white/5 backdrop-blur-[20px] rounded-[24px] pl-3 pr-8 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)]">
               <div className="flex -space-x-4">
                 {[1,2,3,4].map((i) => (
-                  <img key={i} src={`https://i.pravatar.cc/100?img=${i+20}`} alt="User" className="w-12 h-12 rounded-full border-2 border-[#0c0c0c] object-cover" />
+                  <Image key={i} src={`https://i.pravatar.cc/100?img=${i+20}`} alt="User" width={48} height={48} className="w-12 h-12 rounded-full border-2 border-[#0c0c0c] object-cover" />
                 ))}
               </div>
               <div className="flex flex-col items-start">

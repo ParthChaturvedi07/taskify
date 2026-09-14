@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 
 export function CTA() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,10 +35,10 @@ export function CTA() {
           className="absolute left-[-20px] md:left-[20px] top-[10%] md:top-[20%] w-[120px] md:w-[180px] pointer-events-none opacity-90 drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] z-0 hidden sm:block"
         >
           <div className="w-[100px] md:w-[140px] transform -rotate-12 absolute top-0 left-0">
-             <img src="/images/card1.png" alt="Gift Card" className="w-full h-auto object-contain" />
+             <Image src="/images/card1.png" alt="Gift Card" width={140} height={140} className="w-full h-auto object-contain" />
           </div>
           <div className="w-[100px] md:w-[140px] transform rotate-6 absolute top-[40px] left-[30px]">
-             <img src="/images/card2.png" alt="Gift Card" className="w-full h-auto object-contain" />
+             <Image src="/images/card2.png" alt="Gift Card" width={140} height={140} className="w-full h-auto object-contain" />
           </div>
         </motion.div>
 
@@ -47,13 +48,13 @@ export function CTA() {
           className="absolute right-[-20px] md:right-[40px] top-[10%] w-[150px] md:w-[220px] pointer-events-none opacity-90 z-0 hidden sm:block"
         >
           <div className="w-[70px] h-[70px] md:w-[90px] md:h-[90px] bg-white/10 backdrop-blur-md rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.4)] transform rotate-6 absolute top-0 right-[20px] border border-white/20 flex items-center justify-center overflow-hidden">
-             <img src="/images/hc_logo.png" alt="App Logo" className="w-[80%] h-[80%] object-contain drop-shadow-md" />
+             <Image src="/images/hc_logo.png" alt="App Logo" width={80} height={80} className="w-[80%] h-[80%] object-contain drop-shadow-md" />
           </div>
           <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] bg-white/10 backdrop-blur-md rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.4)] transform -rotate-12 absolute top-[60px] right-[70px] border border-white/20 flex items-center justify-center overflow-hidden">
-             <img src="/images/cb_logo.png" alt="App Logo" className="w-[80%] h-[80%] object-contain drop-shadow-md" />
+             <Image src="/images/cb_logo.png" alt="App Logo" width={80} height={80} className="w-[80%] h-[80%] object-contain drop-shadow-md" />
           </div>
           <div className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] bg-white/10 backdrop-blur-md rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.4)] transform rotate-12 absolute top-[130px] right-0 border border-white/20 flex items-center justify-center overflow-hidden">
-             <img src="/images/sc_logo.png" alt="App Logo" className="w-[80%] h-[80%] object-contain drop-shadow-md" />
+             <Image src="/images/sc_logo.png" alt="App Logo" width={80} height={80} className="w-[80%] h-[80%] object-contain drop-shadow-md" />
           </div>
         </motion.div>
 
@@ -74,7 +75,7 @@ export function CTA() {
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4">
             {/* Google Play Button */}
             <button className="flex items-center justify-center gap-4 bg-white text-black hover:bg-white/90 px-8 py-3.5 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_10px_30px_rgba(0,0,0,0.3)] group cursor-pointer">
-              <img src="/images/playstore.png" alt="Google Play" className="w-7 h-7 object-contain filter invert" />
+              <Image src="/images/playstore.png" alt="Google Play" width={28} height={28} className="w-7 h-7 object-contain filter invert" />
               <div className="flex flex-col items-start">
                 <span className="text-[10px] uppercase font-bold text-black/60 leading-none tracking-wider">Get it on</span>
                 <span className="text-[16px] font-bold text-black leading-none mt-1 font-chakra">Google Play</span>
