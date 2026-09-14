@@ -1,0 +1,332 @@
+[
+  {
+    "id": 1,
+    "slug": "cashbunny",
+    "name": "CashBunny",
+    "title": "Cash Bunny - Redeem Code App",
+    "description": "Play, complete tasks, and earn coins for fun and rewards! Complete missions, collect coins, and unlock supported payout options inside a polished gaming reward experience.",
+    "screen": "/images/cashbunny_ph.png",
+    "logo": "/images/cb_logo.png",
+    "heroImage": "/images/cashbunny/details.png",
+    "cardBg": "linear-gradient(180deg, #A4A0F6 0%, #38356C 100%)",
+    "glowColor": "#964bea",
+    "previews": ["/images/cashbunny/preview1.png", "/images/cashbunny/preview2.png", "/images/cashbunny/preview3.png", "/images/cashbunny/preview4.png", "/images/cashbunny/preview5.png"],
+    "playstoreLink": "https://play.google.com/store/apps/details?id=com.taskifygames.cashbunny&referrer=web",
+    "gameplayLink": "https://taskifygames.com/cashbunny#gameplay",
+    "stats": {
+      "rating": "4.8",
+      "installs": "500K+",
+      "earnModes": "10+",
+      "access": "24/7"
+    },
+    "featuresDescription": "Every earning route is presented as a mission path, so users can scan tasks, understand progress, and return for fresh activities.",
+    "features": [
+      {
+        "id": "Play Zone",
+        "title": "Game Missions",
+        "description": "Jump into casual games and complete eligible playtime milestones when they are available."
+      },
+      {
+        "id": "Boost",
+        "title": "Hot Offers",
+        "description": "Pick limited-time offers, app trials, surveys, and partner tasks with clear reward tracking."
+      },
+      {
+        "id": "Bonus",
+        "title": "Daily Rewards",
+        "description": "Use check-ins, streaks, and activity bonuses to keep your coin progress moving."
+      },
+      {
+        "id": "Squad",
+        "title": "Referral Ladder",
+        "description": "Invite friends and unlock referral bonuses after valid activity conditions are completed."
+      }
+    ],
+    "steps": [
+      {
+        "id": "01",
+        "title": "Choose Mission",
+        "description": "Open the app and pick games, offers, surveys, referrals, or daily bonuses that match your region."
+      },
+      {
+        "id": "02",
+        "title": "Finish Action",
+        "description": "Complete the required steps and let the app or partner network validate eligible progress."
+      },
+      {
+        "id": "03",
+        "title": "Collect Coins",
+        "description": "Approved rewards move into the wallet with a transparent activity trail for the user."
+      },
+      {
+        "id": "04",
+        "title": "Redeem",
+        "description": "Request supported rewards once the payout requirement and verification rules are satisfied."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "slug": "wow-cash",
+    "name": "Wow Cash",
+    "title": "Wow Cash - Rewards & Gift Card",
+    "description": "Play games, finish tasks, and collect coins for real rewards! Complete missions, collect coins, and unlock supported payout options inside a polished gaming reward experience.",
+    "screen": "/images/wowcash_ph.png",
+    "logo": "/images/wc_logo.png",
+    "heroImage": "/images/wowcash/details.png",
+    "cardBg": "linear-gradient(180deg, #50549D 0%, #38356C 100%)",
+    "glowColor": "#02e9a1",
+    "previews": ["/images/wowcash/preview1.png", "/images/wowcash/preview2.png", "/images/wowcash/preview3.png", "/images/wowcash/preview4.png", "/images/wowcash/preview5.png"],
+    "playstoreLink": "https://play.google.com/store/apps/details?id=com.taskifygames.wowcash&referrer=web",
+    "gameplayLink": "https://taskifygames.com/wowcash#gameplay",
+    "stats": {
+      "rating": "4.8",
+      "installs": "100K+",
+      "earnModes": "10+",
+      "access": "24/7"
+    },
+    "featuresDescription": "Every earning route is presented as a mission path, so users can scan tasks, understand progress, and return for fresh activities.",
+    "features": [
+      {
+        "id": "Play Zone",
+        "title": "Game Missions",
+        "description": "Jump into casual games and complete eligible playtime milestones when they are available."
+      },
+      {
+        "id": "Boost",
+        "title": "Hot Offers",
+        "description": "Pick limited-time offers, app trials, surveys, and partner tasks with clear reward tracking."
+      },
+      {
+        "id": "Bonus",
+        "title": "Daily Rewards",
+        "description": "Use check-ins, streaks, and activity bonuses to keep your coin progress moving."
+      },
+      {
+        "id": "Squad",
+        "title": "Referral Ladder",
+        "description": "Invite friends and unlock referral bonuses after valid activity conditions are completed."
+      }
+    ],
+    "steps": [
+      {
+        "id": "01",
+        "title": "Choose Mission",
+        "description": "Open the app and pick games, offers, surveys, referrals, or daily bonuses that match your region."
+      },
+      {
+        "id": "02",
+        "title": "Finish Action",
+        "description": "Complete the required steps and let the app or partner network validate eligible progress."
+      },
+      {
+        "id": "03",
+        "title": "Collect Coins",
+        "description": "Approved rewards move into the wallet with a transparent activity trail for the user."
+      },
+      {
+        "id": "04",
+        "title": "Redeem",
+        "description": "Request supported rewards once the payout requirement and verification rules are satisfied."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "slug": "hit-cash",
+    "name": "Hit Cash",
+    "title": "Hit Cash - Get Redeem Codes",
+    "description": "Play games, complete tasks, and collect coins for quick rewards! Complete missions, collect coins, and unlock supported payout options inside a polished gaming reward experience.",
+    "screen": "/images/hitcash_ph.png",
+    "logo": "/images/hc_logo.png",
+    "heroImage": "/images/hitcash/details.png",
+    "cardBg": "linear-gradient(180deg, #194254 0%, #022444 100%)",
+    "glowColor": "#0056e0",
+    "previews": ["/images/hitcash/preview1.png", "/images/hitcash/preview2.png", "/images/hitcash/preview3.png", "/images/hitcash/preview4.png", "/images/hitcash/preview5.png"],
+    "playstoreLink": "https://play.google.com/store/apps/details?id=com.taskifygames.hitcash&referrer=web",
+    "gameplayLink": "https://taskifygames.com/hitcash#gameplay",
+    "stats": {
+      "rating": "4.7",
+      "installs": "100K+",
+      "earnModes": "10+",
+      "access": "24/7"
+    },
+    "featuresDescription": "Every earning route is presented as a mission path, so users can scan tasks, understand progress, and return for fresh activities.",
+    "features": [
+      {
+        "id": "Play Zone",
+        "title": "Game Missions",
+        "description": "Jump into casual games and complete eligible playtime milestones when they are available."
+      },
+      {
+        "id": "Boost",
+        "title": "Hot Offers",
+        "description": "Pick limited-time offers, app trials, surveys, and partner tasks with clear reward tracking."
+      },
+      {
+        "id": "Bonus",
+        "title": "Daily Rewards",
+        "description": "Use check-ins, streaks, and activity bonuses to keep your coin progress moving."
+      },
+      {
+        "id": "Squad",
+        "title": "Referral Ladder",
+        "description": "Invite friends and unlock referral bonuses after valid activity conditions are completed."
+      }
+    ],
+    "steps": [
+      {
+        "id": "01",
+        "title": "Choose Mission",
+        "description": "Open the app and pick games, offers, surveys, referrals, or daily bonuses that match your region."
+      },
+      {
+        "id": "02",
+        "title": "Finish Action",
+        "description": "Complete the required steps and let the app or partner network validate eligible progress."
+      },
+      {
+        "id": "03",
+        "title": "Collect Coins",
+        "description": "Approved rewards move into the wallet with a transparent activity trail for the user."
+      },
+      {
+        "id": "04",
+        "title": "Redeem",
+        "description": "Request supported rewards once the payout requirement and verification rules are satisfied."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "slug": "super-cash",
+    "name": "Super Cash",
+    "title": "Super Cash - Redeem Code App",
+    "description": "Make your free time more rewarding with Super Cash Complete missions, collect coins, and unlock supported payout options inside a polished gaming reward experience.",
+    "screen": "/images/supercash_ph.png",
+    "logo": "/images/sc_logo.png",
+    "heroImage": "/images/supercash/details.png",
+    "cardBg": "linear-gradient(180deg, #D29DFA 0%, #9146F5 100%)",
+    "glowColor": "#964bea",
+    "previews": ["/images/supercash/preview1.png", "/images/supercash/preview2.png", "/images/supercash/preview3.png", "/images/supercash/preview4.png", "/images/supercash/preview5.png"],
+    "playstoreLink": "https://play.google.com/store/apps/details?id=com.taskifygames.supercash&referrer=web",
+    "gameplayLink": "https://taskifygames.com/supercash#gameplay",
+    "stats": {
+      "rating": "4.9",
+      "installs": "1K+",
+      "earnModes": "10+",
+      "access": "24/7"
+    },
+    "featuresDescription": "Every earning route is presented as a mission path, so users can scan tasks, understand progress, and return for fresh activities.",
+    "features": [
+      {
+        "id": "Play Zone",
+        "title": "Game Missions",
+        "description": "Jump into casual games and complete eligible playtime milestones when they are available."
+      },
+      {
+        "id": "Boost",
+        "title": "Hot Offers",
+        "description": "Pick limited-time offers, app trials, surveys, and partner tasks with clear reward tracking."
+      },
+      {
+        "id": "Bonus",
+        "title": "Daily Rewards",
+        "description": "Use check-ins, streaks, and activity bonuses to keep your coin progress moving."
+      },
+      {
+        "id": "Squad",
+        "title": "Referral Ladder",
+        "description": "Invite friends and unlock referral bonuses after valid activity conditions are completed."
+      }
+    ],
+    "steps": [
+      {
+        "id": "01",
+        "title": "Choose Mission",
+        "description": "Open the app and pick games, offers, surveys, referrals, or daily bonuses that match your region."
+      },
+      {
+        "id": "02",
+        "title": "Finish Action",
+        "description": "Complete the required steps and let the app or partner network validate eligible progress."
+      },
+      {
+        "id": "03",
+        "title": "Collect Coins",
+        "description": "Approved rewards move into the wallet with a transparent activity trail for the user."
+      },
+      {
+        "id": "04",
+        "title": "Redeem",
+        "description": "Request supported rewards once the payout requirement and verification rules are satisfied."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "slug": "reward-beast",
+    "name": "Reward Beast",
+    "title": "Reward Beast: Play & Redeem",
+    "description": "Play, complete tasks, earn coins, and enjoy exciting rewards. Complete missions, collect coins, and unlock supported payout options inside a polished gaming reward experience.",
+    "screen": "/images/rewardbeast_ph.png",
+    "logo": "/images/rb_logo.png",
+    "heroImage": "/images/rewardbeast/details.png",
+    "cardBg": "linear-gradient(180deg, #50549D 0%, #38356C 100%)",
+    "glowColor": "#18F7D9",
+    "previews": ["/images/rewardbeast/preview1.png", "/images/rewardbeast/preview2.png", "/images/rewardbeast/preview3.png", "/images/rewardbeast/preview4.png", "/images/rewardbeast/preview5.png"],
+    "playstoreLink": "https://play.google.com/store/apps/details?id=com.taskifygames.rewardbeast&referrer=web",
+    "gameplayLink": "https://taskifygames.com/rewardbeast#gameplay",
+    "stats": {
+      "rating": "4.9",
+      "installs": "100K+",
+      "earnModes": "10+",
+      "access": "24/7"
+    },
+    "featuresDescription": "Every earning route is presented as a mission path, so users can scan tasks, understand progress, and return for fresh activities.",
+    "features": [
+      {
+        "id": "Play Zone",
+        "title": "Game Missions",
+        "description": "Jump into casual games and complete eligible playtime milestones when they are available."
+      },
+      {
+        "id": "Boost",
+        "title": "Hot Offers",
+        "description": "Pick limited-time offers, app trials, surveys, and partner tasks with clear reward tracking."
+      },
+      {
+        "id": "Bonus",
+        "title": "Daily Rewards",
+        "description": "Use check-ins, streaks, and activity bonuses to keep your coin progress moving."
+      },
+      {
+        "id": "Squad",
+        "title": "Referral Ladder",
+        "description": "Invite friends and unlock referral bonuses after valid activity conditions are completed."
+      }
+    ],
+    "steps": [
+      {
+        "id": "01",
+        "title": "Choose Mission",
+        "description": "Open the app and pick games, offers, surveys, referrals, or daily bonuses that match your region."
+      },
+      {
+        "id": "02",
+        "title": "Finish Action",
+        "description": "Complete the required steps and let the app or partner network validate eligible progress."
+      },
+      {
+        "id": "03",
+        "title": "Collect Coins",
+        "description": "Approved rewards move into the wallet with a transparent activity trail for the user."
+      },
+      {
+        "id": "04",
+        "title": "Redeem",
+        "description": "Request supported rewards once the payout requirement and verification rules are satisfied."
+      }
+    ]
+  }
+]

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* ------------------------------------------------------------------ */
 /* Edunline pixel/arcade font family (self-hosted, from /public/fonts) */
 /* .fon files are legacy Windows bitmap fonts and are NOT usable on    */

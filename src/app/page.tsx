@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <main
       className="relative w-full"
-      style={{ background: "#070707", overflowX: "clip" }}
+      style={{ background: "#000000", overflowX: "clip" }}
     >
       {/* Cinematic intro overlay — splits apart to reveal the hero */}
       <IntroOverlay onComplete={handleIntroComplete} />

@@ -173,6 +173,7 @@ export function Carousel({ items }: CarouselProps) {
             setRef={(el) => {
               cardsRef.current[i] = el;
             }}
+            
           />
         ))}
       </div>

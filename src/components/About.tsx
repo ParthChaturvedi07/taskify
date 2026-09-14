@@ -37,17 +37,17 @@ export function About() {
       {/* Floating Phone (Left) */}
       <motion.div 
         style={{ y: yImage2 }}
-        className="absolute bottom-[10%] left-[-10%] md:left-[5%] w-[180px] md:w-[280px] z-10 opacity-30 md:opacity-50 drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)] blur-[1px]"
+        className="absolute bottom-[10%] left-[-10%] md:left-[5%] w-[180px] md:w-[300px] z-10 opacity-30 md:opacity-50 drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)] blur-[1px]"
       >
-        <Image src="/images/cashbunny_ph.png" alt="Cash Bunny App" width={300} height={600} className="w-full h-auto rotate-[-12deg]" />
+        <Image src="/images/cb_3d.png" alt="Cash Bunny App" width={300} height={600} className="w-full h-auto rotate-[-12deg]" />
       </motion.div>
 
       {/* Floating Phone (Right Edge) */}
       <motion.div 
         style={{ y: yImage3 }}
-        className="absolute top-[40%] right-[-15%] md:right-[-5%] w-[160px] md:w-[240px] z-0 opacity-20 md:opacity-30 drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)] blur-[2px]"
+        className="absolute top-[40%] right-[-15%] md:right-[-5%] w-[160px] md:w-[300px] z-0 opacity-20 md:opacity-30 drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)] blur-[2px]"
       >
-        <Image src="/images/wowcash_ph.png" alt="Wow Cash App" width={300} height={600} className="w-full h-auto rotate-[15deg]" />
+        <Image src="/images/wc_3d.png" alt="Wow Cash App" width={300} height={600} className="w-full h-auto rotate-[15deg]" />
       </motion.div>
 
       <div className="relative z-10 w-full max-w-[1200px] flex flex-col justify-center">

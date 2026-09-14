@@ -113,7 +113,7 @@ function PhoneCard() {
 
       <div ref={phoneRef} className="relative z-10 will-change-transform transform-style-3d drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] [animation:fgBob_5s_ease-in-out_infinite]">
         <Image
-          src="/iphone-3d.png"
+          src="/images/iphone_3d.png"
           alt="Taskify gaming app on iPhone"
           width={320}
           height={480}

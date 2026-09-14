@@ -4,7 +4,15 @@ import * as React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const navLinks = ["About", "Apps", "Reviews", "FAQ", "Contact", "Privacy", "Terms"];
+const navLinks = [
+  { label: "About", href: "/#about" },
+  { label: "Apps", href: "/#apps" },
+  { label: "Reviews", href: "/#reviews" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "mailto:hello@taskifygames.com" },
+  { label: "Privacy", href: "/#" },
+  { label: "Terms", href: "/#" },
+];
 
 const socialLinks = [
   {
@@ -54,11 +62,14 @@ export function Footer() {
           src="/images/footer_bg.png"
           alt=""
           fill
-          className="object-cover object-center opacity-80"
+          className="object-cover object-center opacity-80 mask-image-[linear-gradient(to_bottom,transparent,black_20%)] [mask-image:linear-gradient(to_bottom,transparent,black_20%)]"
           priority={false}
         />
         {/* Subtle dark overlay to keep text readable */}
-        <div className="absolute inset-0 bg-[#202020]/40" />
+        <div className="absolute inset-0 bg-[#202020]/40 [mask-image:linear-gradient(to_bottom,transparent,black_20%)]" />
+        
+        {/* Top blend gradient to ensure seamless transition */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black to-transparent" />
       </div>
 
       {/* Content */}
@@ -73,13 +84,15 @@ export function Footer() {
         <div className="flex items-start justify-between pt-10 pb-6">
           {/* 3-D Logo — left side */}
           <div className="flex-shrink-0 -mt-2">
-            <Image
-              src="/images/logo_3d.png"
-              alt="Taskify logo"
-              width={130}
-              height={130}
-              className="object-contain drop-shadow-[0_0_24px_rgba(255,255,255,0.35)]"
-            />
+            <a href="/">
+              <Image
+                src="/images/logo_3d.png"
+                alt="Taskify logo"
+                width={130}
+                height={130}
+                className="object-contain drop-shadow-[0_0_24px_rgba(255,255,255,0.35)] cursor-pointer"
+              />
+            </a>
           </div>
 
           {/* Right column: nav links then social row */}
@@ -88,11 +101,11 @@ export function Footer() {
             <nav className="flex flex-wrap justify-end gap-x-8 gap-y-2">
               {navLinks.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
                   className="text-sm font-medium text-white/70 transition-colors duration-300 hover:text-white"
                 >
-                  {link}
+                  {link.label}
                 </a>
               ))}
             </nav>

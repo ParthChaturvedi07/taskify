@@ -35,10 +35,10 @@ export function CTA() {
           className="absolute left-[-20px] md:left-[20px] top-[10%] md:top-[20%] w-[120px] md:w-[180px] pointer-events-none opacity-90 drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] z-0 hidden sm:block"
         >
           <div className="w-[100px] md:w-[140px] transform -rotate-12 absolute top-0 left-0">
-             <Image src="/images/card1.png" alt="Gift Card" width={140} height={140} className="w-full h-auto object-contain" />
+             <Image src="/images/cb_3d.png" alt="Gift Card" width={140} height={140} className="w-full h-auto object-contain" />
           </div>
           <div className="w-[100px] md:w-[140px] transform rotate-6 absolute top-[40px] left-[30px]">
-             <Image src="/images/card2.png" alt="Gift Card" width={140} height={140} className="w-full h-auto object-contain" />
+             <Image src="/images/wc_3d.png" alt="Gift Card" width={140} height={140} className="w-full h-auto object-contain" />
           </div>
         </motion.div>
 
@@ -71,14 +71,13 @@ export function CTA() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/50">Winning.</span>
           </h2>
           
-          {/* Store Buttons */} 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4">
             {/* Google Play Button */}
-            <button className="flex items-center justify-center gap-4 bg-white text-black hover:bg-white/90 px-8 py-3.5 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_10px_30px_rgba(0,0,0,0.3)] group cursor-pointer">
+            <button onClick={() => window.location.href = "/#apps"} className="flex items-center justify-center gap-4 bg-white text-black hover:bg-white/90 px-8 py-3.5 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_10px_30px_rgba(0,0,0,0.3)] group cursor-pointer">
               <Image src="/images/playstore.png" alt="Google Play" width={28} height={28} className="w-7 h-7 object-contain filter invert" />
               <div className="flex flex-col items-start">
-                <span className="text-[10px] uppercase font-bold text-black/60 leading-none tracking-wider">Get it on</span>
-                <span className="text-[16px] font-bold text-black leading-none mt-1 font-chakra">Google Play</span>
+                <span className="text-[10px] uppercase font-bold text-black/60 leading-none tracking-wider">Explore apps</span>
+                <span className="text-[16px] font-bold text-black leading-none mt-1 font-chakra">Taskify Games</span>
               </div>
             </button>
             

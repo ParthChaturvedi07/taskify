@@ -41,7 +41,7 @@ export function Navbar() {
       <div className={`tg-nav-wrap ${scrolled ? "tg-nav-wrap--scrolled" : ""}`}>
         <nav className="tg-nav">
           {/* Logo */}
-          <a href="#" className="tg-logo" aria-label="Taskify home">
+          <a href="/" className="tg-logo" aria-label="Taskify home">
             <Image
               src="/images/logo.png"
               alt="Taskify Logo"

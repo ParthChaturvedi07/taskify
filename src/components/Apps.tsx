@@ -7,43 +7,10 @@ import { motion } from "framer-motion";
 /* ─────────────────────────────────────────────
    App data
 ───────────────────────────────────────────── */
-const apps = [
-  {
-    id: 1,
-    name: "CashBunny",
-    screen: "/images/cashbunny_ph.png",
-    logo: "/images/cb_logo.png",
-    cardBg: "linear-gradient(180deg, #A4A0F6 0%, #38356C 100%)",
-  },
-  {
-    id: 2,
-    name: "Wow Cash",
-    screen: "/images/wowcash_ph.png",
-    logo: "/images/wc_logo.png",
-    cardBg: "linear-gradient(180deg, #50549D 0%, #38356C 100%)",
-  },
-  {
-    id: 3,
-    name: "Hit Cash",
-    screen: "/images/hitcash_ph.png",
-    logo: "/images/hc_logo.png",
-    cardBg: "linear-gradient(180deg, #194254 0%, #022444 100%)",
-  },
-  {
-    id: 4,
-    name: "Super Cash",
-    screen: "/images/supercash_ph.png",
-    logo: "/images/sc_logo.png",
-    cardBg: "linear-gradient(180deg, #D29DFA 0%, #9146F5 100%)",
-  },
-  {
-    id: 5,
-    name: "Reward Beast",
-    screen: "/images/rewardbeast_ph.png",
-    logo: "/images/rb_logo.png",
-    cardBg: "linear-gradient(180deg, #50549D 0%, #38356C 100%)",
-  },
-];
+import Link from "next/link";
+import appsData from "@/data/apps.json";
+
+const apps = appsData;
 
 /* ─────────────────────────────────────────────
    Single App Card
@@ -57,7 +24,7 @@ function AppCard({ app, index }: { app: (typeof apps)[0], index: number }) {
       transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
       className="group flex flex-col items-center w-full max-w-[280px]"
     >
-      <div className="relative w-full transition-transform duration-[350ms] ease-out group-hover:-translate-y-2">
+      <Link href={`/apps/${app.slug}`} className="relative w-full transition-transform duration-[350ms] ease-out group-hover:-translate-y-2 flex flex-col items-center">
         {/* Gradient card with overflow:hidden — clips phone at the card bottom */}
         <div 
           className="relative w-full aspect-[9/13] rounded-[22px] sm:rounded-[28px] overflow-hidden z-[1] shadow-[0_20px_60px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.25)]" 
@@ -74,20 +41,20 @@ function AppCard({ app, index }: { app: (typeof apps)[0], index: number }) {
             />
           </div>
         </div>
-      </div>
 
-      {/* Logo badge — in flex flow, below the card */}
-      <Image
-        src={app.logo}
-        alt={`${app.name} logo`}
-        width={120}
-        height={120}
-        className="relative bottom-[50px] z-[2] w-[90px] h-[90px] sm:w-[100px] sm:h-[100px] lg:w-[120px] lg:h-[120px] rounded-[18px] sm:rounded-[22px] lg:rounded-[26px] shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-[350ms] ease-out group-hover:scale-[1.07] group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.7)] object-cover block"
-        sizes="(max-width: 520px) 90px, (max-width: 900px) 100px, 120px"
-      />
+        {/* Logo badge — in flex flow, below the card */}
+        <Image
+          src={app.logo}
+          alt={`${app.name} logo`}
+          width={120}
+          height={120}
+          className="relative bottom-[50px] z-[2] w-[90px] h-[90px] sm:w-[100px] sm:h-[100px] lg:w-[120px] lg:h-[120px] rounded-[18px] sm:rounded-[22px] lg:rounded-[26px] shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-[350ms] ease-out group-hover:scale-[1.07] group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.7)] object-cover block"
+          sizes="(max-width: 520px) 90px, (max-width: 900px) 100px, 120px"
+        />
 
-      {/* App name */}
-      <p className="font-chakra text-[clamp(22px,1.4vw,32px)] font-semibold text-[#e2e8f0] tracking-[0.05em] text-center m-0 -mt-[30px]">{app.name}</p>
+        {/* App name */}
+        <p className="font-chakra text-[clamp(22px,1.4vw,32px)] font-semibold text-[#e2e8f0] tracking-[0.05em] text-center m-0 -mt-[30px]">{app.name}</p>
+      </Link>
     </motion.div>
   );
 }
