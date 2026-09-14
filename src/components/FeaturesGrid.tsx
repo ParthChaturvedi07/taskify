@@ -2,12 +2,13 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 /* ─────────────────────────────────────────────
-   SVG icons — slightly thicker, clean
+   SVG icons — clean, white/gray glowing aesthetic
 ───────────────────────────────────────────── */
 const IconUsers = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
     <circle cx="9" cy="7" r="4" />
     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -15,41 +16,34 @@ const IconUsers = () => (
   </svg>
 );
 const IconClock = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
     <polyline points="12 6 12 12 16 14" />
   </svg>
 );
 const IconShield = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
   </svg>
 );
 const IconHeadset = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
     <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z" />
     <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
   </svg>
 );
 
-/* ─────────────────────────────────────────────
-   Card data — each with its own accent colour
-───────────────────────────────────────────── */
 const leftCards = [
   {
     icon: <IconUsers />,
     title: "Easy to Use",
     desc: "Best-in-segment UX that makes every interaction feel effortless and intuitive.",
-    accent: "#6366f1",   // indigo
-    iconBg: "rgba(99,102,241,0.15)",
   },
   {
     icon: <IconShield />,
     title: "Secured",
     desc: "Industry-leading safety standards keep your data and transactions completely safe.",
-    accent: "#10b981",   // emerald
-    iconBg: "rgba(16,185,129,0.15)",
   },
 ];
 const rightCards = [
@@ -57,18 +51,13 @@ const rightCards = [
     icon: <IconClock />,
     title: "Realtime Delivery",
     desc: "Near-instant payouts with a variety of withdrawal options at your fingertips.",
-    accent: "#f59e0b",   // amber
-    iconBg: "rgba(245,158,11,0.15)",
   },
   {
     icon: <IconHeadset />,
     title: "24-hour Support",
     desc: "Our dedicated team is here around the clock — every hour, every day.",
-    accent: "#ec4899",   // pink
-    iconBg: "rgba(236,72,153,0.15)",
   },
 ];
-
 
 /* ─────────────────────────────────────────────
    Center phone card
@@ -116,24 +105,24 @@ function PhoneCard() {
   }, []);
 
   return (
-    <div ref={cardRef} className="fg-card fg-phone-card">
-      <div className="fg-card-inner">
-        {/* multi-layer inner glow */}
-        <div className="fg-phone-glow" />
+    <div ref={cardRef} className="relative cursor-crosshair group w-full rounded-[24px] border border-white/5 bg-transparent p-4 sm:p-8 lg:p-4 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-full h-full">
+      <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-white/[0.02] to-white/[0.08] backdrop-blur-[10px]" />
+      
+      {/* inner glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-white/5 blur-[80px] rounded-full pointer-events-none z-0" />
 
-        <div ref={phoneRef} className="fg-phone-3d">
-          <Image
-            src="/iphone-3d.png"
-            alt="Taskify gaming app on iPhone"
-            width={320}
-            height={480}
-            className="fg-phone-img"
-            priority
-            draggable={false}
-          />
-          {/* coloured floor shadow/reflection under phone */}
-          <div className="fg-phone-shadow" />
-        </div>
+      <div ref={phoneRef} className="relative z-10 will-change-transform transform-style-3d drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] [animation:fgBob_5s_ease-in-out_infinite]">
+        <Image
+          src="/iphone-3d.png"
+          alt="Taskify gaming app on iPhone"
+          width={320}
+          height={480}
+          className="block w-full max-w-[220px] sm:max-w-[280px] md:max-w-[310px] h-auto select-none pointer-events-none"
+          priority
+          draggable={false}
+        />
+        {/* coloured floor shadow/reflection under phone */}
+        <div className="w-[160px] h-[14px] mx-auto mt-[-4px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_40%,transparent_75%)] blur-[6px]" />
       </div>
     </div>
   );
@@ -156,293 +145,31 @@ export function FeaturesGrid() {
 
   return (
     <>
+      {/* Keeping just the custom keyframes for float/bob */}
       <style dangerouslySetInnerHTML={{ __html: `
-        /* ─── Google Fonts ─── */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-        /* ─── Section wrapper ─── */
-        .fg-section {
-          position: relative;
-          width: 100%;
-          padding: 90px 40px 100px;
-          overflow: hidden;
-          background: transparent;
-          font-family: 'Inter', sans-serif;
-        }
-
-        /* Subtle radial ambient glow — violet + blue */
-        .fg-section::before {
-          content: "";
-          position: absolute;
-          top: 50%; left: 50%;
-          transform: translate(-50%, -50%);
-          width: 900px; height: 600px;
-          background:
-            radial-gradient(ellipse at 40% 50%, rgba(139,92,246,0.08) 0%, transparent 60%),
-            radial-gradient(ellipse at 60% 50%, rgba(59,130,246,0.07) 0%, transparent 60%);
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        /* Fine dot-grid */
-        .fg-section::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-          background-size: 26px 26px;
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        /* ─── Section label + heading ─── */
-        .fg-header {
-          position: relative;
-          z-index: 1;
-          text-align: center;
-          margin-bottom: 52px;
-        }
-        .fg-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 5px 14px;
-          border-radius: 999px;
-          background: rgba(139,92,246,0.12);
-          border: 1px solid rgba(139,92,246,0.3);
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #a78bfa;
-          margin-bottom: 14px;
-        }
-        .fg-pill-dot {
-          width: 6px; height: 6px;
-          border-radius: 50%;
-          background: #a78bfa;
-          animation: fgPulse 2s ease-in-out infinite;
-        }
-        @keyframes fgPulse {
-          0%,100% { opacity: 1; transform: scale(1); }
-          50%      { opacity: 0.4; transform: scale(0.7); }
-        }
-        .fg-heading {
-          font-size: clamp(1.6rem, 3vw, 2.2rem);
-          font-weight: 700;
-          color: #fff;
-          letter-spacing: -0.03em;
-          margin: 0;
-          line-height: 1.2;
-        }
-        .fg-heading span {
-          background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        /* ─── 3-col grid ─── */
-        .fg-grid {
-          position: relative;
-          z-index: 1;
-          display: grid;
-          grid-template-columns: 1fr 1.15fr 1fr;
-          align-items: stretch;
-          gap: 18px;
-          max-width: 1180px;
-          margin: 0 auto;
-        }
-        .fg-col {
-          display: flex;
-          flex-direction: column;
-          gap: 18px;
-        }
-
-        /* ─── Card shell ─── */
-        .fg-card {
-          position: relative;
-          /* gradient border via pseudo + background-clip */
-          border-radius: 22px;
-          padding: 1px;               /* border thickness */
-          background: linear-gradient(
-            145deg,
-            rgba(255,255,255,0.10) 0%,
-            rgba(255,255,255,0.03) 50%,
-            rgba(139,92,246,0.12) 100%
-          );
-          transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
-          cursor: default;
-        }
-        .fg-card:hover {
-          background: linear-gradient(
-            145deg,
-            rgba(255,255,255,0.18) 0%,
-            rgba(139,92,246,0.15) 50%,
-            rgba(59,130,246,0.18) 100%
-          );
-          box-shadow:
-            0 0 0 1px rgba(139,92,246,0.2),
-            0 20px 60px rgba(0,0,0,0.5),
-            inset 0 1px 0 rgba(255,255,255,0.06);
-          transform: translateY(-4px);
-        }
-
-        /* Inner card content area */
-        .fg-card-inner {
-          background: linear-gradient(160deg, rgba(18,18,26,0.97) 0%, rgba(13,13,20,0.99) 100%);
-          border-radius: 21px;
-          padding: 26px 22px 24px;
-          height: 100%;
-          box-sizing: border-box;
-        }
-
-        /* Top accent line */
-        .fg-card-accent-bar {
-          position: absolute;
-          top: 1px; left: 20px; right: 20px;
-          height: 2px;
-          border-radius: 0 0 4px 4px;
-          background: linear-gradient(90deg, transparent, var(--accent, #6366f1), transparent);
-          opacity: 0.7;
-          transition: opacity 0.3s ease;
-          z-index: 2;
-        }
-        .fg-card:hover .fg-card-accent-bar { opacity: 1; }
-
-        /* ─── Icon box ─── */
-        .fg-icon-box {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 46px; height: 46px;
-          border-radius: 12px;
-          margin-bottom: 16px;
-          background: var(--icon-bg, rgba(99,102,241,0.15));
-          border: 1px solid rgba(255,255,255,0.08);
-          color: var(--accent, #6366f1);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .fg-card:hover .fg-icon-box {
-          transform: scale(1.08);
-          box-shadow: 0 0 16px var(--accent, #6366f1), 0 0 4px var(--accent, #6366f1);
-        }
-
-        .fg-card-title {
-          font-size: 1rem;
-          font-weight: 700;
-          color: #f1f1f5;
-          margin: 0 0 8px;
-          letter-spacing: -0.015em;
-        }
-        .fg-card-desc {
-          font-size: 0.84rem;
-          line-height: 1.7;
-          color: rgba(255,255,255,0.4);
-          margin: 0;
-        }
-
-        /* ─── Centre phone card ─── */
-        .fg-phone-card {
-          cursor: crosshair;
-        }
-        .fg-phone-card:hover {
-          transform: none;
-        }
-        .fg-phone-card .fg-card-inner {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 28px 16px 36px;
-          overflow: hidden;
-        }
-
-        /* Multi-stop inner glow behind phone */
-        .fg-phone-glow {
-          position: absolute;
-          inset: 0;
-          border-radius: 21px;
-          background:
-            radial-gradient(ellipse at 50% 30%, rgba(139,92,246,0.18) 0%, transparent 55%),
-            radial-gradient(ellipse at 50% 80%, rgba(59,130,246,0.12) 0%, transparent 50%);
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        /* 3D phone wrapper */
-        .fg-phone-3d {
-          position: relative;
-          z-index: 1;
-          will-change: transform;
-          transform-style: preserve-3d;
-          transition: none;
-          filter:
-            drop-shadow(0 -2px 20px rgba(139,92,246,0.4))
-            drop-shadow(0 10px 30px rgba(59,130,246,0.25))
-            drop-shadow(0 2px 6px rgba(0,0,0,0.7));
-          animation: fgBob 5s ease-in-out infinite;
-        }
-        @keyframes fgBob {
-          0%,100% { translate: 0 0px;  }
-          50%      { translate: 0 -12px; }
-        }
-
-        .fg-phone-img {
-          display: block;
-          width: 100%;
-          max-width: 310px;
-          height: auto;
-          user-select: none;
-          pointer-events: none;
-        }
-
-        /* ── Coloured floor shadow under phone ── */
-        .fg-phone-shadow {
-          width: 160px;
-          height: 14px;
-          margin: -4px auto 0;
-          border-radius: 50%;
-          background: radial-gradient(ellipse at center,
-            rgba(139,92,246,0.55) 0%,
-            rgba(99,102,241,0.25) 40%,
-            transparent 75%
-          );
-          filter: blur(6px);
-        }
-
-        /* ─── Floating particles ─── */
-        .fg-particle {
-          position: absolute;
-          border-radius: 50%;
-          background: rgba(139,92,246,0.35);
-          pointer-events: none;
-          z-index: 0;
-          animation: fgFloat linear infinite;
-        }
         @keyframes fgFloat {
-          0%   { transform: translateY(0);     opacity: 0; }
+          0%   { transform: translateY(0); opacity: 0; }
           10%  { opacity: 1; }
           90%  { opacity: 0.5; }
           100% { transform: translateY(-80px); opacity: 0; }
         }
-
-        /* ─── Responsive ─── */
-        @media (max-width: 960px) {
-          .fg-grid {
-            grid-template-columns: 1fr;
-          }
-          .fg-phone-card { order: -1; }
-          .fg-section { padding: 60px 20px 70px; }
-          .fg-heading { font-size: 1.5rem; }
+        @keyframes fgBob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
         }
+        .transform-style-3d { transform-style: preserve-3d; }
       `}} />
 
-      <section className="fg-section" id="features">
-        {/* ambient particles */}
+      <section className="relative w-full px-4 md:px-6 lg:px-8 py-[80px] overflow-hidden flex flex-col items-center">
+        
+        {/* Ambient Glows */}
+        {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[1000px] max-h-[1000px] bg-white/5 blur-[150px] rounded-full pointer-events-none z-0" /> */}
+
+        {/* Ambient Particles */}
         {particles.map((p) => (
           <span
             key={p.id}
-            className="fg-particle"
+            className="absolute rounded-full bg-white/30 pointer-events-none z-0 [animation:fgFloat_linear_infinite]"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
@@ -454,57 +181,76 @@ export function FeaturesGrid() {
           />
         ))}
 
-        {/* Section heading */}
-        <div className="fg-header">
-          <div className="fg-pill">
-            <span className="fg-pill-dot" />
+        {/* Section Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative z-10 flex flex-col items-center text-center mb-[50px] md:mb-[80px] w-full max-w-[1100px]"
+        >
+          <h2 className="font-pixel text-[clamp(30px,6vw,54px)] font-bold tracking-[0.02em] uppercase text-white m-0 leading-none [text-shadow:0_0_60px_rgba(255,255,255,0.12)]">
             Why Choose Us
-          </div>
-          <h2 className="fg-heading">
-            Everything you need,<br />
-            <span>built for players</span>
           </h2>
-        </div>
+          <p className="font-chakra text-[clamp(14px,1.2vw,16px)] font-normal text-[#6b6b6b] leading-[1.6] mt-4 max-w-[400px]">
+            Everything you need, built specifically for players.
+          </p>
+        </motion.div>
 
-        <div className="fg-grid">
-          {/* LEFT */}
-          <div className="fg-col">
-            {leftCards.map((c) => (
-              <div
-                key={c.title}
-                className="fg-card"
-                style={{ "--accent": c.accent, "--icon-bg": c.iconBg } as React.CSSProperties}
+        {/* Grid Container */}
+        <div className="relative z-10 w-full max-w-[1100px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
+          
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col gap-6 md:gap-8 col-span-1">
+            {leftCards.map((c, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.7, delay: i * 0.15, ease: "easeOut" }}
+                className="group relative flex flex-col p-8 rounded-[24px] bg-white/5 border border-white/10 backdrop-blur-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)] h-full"
               >
-                <div className="fg-card-accent-bar" />
-                <div className="fg-card-inner">
-                  <div className="fg-icon-box">{c.icon}</div>
-                  <h3 className="fg-card-title">{c.title}</h3>
-                  <p className="fg-card-desc">{c.desc}</p>
+                <div className="w-[52px] h-[52px] rounded-[14px] bg-white/10 border border-white/20 flex items-center justify-center text-white mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                  {c.icon}
                 </div>
-              </div>
+                <h3 className="font-chakra text-[18px] md:text-[20px] font-bold text-white tracking-[0.02em] mb-2">{c.title}</h3>
+                <p className="font-chakra text-[14px] md:text-[15px] text-[#888888] leading-[1.6] m-0">{c.desc}</p>
+              </motion.div>
             ))}
           </div>
 
-          {/* CENTRE */}
-          <PhoneCard />
+          {/* CENTRE COLUMN (Phone) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 40 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="order-first md:col-span-2 lg:col-span-1 lg:order-none w-full"
+          >
+             <PhoneCard />
+          </motion.div>
 
-          {/* RIGHT */}
-          <div className="fg-col">
-            {rightCards.map((c) => (
-              <div
-                key={c.title}
-                className="fg-card"
-                style={{ "--accent": c.accent, "--icon-bg": c.iconBg } as React.CSSProperties}
+          {/* RIGHT COLUMN */}
+          <div className="flex flex-col gap-6 md:gap-8 col-span-1">
+            {rightCards.map((c, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.7, delay: i * 0.15, ease: "easeOut" }}
+                className="group relative flex flex-col p-8 rounded-[24px] bg-white/5 border border-white/10 backdrop-blur-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)] h-full"
               >
-                <div className="fg-card-accent-bar" />
-                <div className="fg-card-inner">
-                  <div className="fg-icon-box">{c.icon}</div>
-                  <h3 className="fg-card-title">{c.title}</h3>
-                  <p className="fg-card-desc">{c.desc}</p>
+                <div className="w-[52px] h-[52px] rounded-[14px] bg-white/10 border border-white/20 flex items-center justify-center text-white mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                  {c.icon}
                 </div>
-              </div>
+                <h3 className="font-chakra text-[18px] md:text-[20px] font-bold text-white tracking-[0.02em] mb-2">{c.title}</h3>
+                <p className="font-chakra text-[14px] md:text-[15px] text-[#888888] leading-[1.6] m-0">{c.desc}</p>
+              </motion.div>
             ))}
           </div>
+
         </div>
       </section>
     </>

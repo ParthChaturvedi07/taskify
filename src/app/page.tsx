@@ -8,6 +8,11 @@ import { About } from "@/components/About";
 import { Footer } from "@/components/Footer";
 import { FeaturesGrid } from "@/components/FeaturesGrid";
 import { IntroOverlay } from "@/components/IntroOverlay";
+import { Apps } from "@/components/Apps";
+import { HowItWorks } from "@/components/HowItWorks";
+import { Testimonials } from "@/components/Testimonials";
+import { FAQ } from "@/components/FAQ";
+import { CTA } from "@/components/CTA";
 
 export default function Home() {
   // triggerReveal is registered by <Hero> and called by <IntroOverlay> onComplete
@@ -56,13 +61,38 @@ export default function Home() {
       </section>
 
       {/* ── CONTENT BELOW FOLD ── */}
-      <section className="relative w-full pt-10 md:pt-15 pb-10 md:pb-15">
+      <section id="about" className="relative w-full pt-10 md:pt-15 pb-10 md:pb-15">
         <About />
       </section>
 
       {/* ── FEATURES GRID ── */}
-      <section className="relative w-full">
+      <section id="features" className="relative w-full">
         <FeaturesGrid />
+      </section>
+
+      {/* ── APPS SECTION ── */}
+      <section id="apps" className="relative w-full">
+        <Apps />
+      </section>
+
+      {/* ── HOW IT WORKS SECTION ── */}
+      <section id="how-it-works" className="relative w-full">
+        <HowItWorks />
+      </section>
+
+      {/* ── TESTIMONIALS SECTION ── */}
+      <section id="reviews" className="relative w-full">
+        <Testimonials />
+      </section>
+
+      {/* ── FAQ SECTION ── */}
+      <section id="faq" className="relative w-full">
+        <FAQ />
+      </section>
+
+      {/* ── CTA SECTION ── */}
+      <section className="relative w-full z-10">
+        <CTA />
       </section>
 
       {/* ── FOOTER ── */}

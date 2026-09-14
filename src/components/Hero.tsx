@@ -487,7 +487,7 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
 
         {/* ── Text block ── */}
         <section className="hero-section">
-          <h1 ref={h1Ref} className="hero-h1" style={{ opacity: 0 }}>TURN FREE TIME</h1>
+          <h1 ref={h1Ref} className="hero-h1" style={{ opacity: 0 }}>TURN FREE TIME INTO</h1>
           <h1
             ref={rewardsRef}
             data-text="REWARDS"
@@ -554,8 +554,8 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           </div>
 
           {/* Soft ambient edge & bottom gradients */}
-          <div className="fan-fade fan-fade-l" aria-hidden="true" />
-          <div className="fan-fade fan-fade-r" aria-hidden="true" />
+          {/* <div className="fan-fade fan-fade-l" aria-hidden="true" />
+          <div className="fan-fade fan-fade-r" aria-hidden="true" /> */}
           <div className="fan-fade fan-fade-b" aria-hidden="true" />
         </section>
       </div>
@@ -763,16 +763,16 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           z-index: 20;
         }
           
-        .fan-fade-l {
-          top: 0; left: 0; bottom: 0;
-          width: clamp(60px, 10vw, 180px);
-          background: linear-gradient(to right, #070707 0%, transparent 100%);
-        }
-        .fan-fade-r {
-          top: 0; right: 0; bottom: 0;
-          width: clamp(60px, 10vw, 180px);
-          background: linear-gradient(to left, #070707 0%, transparent 100%);
-        }
+        // .fan-fade-l {
+        //   top: 0; left: 0; bottom: 0;
+        //   width: clamp(60px, 10vw, 180px);
+        //   background: linear-gradient(to right, #070707 0%, transparent 100%);
+        // }
+        // .fan-fade-r {
+        //   top: 0; right: 0; bottom: 0;
+        //   width: clamp(60px, 10vw, 180px);
+        //   background: linear-gradient(to left, #070707 0%, transparent 100%);
+        // }
         .fan-fade-b{
           bottom: -20px; left: 0; right: 0;
           height: 90px;

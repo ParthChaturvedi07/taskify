@@ -1,18 +1,39 @@
 "use client";
 import * as React from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
-const NAV_LINKS = ["About", "Reviews", "FAQs", "Contact"];
+const NAV_LINKS = [
+  { label: "About", id: "about" },
+  { label: "Features", id: "features" },
+  { label: "How It Works", id: "how-it-works" },
+  { label: "Reviews", id: "reviews" },
+  { label: "FAQs", id: "faq" },
+];
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const pathname = usePathname();
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+      setOpen(false);
+    } else {
+      setOpen(false);
+    }
+  };
 
   return (
     <>
@@ -34,18 +55,18 @@ export function Navbar() {
           {/* Desktop links */}
           <ul className="tg-nav-links">
             {NAV_LINKS.map((link) => (
-              <li key={link}>
-                <a href="#">{link}</a>
+              <li key={link.id}>
+                <a href={`/#${link.id}`} onClick={(e) => handleNavClick(e, link.id)}>
+                  {link.label}
+                </a>
               </li>
             ))}
           </ul>
 
           {/* Desktop CTA */}
-          <a href="#" className="tg-nav-cta tg-nav-cta--desktop">
+          <a href="/#apps" onClick={(e) => handleNavClick(e, 'apps')} className="tg-nav-cta tg-nav-cta--desktop">
             Explore apps
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M8 5v14l11-7z" />
-            </svg>
+            <Image src="/images/playstore.png" alt="Play Store" width={20} height={20} className="object-contain" />
           </a>
 
           {/* Mobile hamburger */}
@@ -65,15 +86,13 @@ export function Navbar() {
       {/* Mobile drawer */}
       <div className={`tg-mobile-menu ${open ? "tg-mobile-menu--open" : ""}`}>
         {NAV_LINKS.map((link) => (
-          <a key={link} href="#" onClick={() => setOpen(false)} className="tg-mobile-link">
-            {link}
+          <a key={link.id} href={`/#${link.id}`} onClick={(e) => handleNavClick(e, link.id)} className="tg-mobile-link">
+            {link.label}
           </a>
         ))}
-        <a href="#" className="tg-nav-cta tg-nav-cta--mobile" onClick={() => setOpen(false)}>
+        <a href="/#apps" className="tg-nav-cta tg-nav-cta--mobile" onClick={(e) => handleNavClick(e, 'apps')}>
           Explore apps
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M8 5v14l11-7z" />
-          </svg>
+          <Image src="/images/playstore.png" alt="Play Store" width={20} height={20} className="object-contain" />
         </a>
       </div>
 
