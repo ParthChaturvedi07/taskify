@@ -98,7 +98,7 @@ export function Navbar() {
               {link.label}
             </a>
           ) : (
-            <a href="/contact" className="tg-mobile-link">
+            <a key={link.id} href="/contact" className="tg-mobile-link">
               {link.label}
             </a>
           )

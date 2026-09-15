@@ -80,14 +80,14 @@ export default function ContactPage() {
 
       <div className="relative z-10 flex flex-col items-center flex-grow w-full px-4 pt-40 pb-24 max-w-[1000px] mx-auto">
         <h1 className="font-pixel text-4xl md:text-6xl text-white text-center leading-[1.1] uppercase tracking-wide text-balance">
-          Let's build
+          Let&apos;s build
           <br />
           something together
         </h1>
 
         <p className="text-[#888888] mt-6 max-w-2xl text-center text-sm md:text-[15px] text-balance leading-relaxed">
           Partnership, sponsorship, or support — whatever the mission, our
-          team responds fast. Reach out and let's make things happen.
+          team responds fast. Reach out and let&apos;s make things happen.
         </p>
 
         <button

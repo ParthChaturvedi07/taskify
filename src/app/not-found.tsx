@@ -80,7 +80,7 @@ export default function NotFound() {
     tl.add(() => {
       if (sparksRef.current) {
         const sparks = sparksRef.current.children;
-        gsap.utils.toArray(sparks).forEach((spark: any) => {
+        gsap.utils.toArray(sparks).forEach((spark: Element) => {
           const shootSpark = () => {
             // Randomize angle and distance for a burst effect
             const angle = Math.random() * Math.PI * 2;
