@@ -4,227 +4,258 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { GridBackground } from "@/components/ui/GridBackground";
+import { DotGrid } from "@/components/ui/DotGrid";
 import { Navbar } from "@/components/Navbar";
-import { Button } from "@/components/ui/Button";
-import Link from "next/link";
 import { Footer } from "@/components/Footer";
+import Link from "next/link";
+import { TriangleAlert, Home } from "lucide-react";
+
+const Spark = ({ className, style }: { className?: string, style?: React.CSSProperties }) => (
+  <div className={`absolute rounded-full bg-white ${className}`} style={{
+    width: '3px',
+    height: '30px',
+    boxShadow: '0 0 15px 4px rgba(200, 230, 255, 0.9), 0 0 6px 2px rgba(255, 255, 255, 1)',
+    ...style
+  }} />
+);
 
 export default function NotFound() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const leftPlugRef = useRef<HTMLDivElement>(null);
+  const rightPlugRef = useRef<HTMLDivElement>(null);
+  const sparksRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
-  const codeRef = useRef<HTMLDivElement>(null);
-  const labelRef = useRef<HTMLDivElement>(null);
-  const subRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLDivElement>(null);
-  const scanRef = useRef<HTMLDivElement>(null);
-
-  // Glitch layer refs for "404"
-  const glitch1Ref = useRef<HTMLSpanElement>(null);
-  const glitch2Ref = useRef<HTMLSpanElement>(null);
-  const glitch3Ref = useRef<HTMLSpanElement>(null);
-
-  /* ─────────────────────────────────────────────────
-   * ENTRANCE ANIMATION
-   * ───────────────────────────────────────────────── */
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+    const tl = gsap.timeline();
 
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(
-          [codeRef.current, labelRef.current, subRef.current, buttonRef.current],
-          { clearProps: "all" }
-        );
-      });
+    // Initial state: plugs pushed together at center (overlapping), text/sparks hidden
+    gsap.set(sparksRef.current, { opacity: 0, scale: 0 });
+    gsap.set(textRef.current, { opacity: 0, scale: 0.5, filter: "blur(20px)" });
 
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // Initial hidden state
-        gsap.set(codeRef.current, { y: 80, opacity: 0, filter: "blur(12px)" });
-        gsap.set(labelRef.current, { y: 50, opacity: 0, filter: "blur(8px)" });
-        gsap.set(subRef.current, { y: 40, opacity: 0 });
-        gsap.set(buttonRef.current, { y: 30, opacity: 0 });
+    // 1. Plugs start overlapping (attached) and separate to their natural positions
+    // fromTo = explicit start + end, never confused by SSR/hydration state
+    tl.fromTo(leftPlugRef.current,
+      { xPercent: -10 },   // START: left plug pushed right (into center) by 75% of its width
+      { xPercent: -35, duration: 2, ease: "power2.inOut", delay: 0.6 }
+    )
+      .fromTo(rightPlugRef.current,
+        { xPercent: 10 },  // START: right plug pushed left (into center) by 75% of its width
+        { xPercent: 45, duration: 2, ease: "power2.inOut" },
+        "<"
+      )
+      // 2. 404 appears in the gap
+      .to(textRef.current, {
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 0.9,
+        ease: "back.out(1.5)"
+      }, "<0.8")
+      // 3. Sparks appear
+      .to(sparksRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: "back.out(2)"
+      }, "<0.1");
 
-        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    // // 4. Continuous idle breathing animation after separation
+    // tl.to(leftPlugRef.current, {
+    //   x: "-8px",
+    //   duration: 2,
+    //   yoyo: true,
+    //   repeat: -1,
+    //   ease: "sine.inOut"
+    // }, "+=0");
 
-        tl.to(codeRef.current, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.1 })
-          .to(labelRef.current, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.9 }, "-=0.6")
-          .to(subRef.current, { y: 0, opacity: 1, duration: 0.7 }, "-=0.5")
-          .to(buttonRef.current, { y: 0, opacity: 1, duration: 0.6, ease: "back.out(1.4)" }, "-=0.3");
-      });
+    // tl.to(rightPlugRef.current, {
+    //   x: "8px",
+    //   duration: 2.2,
+    //   yoyo: true,
+    //   repeat: -1,
+    //   ease: "sine.inOut"
+    // }, "<");
 
-      return () => mm.revert();
-    }, containerRef);
+    // Realistic electrical sparks shooting outward
+    tl.add(() => {
+      if (sparksRef.current) {
+        const sparks = sparksRef.current.children;
+        gsap.utils.toArray(sparks).forEach((spark: any) => {
+          const shootSpark = () => {
+            // Randomize angle and distance for a burst effect
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 50 + Math.random() * 100;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
 
-    return () => ctx.revert();
-  }, []);
+            // Randomize streak rotation to match the trajectory
+            const rot = (angle * 180) / Math.PI + 90;
 
-  /* ─────────────────────────────────────────────────
-   * GLITCH LOOP on "404"
-   * ───────────────────────────────────────────────── */
-  useEffect(() => {
-    const layers = [glitch1Ref.current, glitch2Ref.current, glitch3Ref.current];
-    if (!layers.every(Boolean)) return;
+            gsap.fromTo(spark,
+              {
+                x: 0,
+                y: 0,
+                rotation: rot,
+                scaleY: "random(0.5, 1)",
+                opacity: 1
+              },
+              {
+                x: tx,
+                y: ty,
+                scaleY: 0.1,
+                opacity: 0,
+                duration: "random(0.15, 0.4)",
+                ease: "power3.out",
+                onComplete: () => {
+                  gsap.delayedCall(Math.random() * 1.2, shootSpark);
+                }
+              }
+            );
+          };
 
-    const glitch = () => {
-      const tl = gsap.timeline();
-
-      tl.set(layers, { x: 0, skewX: 0, opacity: 1 });
-
-      tl.to(glitch1Ref.current, { x: -14, skewX: -9, duration: 0.06, ease: "none" })
-        .to(glitch2Ref.current, { x: 16, skewX: 7, duration: 0.05, ease: "none" }, "<")
-        .to(glitch3Ref.current, { x: -8, skewX: -5, duration: 0.04, ease: "none" }, "<")
-        .to(layers, { x: 0, skewX: 0, duration: 0.04, ease: "none" })
-        .to(glitch1Ref.current, { x: 8, duration: 0.035, ease: "none" })
-        .to(glitch2Ref.current, { x: -10, duration: 0.035, ease: "none" }, "<")
-        .to(layers, { x: 0, duration: 0.04, ease: "none" });
-    };
-
-    const initialGlitch = gsap.delayedCall(1.8, glitch);
-    const interval = window.setInterval(() => {
-      if (Math.random() > 0.4) glitch();
-    }, 1600);
+          // Initial staggered bursts
+          gsap.delayedCall(Math.random() * 1.5, shootSpark);
+        });
+      }
+    }, "-=1.5");
 
     return () => {
-      initialGlitch.kill();
-      window.clearInterval(interval);
-    };
-  }, []);
-
-  /* ─────────────────────────────────────────────────
-   * SCAN-LINE DRIFT
-   * ───────────────────────────────────────────────── */
-  useEffect(() => {
-    if (!scanRef.current) return;
-    gsap.set(scanRef.current, { y: "-100%" });
-    gsap.to(scanRef.current, {
-      y: "200%",
-      duration: 4,
-      ease: "none",
-      repeat: -1,
-    });
+      tl.kill();
+    }
   }, []);
 
   return (
-    <main className="relative w-full overflow-x-hidden">
-      <section className="relative min-h-[100dvh] w-full flex flex-col pt-24 sm:pt-28 md:pt-32 overflow-hidden">
-        {/* Shared animated grid */}
-        <GridBackground />
+    <main className="relative w-full overflow-x-hidden min-h-[100dvh] flex flex-col bg-black">
+      <GridBackground />
+      <DotGrid />
+      <Navbar />
 
-        {/* Navbar */}
-        <Navbar />
+      {/* ── White radial glow ──
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-10%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "1100px",
+          height: "700px",
+          background:
+            "radial-gradient(ellipse at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 40%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      /> */}
 
-        {/* Scanline overlay */}
-        <div
-          ref={scanRef}
-          aria-hidden="true"
-          className="pointer-events-none absolute left-0 w-full z-10"
-          style={{
-            height: "60px",
-            background:
-              "linear-gradient(to bottom, transparent 0%, rgba(61,213,243,0.04) 50%, transparent 100%)",
-          }}
-        />
+      {/* ── Top-right white glow ── */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-15%",
+          right: "-10%",
+          width: "700px",
+          height: "700px",
+          background:
+            "radial-gradient(ellipse at center, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 35%, transparent 65%)",
+          pointerEvents: "none",
+          zIndex: 0,
+          borderRadius: "50%",
+          filter: "blur(40px)",
+        }}
+      />
 
-        {/* Main content */}
-        <div
-          ref={containerRef}
-          className="z-10 flex w-full flex-1 flex-col items-center justify-center gap-6 text-center px-4 pb-20"
-        >
-          {/* ── 404 PIXEL TEXT ── */}
-          <div ref={codeRef} className="relative font-pixel leading-none text-[clamp(5rem,26vw,12rem)]">
-            {/* Main text */}
+
+      <div className="z-10 flex w-full flex-1 flex-col items-center justify-center px-4 pt-32 pb-16">
+
+        {/* Plugs and 404 Section */}
+        <div className="relative w-full max-w-6xl h-64 sm:h-80 flex items-center justify-center">
+
+          {/* 404 Text - Center */}
+          <div ref={textRef} className="absolute z-20 flex flex-col items-center pointer-events-none">
             <h1
-              className="relative z-10 text-[#3DD5F3] leading-none select-none"
-              style={{
-                textShadow: `
-                  0 1px 0 #074254ff,
-                  0 2px 0 #094253ff,
-                  0 3px 0 #052731ff,
-                  0 4px 0 #062d39ff,
-                  0 5px 0 #08303dff,
-                  0 6px 0 #08303dff,
-                  0 8px 0 #062d39ff,
-                  0 10px 0 #04222dff,
-                  0 15px 30px rgba(61,213,243,0.5),
-                  0 0 40px rgba(61,213,243,0.35)
-                `,
-                WebkitTextStroke: "1px #2a99afff",
-              }}
+              className="text-white font-bold font-pixel text-7xl sm:text-8xl md:text-[9rem] lg:text-[11rem] leading-none tracking-widest drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+              style={{ WebkitTextStroke: "2px #fff", color: "transparent" }}
             >
               404
             </h1>
-
-            {/* Glitch layer 1 */}
-            <span
-              ref={glitch1Ref}
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 text-[#3DD5F3] select-none"
-              style={{ clipPath: "inset(18% 0 62% 0)", WebkitTextStroke: "1px #2a99afff" }}
-            >
-              404
-            </span>
-
-            {/* Glitch layer 2 */}
-            <span
-              ref={glitch2Ref}
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 text-[#3DD5F3] select-none"
-              style={{ clipPath: "inset(52% 0 28% 0)", WebkitTextStroke: "1px #2a99afff" }}
-            >
-              404
-            </span>
-
-            {/* Glitch layer 3 */}
-            <span
-              ref={glitch3Ref}
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 text-[#3DD5F3] select-none"
-              style={{ clipPath: "inset(76% 0 6% 0)", WebkitTextStroke: "1px #2a99afff" }}
-            >
-              404
-            </span>
+            <h2 className="text-white text-2xl sm:text-3xl font-sans font-medium mt-2 tracking-wide">Error</h2>
           </div>
 
-          {/* ── LABEL ── */}
-          <div ref={labelRef}>
-            <p
-              className="text-[clamp(1.25rem,5vw,2rem)] font-bold tracking-tight text-white uppercase"
-              style={{
-                fontFamily: '"Darker Grotesque", sans-serif',
-                textShadow: "0px 4px 10px rgba(0,0,0,0.8)",
-              }}
-            >
-              Page not found
-            </p>
+          {/* Sparks - Behind Text */}
+          <div ref={sparksRef} className="absolute z-10 left-1/2 top-1/2 w-0 h-0 pointer-events-none flex items-center justify-center">
+            {/* Generate several sparks that will be animated by GSAP from the center */}
+            <Spark />
+            <Spark />
+            <Spark />
+            <Spark />
+            <Spark />
+            <Spark />
+            <Spark />
+            <Spark />
           </div>
 
-          {/* ── SUBTITLE ── */}
-          <div ref={subRef}>
-            <p
-              className="text-[clamp(0.9rem,2.5vw,1.1rem)] font-semibold text-white/80 max-w-sm leading-relaxed"
-              style={{
-                fontFamily: '"Darker Grotesque", sans-serif',
-                textShadow: "0 1px 8px rgba(0,0,0,0.9)",
-              }}
-            >
-              Looks like you&apos;ve wandered off the map. This level doesn&apos;t exist — yet.
-            </p>
-          </div>
-
-          {/* ── CTA ── */}
-          <div ref={buttonRef} className="mt-4">
-            <Link href="/" aria-label="Go back home">
-              <Button
-                variant="glow-pill"
-                className="h-[54px] w-[220px] sm:h-[46px] sm:w-[200px] md:h-[52px] md:w-[220px] lg:h-[56px] lg:w-[240px]"
-              >
-                GO HOME
-              </Button>
-            </Link>
+          {/* Plugs Container - Centered Anchor */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="relative w-0 h-full flex items-center justify-center">
+              {/* Left Plug (Male) */}
+              <div ref={leftPlugRef} className="absolute right-0 h-36 sm:h-46 md:h-56 lg:h-66 flex items-center justify-end z-30">
+                <img src="/images/plugs/plug-left.png" alt="Left Plug" className="h-full w-auto max-w-none drop-shadow-2xl object-right object-contain" />
+              </div>
+              {/* Right Plug (Female) */}
+              <div ref={rightPlugRef} className="absolute left-0 h-36 sm:h-46 md:h-56 lg:h-56 flex items-center justify-start z-30">
+                <img src="/images/plugs/plug-right.png" alt="Right Plug" className="h-full w-auto max-w-none drop-shadow-2xl object-left object-contain" />
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-      <Footer/>
+
+        {/* Warning Section */}
+        <div className="mt-4 flex flex-col items-center gap-6 relative z-40">
+          <div className="flex flex-col items-center gap-2">
+            <TriangleAlert className="text-[#ffdf00] w-7 h-7 drop-shadow-md" fill="#ffdf00" color="#000" strokeWidth={2} />
+            <p className="text-white text-base tracking-wide font-sans">Page not found :-(</p>
+          </div>
+
+          <Link href="/" aria-label="Go back home">
+            <button className="group relative flex items-center gap-3 bg-[#555] hover:bg-[#666] text-white px-2 py-2 pr-6 rounded-[14px] border-[2px] border-[#777] transition-all duration-300 font-pixel tracking-widest text-sm uppercase shadow-lg active:scale-95">
+              <div className="bg-[#333] p-1.5 rounded-lg border border-[#555] group-hover:bg-[#444] transition-colors">
+                <Home className="w-5 h-5 text-white" strokeWidth={2} />
+              </div>
+              <span className="pt-0.5">BACK TO HOME</span>
+            </button>
+          </Link>
+        </div>
+
+        {/* Terminal UI */}
+        <div className="mt-12 mb-8 bg-[#090f18] border border-[#162130] rounded-2xl w-full max-w-[500px] overflow-hidden text-left font-mono text-sm shadow-[0_0_40px_rgba(0,10,25,0.6)] relative z-40 mx-4">
+          <div className="flex items-center px-4 py-2.5 bg-[#0d1520] border-b border-[#162130]">
+            <div className="flex space-x-2">
+              <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+            </div>
+            <div className="mx-auto text-xs text-[#596d82] font-sans tracking-wider">system.log</div>
+            <div className="w-12"></div>
+          </div>
+          <div className="p-5 space-y-3.5 text-[#8a9db0] bg-[#090f18] text-xs sm:text-sm">
+            <div className="flex gap-3">
+              <span className="text-[#00ffd1] font-bold">$</span>
+              <span>GET <span className="text-[#d1d5db]">/requested-page</span></span>
+            </div>
+            <div className="flex gap-3 items-center ml-2">
+              <span className="bg-[#4d1619] text-[#ff5f56] text-[10px] font-bold px-1.5 py-0.5 rounded border border-[#6b1e22]">404</span>
+              <span className="text-[#ff5f56]">Route not found - no match in registry</span>
+            </div>
+            <div className="flex gap-3">
+              <span className="text-[#00ffd1] font-bold">$</span>
+              <span>SUGGEST <span className="text-[#596d82] px-1">-&gt;</span> <Link href="/" className="text-white hover:underline">/home</Link></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <Footer />
     </main>
   );
 }
