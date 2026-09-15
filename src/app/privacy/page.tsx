@@ -1,22 +1,41 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { GridBackground } from "@/components/ui/GridBackground";
+import { DotGrid } from "@/components/ui/DotGrid";
 
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-[#030303] flex flex-col relative text-white">
       <Navbar />
-
+      <GridBackground />
+      <DotGrid />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-15%",
+          right: "-10%",
+          width: "700px",
+          height: "700px",
+          background:
+            "radial-gradient(ellipse at center, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 35%, transparent 65%)",
+          pointerEvents: "none",
+          zIndex: 0,
+          borderRadius: "50%",
+          filter: "blur(40px)",
+        }}
+      />
       <section className="relative w-full max-w-4xl mx-auto px-6 py-32 md:py-40 flex-1 z-10">
         <h1 className="font-pixel text-4xl md:text-6xl font-bold uppercase mb-4 text-white">
           Privacy Policy
         </h1>
         <p className="font-chakra text-lg text-white/60 mb-12">
-          We believe in full transparency about how your data is handled. Read carefully — your privacy matters to us.<br/>
+          We believe in full transparency about how your data is handled. Read carefully — your privacy matters to us.<br />
           <span className="text-white/40">Last Updated: May 15, 2026</span>
         </p>
 
         <div className="prose prose-invert max-w-none font-chakra text-white/80 space-y-12">
-          
+
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">Contents</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-white/60">
@@ -64,7 +83,7 @@ export default function PrivacyPage() {
               <span className="font-pixel text-xl text-white/20">03</span> Information We Collect
             </h2>
             <p className="leading-relaxed mb-4">We may collect information about you in various ways. The information we may collect includes:</p>
-            
+
             <h3 className="text-xl font-bold text-white mt-6 mb-2">Personal Data</h3>
             <ul className="list-disc pl-6 space-y-2 mb-6">
               <li>Email address</li>
@@ -223,9 +242,9 @@ export default function PrivacyPage() {
               <span className="font-pixel text-xl text-white/20">15</span> Contact Us
             </h2>
             <p className="leading-relaxed">
-              If you have any questions or concerns regarding this Privacy Policy, you may contact us at:<br/><br/>
-              <strong>TaskifyGames</strong><br/>
-              Azamgarh, Uttar Pradesh, India<br/>
+              If you have any questions or concerns regarding this Privacy Policy, you may contact us at:<br /><br />
+              <strong>TaskifyGames</strong><br />
+              Azamgarh, Uttar Pradesh, India<br />
               admin@taskifygames.com
             </p>
           </section>

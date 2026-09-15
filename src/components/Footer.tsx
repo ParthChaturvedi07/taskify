@@ -9,9 +9,9 @@ const navLinks = [
   { label: "Apps", href: "/#apps" },
   { label: "Reviews", href: "/#reviews" },
   { label: "FAQ", href: "/#faq" },
-  { label: "Contact", href: "mailto:hello@taskifygames.com" },
-  { label: "Privacy", href: "/#" },
-  { label: "Terms", href: "/#" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
 ];
 
 const socialLinks = [

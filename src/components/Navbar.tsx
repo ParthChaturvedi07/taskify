@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { label: "How It Works", id: "how-it-works" },
   { label: "Reviews", id: "reviews" },
   { label: "FAQs", id: "faq" },
+  { label: "Contact Us", id: "contact" },
 ];
 
 export function Navbar() {
@@ -56,9 +57,15 @@ export function Navbar() {
           <ul className="tg-nav-links">
             {NAV_LINKS.map((link) => (
               <li key={link.id}>
-                <a href={`/#${link.id}`} onClick={(e) => handleNavClick(e, link.id)}>
-                  {link.label}
-                </a>
+                {link.id !== "contact" ? (
+                  <a href={`/#${link.id}`} onClick={(e) => handleNavClick(e, link.id)}>
+                    {link.label}
+                  </a>
+                ) : (
+                  <a href="/contact" >
+                    {link.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -86,9 +93,15 @@ export function Navbar() {
       {/* Mobile drawer */}
       <div className={`tg-mobile-menu ${open ? "tg-mobile-menu--open" : ""}`}>
         {NAV_LINKS.map((link) => (
-          <a key={link.id} href={`/#${link.id}`} onClick={(e) => handleNavClick(e, link.id)} className="tg-mobile-link">
-            {link.label}
-          </a>
+          link.id !== "contact" ? (
+            <a key={link.id} href={`/#${link.id}`} onClick={(e) => handleNavClick(e, link.id)} className="tg-mobile-link">
+              {link.label}
+            </a>
+          ) : (
+            <a href="/contact" className="tg-mobile-link">
+              {link.label}
+            </a>
+          )
         ))}
         <a href="/#apps" className="tg-nav-cta tg-nav-cta--mobile" onClick={(e) => handleNavClick(e, 'apps')}>
           Explore apps

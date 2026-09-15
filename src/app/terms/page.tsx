@@ -1,12 +1,32 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { DotGrid } from "@/components/ui/DotGrid";
+import { GridBackground } from "@/components/ui/GridBackground";
 
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-[#030303] flex flex-col relative text-white">
       <Navbar />
+      <GridBackground/>
+      <DotGrid/>
 
-      <section className="relative w-full max-w-4xl mx-auto px-6 py-32 md:py-40 flex-1 z-10">
+       <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-15%",
+          right: "-10%",
+          width: "700px",
+          height: "700px",
+          background:
+            "radial-gradient(ellipse at center, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 35%, transparent 65%)",
+          pointerEvents: "none",
+          zIndex: 0,
+          borderRadius: "50%",
+          filter: "blur(40px)",
+        }}
+      />
+      <section className=" relative w-full max-w-4xl mx-auto px-6 py-32 md:py-40 flex-1 z-10">
         <h1 className="font-pixel text-4xl md:text-6xl font-bold uppercase mb-4 text-white">
           Terms & Conditions
         </h1>
