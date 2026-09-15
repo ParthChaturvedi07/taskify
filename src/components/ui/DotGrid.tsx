@@ -98,7 +98,7 @@ export function useDotField(canvasRef: React.RefObject<HTMLCanvasElement | null>
       window.removeEventListener("touchend",   onTouchEnd);
       window.removeEventListener("resize",     resize);
     };
-  }, []);
+  }, [canvasRef]);
 }
 
 export function DotGrid() {

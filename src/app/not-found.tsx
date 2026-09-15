@@ -200,10 +200,12 @@ export default function NotFound() {
             <div className="relative w-0 h-full flex items-center justify-center">
               {/* Left Plug (Male) */}
               <div ref={leftPlugRef} className="absolute right-0 h-36 sm:h-46 md:h-56 lg:h-66 flex items-center justify-end z-30">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/plugs/plug-left.png" alt="Left Plug" className="h-full w-auto max-w-none drop-shadow-2xl object-right object-contain" />
               </div>
               {/* Right Plug (Female) */}
               <div ref={rightPlugRef} className="absolute left-0 h-36 sm:h-46 md:h-56 lg:h-56 flex items-center justify-start z-30">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/plugs/plug-right.png" alt="Right Plug" className="h-full w-auto max-w-none drop-shadow-2xl object-left object-contain" />
               </div>
             </div>
