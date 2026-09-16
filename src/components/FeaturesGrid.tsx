@@ -6,9 +6,6 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
-/* ─────────────────────────────────────────────
-   SVG icons — clean, white/gray glowing aesthetic
-───────────────────────────────────────────── */
 const IconUsers = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -61,14 +58,11 @@ const rightCards = [
   },
 ];
 
-/* ─────────────────────────────────────────────
-   Center phone card
-───────────────────────────────────────────── */
 function PhoneModel() {
   const { scene } = useGLTF("/3D/Phone hand for safety.glb");
   const ref = useRef<THREE.Group>(null);
 
-  const baseRotationY = Math.PI * 0.88; // Rotate 180 degrees from -Math.PI/4
+  const baseRotationY = Math.PI * 0.88; 
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -109,16 +103,12 @@ function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement>
           </Suspense>
         </Canvas>
 
-        {/* coloured floor shadow/reflection under phone */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[160px] h-[14px] mx-auto mt-[-4px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_40%,transparent_75%)] blur-[6px] pointer-events-none" />
       </div>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────
-   Main FeaturesGrid
-───────────────────────────────────────────── */
 export function FeaturesGrid() {
   const sectionRef = useRef<HTMLElement>(null);
   const [particles] = useState(() =>
@@ -134,7 +124,7 @@ export function FeaturesGrid() {
 
   return (
     <>
-      {/* Keeping just the custom keyframes for float/bob */}
+    
       <style dangerouslySetInnerHTML={{
         __html: `
         @keyframes fgFloat {
@@ -152,10 +142,6 @@ export function FeaturesGrid() {
 
       <section ref={sectionRef} className="relative w-full px-4 md:px-6 lg:px-8 py-[80px] overflow-hidden flex flex-col items-center">
 
-        {/* Ambient Glows */}
-        {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[1000px] max-h-[1000px] bg-white/5 blur-[150px] rounded-full pointer-events-none z-0" /> */}
-
-        {/* Ambient Particles */}
         {particles.map((p) => (
           <span
             key={p.id}
@@ -171,7 +157,6 @@ export function FeaturesGrid() {
           />
         ))}
 
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -187,10 +172,8 @@ export function FeaturesGrid() {
           </p>
         </motion.div>
 
-        {/* Grid Container */}
         <div className="relative z-10 w-full max-w-[1100px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
 
-          {/* LEFT COLUMN */}
           <div className="flex flex-col gap-6 md:gap-8 col-span-1">
             {leftCards.map((c, i) => (
               <motion.div
@@ -210,7 +193,6 @@ export function FeaturesGrid() {
             ))}
           </div>
 
-          {/* CENTRE COLUMN (Phone) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 40 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -221,7 +203,6 @@ export function FeaturesGrid() {
             <PhoneCard eventSource={sectionRef} />
           </motion.div>
 
-          {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-6 md:gap-8 col-span-1">
             {rightCards.map((c, i) => (
               <motion.div

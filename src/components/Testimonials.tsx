@@ -3,35 +3,52 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 
-const testimonials = [
+type Testimonial = {
+  quote: string;
+  name: string;
+  rating: string;
+  avatar: string;
+  language?: string;
+};
+
+const testimonials: Testimonial[] = [
   {
-    quote: `"I've earned ₹450 this week alone just by playing games on my commute."`,
-    name: "Rajesh K.",
-    handle: "@rajesh_plays",
+    quote: `"Tasks are quick, the interface is smooth, and payouts actually arrive on time."`,
+    name: "Babu Pokkina",
+    rating: "⭐⭐⭐⭐⭐ (5/5)",
     avatar: "https://i.pravatar.cc/150?img=11",
   },
   {
-    quote: `"No confusing menus or hidden rules. The cash hits my wallet exactly when promised."`,
-    name: "Priya S.",
-    handle: "@priya_tasks",
+    quote: `"Aplikasi ini mudah digunakan dan memiliki banyak tugas yang bisa dilakukan untuk mendapatkan poin."`,
+    name: "Rosna Harianto",
+    language: "(Indonesian)",
+    rating: "⭐⭐⭐⭐⭐ (5/5)",
     avatar: "https://i.pravatar.cc/150?img=9",
   },
   {
-    quote: `"The best reward platform I've used. Super Missions are incredibly lucrative."`,
-    name: "Amit M.",
-    handle: "@amit_gamer",
+    quote: `"Es una buena apps, juegos divertidos, los recomiendo."`,
+    name: "Jailer Quiroz",
+    language: "(Spanish)",
+    rating: "⭐⭐⭐⭐⭐ (5/5)",
+    avatar: "https://i.pravatar.cc/150?img=12",
+  },
+  {
+    quote: `"Estou gostando muito do aplicativo, tem várias opções de ganhar pontos."`,
+    name: "Adelson Thiago",
+    language: "(Portuguese)",
+    rating: "⭐⭐⭐⭐⭐ (5/5)",
     avatar: "https://i.pravatar.cc/150?img=15",
   },
   {
-    quote: `"I usually don't trust reward apps, but TaskifyGames proved me wrong. Fast payouts!"`,
-    name: "Neha R.",
-    handle: "@neha_reviews",
+    quote: `"It is good for earning coins and that is redeem like Play Store, UPI."`,
+    name: "Rakhirani Behera",
+    rating: "⭐⭐⭐⭐⭐ (5/5)",
     avatar: "https://i.pravatar.cc/150?img=5",
   },
   {
-    quote: `"Such a clean interface. Earning pocket money while waiting for the bus is my new routine."`,
-    name: "Vikram P.",
-    handle: "@vik_tech",
+    quote: `"The app is simple and user-friendly, so anyone can use it without confusion."`,
+    name: "Venkatesh Bandi",
+    rating: "⭐⭐⭐⭐⭐ (5/5)",
     avatar: "https://i.pravatar.cc/150?img=8",
   }
 ];
@@ -133,8 +150,11 @@ export function Testimonials() {
             <div className="mt-auto flex items-center gap-5">
               <Image src={t.avatar} alt={t.name} width={64} height={64} className="w-14 h-14 rounded-full border-2 border-[#0c0c0c] object-cover" />
               <div className="flex flex-col items-start">
-                <span className="font-chakra text-[18px] md:text-[20px] font-bold text-white leading-none mb-1.5">{t.name}</span>
-                <span className="font-chakra text-[14px] md:text-[15px] text-[#888888] font-medium">{t.handle}</span>
+                <span className="font-chakra text-[18px] md:text-[20px] font-bold text-white leading-none mb-1.5 flex items-center gap-2">
+                  {t.name}
+                  {t.language && <span className="text-[12px] font-normal text-white/50">{t.language}</span>}
+                </span>
+                <span className="font-chakra text-[14px] md:text-[15px] text-[#FFD700] font-medium">{t.rating}</span>
               </div>
             </div>
           </div>
