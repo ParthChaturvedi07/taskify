@@ -51,8 +51,7 @@ export function FAQ() {
   return (
     <section className="relative w-full px-4 md:px-6 lg:px-12 py-[80px] flex flex-col items-center overflow-hidden bg-transparent">
       
-      {/* Background Glow */}
-      {/* <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-[50vh] bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none z-0" /> */}
+
 
       {/* Header */}
       <motion.div 

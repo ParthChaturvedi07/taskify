@@ -59,22 +59,7 @@ export default function NotFound() {
         ease: "back.out(2)"
       }, "<0.1");
 
-    // // 4. Continuous idle breathing animation after separation
-    // tl.to(leftPlugRef.current, {
-    //   x: "-8px",
-    //   duration: 2,
-    //   yoyo: true,
-    //   repeat: -1,
-    //   ease: "sine.inOut"
-    // }, "+=0");
 
-    // tl.to(rightPlugRef.current, {
-    //   x: "8px",
-    //   duration: 2.2,
-    //   yoyo: true,
-    //   repeat: -1,
-    //   ease: "sine.inOut"
-    // }, "<");
 
     // Realistic electrical sparks shooting outward
     tl.add(() => {
@@ -130,22 +115,7 @@ export default function NotFound() {
       <DotGrid />
       <Navbar />
 
-      {/* ── White radial glow ──
-      <div
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: "-10%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "1100px",
-          height: "700px",
-          background:
-            "radial-gradient(ellipse at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 40%, transparent 70%)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      /> */}
+
 
       {/* ── Top-right white glow ── */}
       <div

@@ -392,25 +392,6 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
 
           <div ref={ctaRef} className="hero-cta-row flex items-center justify-center gap-4" style={{ opacity: 0 }}>
             <button onClick={() => window.location.href = "/#apps"} className="hero-cta-btn">Start earning</button>
-            {/* <button
-              onClick={replayFlowerBloom}
-              className="hero-secondary-btn flex items-center gap-2"
-              title="Replay Flower Bloom Animation"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-              </svg>
-              <span>Rebloom</span>
-            </button> */}
           </div>
         </section>
 
@@ -444,10 +425,7 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
             ))}
           </div>
 
-          {/* Soft ambient edge & bottom gradients */}
-          {/* <div className="fan-fade fan-fade-l" aria-hidden="true" />
-          <div className="fan-fade fan-fade-r" aria-hidden="true" /> */}
-          {/* <div className="fan-fade fan-fade-b" aria-hidden="true" /> */}
+
         </section>
       </div>
 
@@ -651,16 +629,7 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           z-index: 20;
         }
           
-        // .fan-fade-l {
-        //   top: 0; left: 0; bottom: 0;
-        //   width: clamp(60px, 10vw, 180px);
-        //   background: linear-gradient(to right, #070707 0%, transparent 100%);
-        // }
-        // .fan-fade-r {
-        //   top: 0; right: 0; bottom: 0;
-        //   width: clamp(60px, 10vw, 180px);
-        //   background: linear-gradient(to left, #070707 0%, transparent 100%);
-        // }
+
         .fan-fade-b{
           bottom: -20px; left: 0; right: 0;
           height: 90px;

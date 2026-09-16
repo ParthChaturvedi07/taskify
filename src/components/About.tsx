@@ -23,8 +23,7 @@ export function About() {
       ref={containerRef}
       className="relative w-full min-h-[120vh] px-4 md:px-6 lg:px-8 py-[100px] flex flex-col items-center justify-center overflow-hidden"
     >
-      {/* Background Ambient Glow */}
-      {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[1000px] max-h-[1000px] rounded-full bg-white/5 blur-[150px] pointer-events-none z-0" /> */}
+
 
       {/* Floating 3D Logo (Center-Right Anchor) */}
       <motion.div 

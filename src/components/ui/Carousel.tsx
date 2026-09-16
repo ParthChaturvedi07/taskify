@@ -106,7 +106,6 @@ export function Carousel({ items }: CarouselProps) {
           card.style.transform = `translate(-50%, -50%) translate3d(${x}px, 0, ${z}px) rotateY(${rotY}deg)`;
           
           // Smooth opacity fade at the edges of the view
-          // const depthOpacity = Math.max(0, 1 - distanceFrom180 / 300);
           const depthOpacity = 1;
           card.style.opacity = depthOpacity.toString();
         } else {
