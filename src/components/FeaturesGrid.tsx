@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState, Suspense } from "react";
+import React, { useRef, useState, Suspense } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
