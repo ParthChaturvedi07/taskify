@@ -75,15 +75,15 @@ function PhoneModel() {
 
   return (
     <group ref={ref} position={[0, 0, 0]} rotation={[0, baseRotationY, 0]}>
-      <primitive object={scene} scale={1.55} />
+      <primitive object={scene} scale={1.6} />
     </group>
   );
 }
 
 function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement> }) {
   return (
-    <div className="relative group w-full rounded-[24px] border border-white/5 bg-transparent sm:p-8 lg:p-4 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-full h-[450px]">
-      <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-white/[0.02] to-white/[0.08] backdrop-blur-[10px]" />
+    <div className="relative group w-full flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-full h-[450px]">
+      <div className="absolute " />
 
       {/* inner glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-white/5 blur-[80px] rounded-full pointer-events-none z-0" />
