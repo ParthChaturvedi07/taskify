@@ -428,7 +428,10 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
                 }}
                 className="flower-card-wrapper"
               >
-                <div className="flower-card-inner">
+                {/* Glow behind the card */}
+                <div className="absolute inset-0 bg-white/20 blur-[50px] rounded-full pointer-events-none" />
+                
+                <div className="flower-card-inner relative z-10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={card.src}
@@ -595,7 +598,7 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           width: 100vw;
           margin-left: calc(-50vw + 50%);
           height: 600px;
-          overflow: hidden;
+          // overflow: hidden;
           margin-top: 36px;
           display: flex;
           justify-content: center;
