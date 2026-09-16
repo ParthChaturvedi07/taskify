@@ -83,7 +83,7 @@ export function CTA() {
             
             {/* App Store Button (Stylized for future support) */}
             <button className="flex items-center justify-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 text-white px-8 py-3.5 rounded-full transition-all duration-300 group cursor-not-allowed opacity-80">
-              <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-7 h-7 text-white" viewBox="-2 0 24 27" fill="currentColor">
                 <path d="M16.3653 14.1685C16.3312 11.238 18.7397 9.80786 18.847 9.74235C17.3879 7.60803 15.1118 7.2995 14.3644 7.2023C12.4419 7.00902 10.6015 8.33703 9.61748 8.33703C8.63342 8.33703 7.13524 7.23469 5.51347 7.2662C3.42767 7.29749 1.50367 8.48395 0.443315 10.3343C-1.71369 14.0763 0.999653 19.6105 3.10214 22.656C4.12932 24.145 5.3308 25.8205 6.9069 25.7533C8.42397 25.6881 9.00693 24.7702 10.8258 24.7702C12.6453 24.7702 13.1678 25.7533 14.7439 25.7208C16.3797 25.6881 17.4042 24.2125 18.4255 22.7212C19.6053 20.9859 20.0886 19.3087 20.1202 19.2222C20.0886 19.208 16.3986 17.7981 16.3653 14.1685ZM13.4309 4.90806C14.2693 3.89209 14.8329 2.47953 14.6791 1.05C13.4475 1.09941 11.9688 1.8703 11.1009 2.88562C10.3216 3.78508 9.64257 5.23437 9.82736 6.63462C11.1963 6.74088 12.5936 5.92348 13.4309 4.90806Z" />
               </svg>
               <div className="flex flex-col items-start">

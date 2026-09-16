@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF, Environment } from "@react-three/drei";
 
 /* ─────────────────────────────────────────────
    SVG icons — clean, white/gray glowing aesthetic
@@ -62,67 +64,53 @@ const rightCards = [
 /* ─────────────────────────────────────────────
    Center phone card
 ───────────────────────────────────────────── */
-function PhoneCard() {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const phoneRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number | null>(null);
-  const target = useRef({ x: 0, y: 0 });
-  const current = useRef({ x: 0, y: 0 });
+function PhoneModel() {
+  const { scene } = useGLTF("/3D/Phone hand for safety.glb");
+  const ref = useRef<any>(null);
 
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
+  const baseRotationY = Math.PI * 0.88; // Rotate 180 degrees from -Math.PI/4
 
-    const onMove = (e: MouseEvent) => {
-      const r = card.getBoundingClientRect();
-      const nx = ((e.clientX - r.left) / r.width - 0.5) * 2;
-      const ny = ((e.clientY - r.top) / r.height - 0.5) * 2;
-      target.current = { x: -ny * 15, y: nx * 15 };
-    };
-    const onLeave = () => { target.current = { x: 0, y: 0 }; };
+  useFrame((state) => {
+    if (!ref.current) return;
+    const targetY = baseRotationY + state.pointer.x * 0.12;
+    const targetX = -state.pointer.y * 0.12;
 
-    card.addEventListener("mousemove", onMove);
-    card.addEventListener("mouseleave", onLeave);
-
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const tick = () => {
-      current.current.x = lerp(current.current.x, target.current.x, 0.08);
-      current.current.y = lerp(current.current.y, target.current.y, 0.08);
-      if (phoneRef.current) {
-        const { x, y } = current.current;
-        phoneRef.current.style.transform =
-          `perspective(900px) rotateX(${x}deg) rotateY(${y}deg) scale3d(1.03,1.03,1.03)`;
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      card.removeEventListener("mousemove", onMove);
-      card.removeEventListener("mouseleave", onLeave);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
+    ref.current.rotation.y += (targetY - ref.current.rotation.y) * 0.1;
+    ref.current.rotation.x += (targetX - ref.current.rotation.x) * 0.1;
+  });
 
   return (
-    <div ref={cardRef} className="relative cursor-crosshair group w-full rounded-[24px] border border-white/5 bg-transparent p-4 sm:p-8 lg:p-4 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-full h-full">
+    <group ref={ref} position={[0, -0.3, 0]} rotation={[0, baseRotationY, 0]}>
+      <primitive object={scene} scale={1.8} />
+    </group>
+  );
+}
+
+function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement> }) {
+  return (
+    <div className="relative group w-full rounded-[24px] border border-white/5 bg-transparent p-4 sm:p-8 lg:p-4 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-full h-[450px]">
       <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-white/[0.02] to-white/[0.08] backdrop-blur-[10px]" />
-      
+
       {/* inner glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-white/5 blur-[80px] rounded-full pointer-events-none z-0" />
 
-      <div ref={phoneRef} className="relative z-10 will-change-transform transform-style-3d drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] [animation:fgBob_5s_ease-in-out_infinite]">
-        <Image
-          src="/images/iphone_3d.png"
-          alt="Taskify gaming app on iPhone"
-          width={320}
-          height={480}
-          className="block w-full max-w-[220px] sm:max-w-[280px] md:max-w-[310px] h-auto select-none pointer-events-none"
-          priority
-          draggable={false}
-        />
+      <div className="relative z-10 w-full h-full min-h-[300px]">
+        <Canvas 
+          camera={{ position: [0, 0, 5], fov: 45 }} 
+          className="w-full h-full"
+          eventSource={eventSource as any}
+          eventPrefix="client"
+        >
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <Suspense fallback={null}>
+            <PhoneModel />
+            <Environment preset="city" />
+          </Suspense>
+        </Canvas>
+
         {/* coloured floor shadow/reflection under phone */}
-        <div className="w-[160px] h-[14px] mx-auto mt-[-4px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_40%,transparent_75%)] blur-[6px]" />
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[160px] h-[14px] mx-auto mt-[-4px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_40%,transparent_75%)] blur-[6px] pointer-events-none" />
       </div>
     </div>
   );
@@ -132,6 +120,7 @@ function PhoneCard() {
    Main FeaturesGrid
 ───────────────────────────────────────────── */
 export function FeaturesGrid() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [particles] = useState(() =>
     Array.from({ length: 24 }, (_, i) => ({
       id: i,
@@ -146,7 +135,8 @@ export function FeaturesGrid() {
   return (
     <>
       {/* Keeping just the custom keyframes for float/bob */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes fgFloat {
           0%   { transform: translateY(0); opacity: 0; }
           10%  { opacity: 1; }
@@ -160,8 +150,8 @@ export function FeaturesGrid() {
         .transform-style-3d { transform-style: preserve-3d; }
       `}} />
 
-      <section className="relative w-full px-4 md:px-6 lg:px-8 py-[80px] overflow-hidden flex flex-col items-center">
-        
+      <section ref={sectionRef} className="relative w-full px-4 md:px-6 lg:px-8 py-[80px] overflow-hidden flex flex-col items-center">
+
         {/* Ambient Glows */}
         {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[1000px] max-h-[1000px] bg-white/5 blur-[150px] rounded-full pointer-events-none z-0" /> */}
 
@@ -182,7 +172,7 @@ export function FeaturesGrid() {
         ))}
 
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
@@ -199,7 +189,7 @@ export function FeaturesGrid() {
 
         {/* Grid Container */}
         <div className="relative z-10 w-full max-w-[1100px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
-          
+
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-6 md:gap-8 col-span-1">
             {leftCards.map((c, i) => (
@@ -221,14 +211,14 @@ export function FeaturesGrid() {
           </div>
 
           {/* CENTRE COLUMN (Phone) */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 40 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.9, ease: "easeOut" }}
             className="order-first md:col-span-2 lg:col-span-1 lg:order-none w-full"
           >
-             <PhoneCard />
+            <PhoneCard eventSource={sectionRef} />
           </motion.div>
 
           {/* RIGHT COLUMN */}
