@@ -59,30 +59,30 @@ const rightCards = [
 ];
 
 function PhoneModel() {
-  const { scene } = useGLTF("/3D/Phone hand for safety.glb");
+  const { scene } = useGLTF("/3D/Phone hand for safety2.glb");
   const ref = useRef<THREE.Group>(null);
 
   const baseRotationY = Math.PI * 0.88; 
 
   useFrame((state) => {
     if (!ref.current) return;
-    const targetY = baseRotationY + state.pointer.x * 0.12;
-    const targetX = -state.pointer.y * 0.12;
+    const targetY = baseRotationY + state.pointer.x * 0.16;
+    const targetX = -state.pointer.y * 0.16;
 
     ref.current.rotation.y += (targetY - ref.current.rotation.y) * 0.1;
     ref.current.rotation.x += (targetX - ref.current.rotation.x) * 0.1;
   });
 
   return (
-    <group ref={ref} position={[0, -0.3, 0]} rotation={[0, baseRotationY, 0]}>
-      <primitive object={scene} scale={1.8} />
+    <group ref={ref} position={[0, 0, 0]} rotation={[0, baseRotationY, 0]}>
+      <primitive object={scene} scale={1.55} />
     </group>
   );
 }
 
 function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement> }) {
   return (
-    <div className="relative group w-full rounded-[24px] border border-white/5 bg-transparent p-4 sm:p-8 lg:p-4 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-full h-[450px]">
+    <div className="relative group w-full rounded-[24px] border border-white/5 bg-transparent sm:p-8 lg:p-4 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-full h-[450px]">
       <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-white/[0.02] to-white/[0.08] backdrop-blur-[10px]" />
 
       {/* inner glow */}
@@ -172,7 +172,7 @@ export function FeaturesGrid() {
           </p>
         </motion.div>
 
-        <div className="relative z-10 w-full max-w-[1100px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
+        <div className="relative z-10 w-full max-w-[1250px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
 
           <div className="flex flex-col gap-6 md:gap-8 col-span-1">
             {leftCards.map((c, i) => (
