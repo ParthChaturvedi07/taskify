@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState, Suspense } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment } from "@react-three/drei";
