@@ -4,6 +4,7 @@ import React, { useRef, useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment } from "@react-three/drei";
+import * as THREE from "three";
 
 /* ─────────────────────────────────────────────
    SVG icons — clean, white/gray glowing aesthetic
@@ -65,7 +66,7 @@ const rightCards = [
 ───────────────────────────────────────────── */
 function PhoneModel() {
   const { scene } = useGLTF("/3D/Phone hand for safety.glb");
-  const ref = useRef<any>(null);
+  const ref = useRef<THREE.Group>(null);
 
   const baseRotationY = Math.PI * 0.88; // Rotate 180 degrees from -Math.PI/4
 
@@ -97,7 +98,7 @@ function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement>
         <Canvas 
           camera={{ position: [0, 0, 5], fov: 45 }} 
           className="w-full h-full"
-          eventSource={eventSource as any}
+          eventSource={eventSource as unknown as React.MutableRefObject<HTMLElement>}
           eventPrefix="client"
         >
           <ambientLight intensity={0.5} />
