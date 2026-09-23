@@ -1,8 +1,31 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform, animate, useInView } from "framer-motion";
 import Image from "next/image";
+
+function AnimatedNumber({ value }: { value: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-20px" });
+
+  useEffect(() => {
+    if (inView) {
+      const controls = animate(0, value, {
+        duration: 1,
+        delay: 0.5,
+        ease: "easeOut",
+        onUpdate: (latest) => {
+          if (ref.current) {
+            ref.current.textContent = Math.round(latest).toString();
+          }
+        }
+      });
+      return () => controls.stop();
+    }
+  }, [inView, value]);
+
+  return <span ref={ref}>0</span>;
+}
 
 export function About() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +35,6 @@ export function About() {
     offset: ["start end", "end start"]
   });
 
-  // Parallax transformations for that Awwwards feel
   const yText = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const yImage1 = useTransform(scrollYProgress, [0, 1], [150, -150]);
   const yImage2 = useTransform(scrollYProgress, [0, 1], [-50, 150]);
@@ -36,7 +58,7 @@ export function About() {
       {/* Floating Phone (Left) */}
       <motion.div 
         style={{ y: yImage2 }}
-        className="absolute bottom-[10%] left-[-10%] md:left-[5%] w-[180px] md:w-[300px] z-10 opacity-30 md:opacity-50 drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)] blur-[1px]"
+        className="absolute bottom-[10%] left-[-2%] md:left-[5%] w-[180px] md:w-[300px] z-10 opacity-50 drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)] blur-[1px]"
       >
         <Image src="/images/cb_3d.png" alt="Cash Bunny App" width={300} height={600} className="w-full h-auto rotate-[-12deg]" />
       </motion.div>
@@ -44,7 +66,7 @@ export function About() {
       {/* Floating Phone (Right Edge) */}
       <motion.div 
         style={{ y: yImage3 }}
-        className="absolute top-[40%] right-[-15%] md:right-[-5%] w-[160px] md:w-[300px] z-0 opacity-20 md:opacity-30 drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)] blur-[2px]"
+        className="absolute top-[40%] right-[-5%] md:right-[-5%] w-[160px] md:w-[300px] z-0 opacity-50 md:opacity-40 drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)] blur-[2px]"
       >
         <Image src="/images/wc_3d.png" alt="Wow Cash App" width={300} height={600} className="w-full h-auto rotate-[15deg]" />
       </motion.div>
@@ -55,7 +77,7 @@ export function About() {
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-20px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 self-start lg:self-center"
         >
@@ -79,7 +101,7 @@ export function About() {
           <motion.div 
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
             className="md:col-span-6 lg:col-span-5 lg:col-start-2 flex flex-col"
           >
@@ -95,12 +117,12 @@ export function About() {
           <motion.div 
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
             className="md:col-span-6 lg:col-span-4 lg:col-start-9 flex flex-col justify-end items-start lg:items-end text-left lg:text-right mt-10 md:mt-0"
           >
             <span className="font-pixel text-[clamp(60px,7vw,110px)] font-bold text-white leading-[0.8] tracking-tight [text-shadow:0_0_60px_rgba(255,255,255,0.2)]">
-              801K+
+              <AnimatedNumber value={801} />K+
             </span>
             <span className="font-chakra text-[13px] md:text-[15px] uppercase tracking-[0.2em] text-white/50 font-bold mb-8 mt-4">
               Global Downloads

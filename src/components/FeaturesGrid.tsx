@@ -59,10 +59,10 @@ const rightCards = [
 ];
 
 function PhoneModel() {
-  const { scene } = useGLTF("/3D/Phone hand for safety2.glb");
+  const { scene } = useGLTF("/3D/Mobile phone.glb");
   const ref = useRef<THREE.Group>(null);
 
-  const baseRotationY = Math.PI * 0.88; 
+  const baseRotationY = Math.PI * 0.08; 
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -74,8 +74,8 @@ function PhoneModel() {
   });
 
   return (
-    <group ref={ref} position={[0, 0, 0]} rotation={[0, baseRotationY, 0]}>
-      <primitive object={scene} scale={1.6} />
+    <group ref={ref} position={[0, -1.5, 0]} rotation={[0, baseRotationY, 0]}>
+      <primitive object={scene} scale={15} />
     </group>
   );
 }
@@ -88,7 +88,7 @@ function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement>
       {/* inner glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-white/5 blur-[80px] rounded-full pointer-events-none z-0" />
 
-      <div className="relative z-10 w-full h-full min-h-[300px]">
+      <div className="absolute top-[-40px] bottom-[-40px] left-[-30%] right-[-30%] z-10 pointer-events-none">
         <Canvas 
           camera={{ position: [0, 0, 5], fov: 45 }} 
           className="w-full h-full"
@@ -97,13 +97,13 @@ function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement>
         >
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 10]} intensity={1} />
-          <Suspense fallback={null}>
+          <Suspense fallback={null}>  
             <PhoneModel />
             <Environment preset="city" />
           </Suspense>
         </Canvas>
 
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[160px] h-[14px] mx-auto mt-[-4px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_40%,transparent_75%)] blur-[6px] pointer-events-none" />
+        <div className="absolute bottom-[56px] left-1/2 -translate-x-1/2 w-[160px] h-[14px] mx-auto mt-[-4px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_40%,transparent_75%)] blur-[6px] pointer-events-none" />
       </div>
     </div>
   );
@@ -140,7 +140,7 @@ export function FeaturesGrid() {
         .transform-style-3d { transform-style: preserve-3d; }
       `}} />
 
-      <section ref={sectionRef} className="relative w-full px-4 md:px-6 lg:px-8 py-[80px] overflow-hidden flex flex-col items-center">
+      <section ref={sectionRef} className="relative w-full px-4 md:px-6 lg:px-8 py-[80px] flex flex-col items-center">
 
         {particles.map((p) => (
           <span
@@ -198,7 +198,7 @@ export function FeaturesGrid() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.9, ease: "easeOut" }}
-            className="order-first md:col-span-2 lg:col-span-1 lg:order-none w-full"
+            className="order-first md:col-span-2 lg:col-span-1 lg:order-none w-full relative z-20"
           >
             <PhoneCard eventSource={sectionRef} />
           </motion.div>

@@ -103,22 +103,22 @@ export function Apps() {
           className="w-full flex flex-wrap lg:flex-nowrap items-center justify-between p-[16px] px-[20px] lg:py-[20px] lg:px-[28px] rounded-[16px] bg-white/5 backdrop-blur-[20px] border border-white/5 shadow-[0_8px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-1px_0_rgba(255,255,255,0.02)] gap-[14px] lg:gap-[12px]"
         >
           
-          <div className="flex flex-wrap lg:flex-nowrap items-center flex-1 gap-y-[12px]">
-            <div className="flex flex-col gap-[5px] pr-[14px] mr-[14px] md:pr-[20px] md:mr-[20px] lg:pr-[28px] lg:mr-[28px] border-r border-white/10">
-              <span className="font-chakra text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Live Apps</span>
-              <span className="font-chakra text-[clamp(14px,1.3vw,18px)] font-bold text-white tracking-[0.04em] m-0">04</span>
+          <div className="flex flex-nowrap items-center flex-1 overflow-x-auto w-full md:overflow-visible pb-2 lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="flex flex-col gap-[3px] md:gap-[5px] pr-[10px] mr-[10px] md:pr-[20px] md:mr-[20px] lg:pr-[28px] lg:mr-[28px] border-r border-white/10 shrink-0">
+              <span className="font-chakra text-[8px] md:text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Live Apps</span>
+              <span className="font-chakra text-[clamp(13px,1.3vw,18px)] font-bold text-white tracking-[0.04em] m-0">04</span>
             </div>
-            <div className="flex flex-col gap-[5px] pr-[14px] mr-[14px] md:pr-[20px] md:mr-[20px] lg:pr-[28px] lg:mr-[28px] border-r border-white/10">
-              <span className="font-chakra text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Platform</span>
-              <span className="font-chakra text-[clamp(14px,1.3vw,18px)] font-bold text-white tracking-[0.04em] m-0">Android</span>
+            <div className="flex flex-col gap-[3px] md:gap-[5px] pr-[10px] mr-[10px] md:pr-[20px] md:mr-[20px] lg:pr-[28px] lg:mr-[28px] border-r border-white/10 shrink-0">
+              <span className="font-chakra text-[8px] md:text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Platform</span>
+              <span className="font-chakra text-[clamp(13px,1.3vw,18px)] font-bold text-white tracking-[0.04em] m-0">Android</span>
             </div>
-            <div className="flex flex-col gap-[5px] pr-[14px] mr-[14px] md:pr-[20px] md:mr-[20px] lg:pr-[28px] lg:mr-[28px] border-r border-white/10">
-              <span className="font-chakra text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Total Installs</span>
-              <span className="font-chakra text-[clamp(14px,1.3vw,18px)] font-bold text-[#a3a3a3] tracking-[0.04em] m-0">801K+</span>
+            <div className="flex flex-col gap-[3px] md:gap-[5px] pr-[10px] mr-[10px] md:pr-[20px] md:mr-[20px] lg:pr-[28px] lg:mr-[28px] border-r border-white/10 shrink-0">
+              <span className="font-chakra text-[8px] md:text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Total Installs</span>
+              <span className="font-chakra text-[clamp(13px,1.3vw,18px)] font-bold text-[#a3a3a3] tracking-[0.04em] m-0">801K+</span>
             </div>
-            <div className="flex flex-col gap-[5px]">
-              <span className="font-chakra text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Avg Rating</span>
-              <span className="font-chakra text-[clamp(14px,1.3vw,18px)] font-bold text-[#a3a3a3] tracking-[0.04em] m-0">4.8 ★</span>
+            <div className="flex flex-col gap-[3px] md:gap-[5px] shrink-0 pr-[4px]">
+              <span className="font-chakra text-[8px] md:text-[9px] font-semibold tracking-[0.22em] uppercase text-white/30 m-0">Avg Rating</span>
+              <span className="font-chakra text-[clamp(13px,1.3vw,18px)] font-bold text-[#a3a3a3] tracking-[0.04em] m-0">4.8 ★</span>
             </div>
           </div>
           
