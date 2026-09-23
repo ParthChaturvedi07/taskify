@@ -59,10 +59,10 @@ const rightCards = [
 ];
 
 function PhoneModel() {
-  const { scene } = useGLTF("/3D/Mobile phone.glb");
+  const { scene } = useGLTF("/3D/phone model increased brightness.glb");
   const ref = useRef<THREE.Group>(null);
 
-  const baseRotationY = Math.PI * 0.08; 
+  const baseRotationY = Math.PI * 0.0008;
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -89,19 +89,48 @@ function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-white/5 blur-[80px] rounded-full pointer-events-none z-0" />
 
       <div className="absolute top-[-40px] bottom-[-40px] left-[-30%] right-[-30%] z-10 pointer-events-none">
-        <Canvas 
-          camera={{ position: [0, 0, 5], fov: 45 }} 
-          className="w-full h-full"
-          eventSource={eventSource as unknown as React.MutableRefObject<HTMLElement>}
-          eventPrefix="client"
-        >
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 10]} intensity={1} />
-          <Suspense fallback={null}>  
-            <PhoneModel />
-            <Environment preset="city" />
-          </Suspense>
-        </Canvas>
+        <Canvas
+  camera={{ position: [0, 0, 5], fov: 45 }}
+  className="w-full h-full"
+  eventSource={eventSource as unknown as React.MutableRefObject<HTMLElement>}
+  eventPrefix="client"
+>
+  {/* Very subtle global fill */}
+  <ambientLight intensity={0.15} />
+
+  {/* Main soft light */}
+  <directionalLight
+    position={[-3, 6, 5]}
+    intensity={1.5}
+  />
+
+  {/* White front/side light */}
+  <spotLight
+    position={[-5, 4, 5]}
+    angle={0.6}
+    penumbra={1}
+    intensity={1.5}
+    color="#ffffff"
+  />
+
+  {/* Purple cinematic rim */}
+  <spotLight
+    position={[5, 2, -3]}
+    angle={0.7}
+    penumbra={1}
+    intensity={2}
+    color="#c77dff"
+  />
+
+  <Suspense fallback={null}>
+    <PhoneModel />
+
+    <Environment
+      files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/newman_lobby_4k.hdr"
+      background={false}
+    />
+  </Suspense>
+</Canvas>
 
         <div className="absolute bottom-[56px] left-1/2 -translate-x-1/2 w-[160px] h-[14px] mx-auto mt-[-4px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_40%,transparent_75%)] blur-[6px] pointer-events-none" />
       </div>
@@ -124,7 +153,7 @@ export function FeaturesGrid() {
 
   return (
     <>
-    
+
       <style dangerouslySetInnerHTML={{
         __html: `
         @keyframes fgFloat {
