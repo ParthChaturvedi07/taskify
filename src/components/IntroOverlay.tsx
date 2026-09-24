@@ -39,8 +39,8 @@ export function IntroOverlay({ onComplete }: IntroOverlayProps) {
     return () => { tl.kill(); };
   }, [mounted, onComplete]);
 
-  if (!mounted) return null;
-
+  // NOTE: No early `return null` — panels must be in the DOM from the very
+  // first render so the page is never visible before the overlay mounts.
   return (
     <div
       ref={overlayRef}

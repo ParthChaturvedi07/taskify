@@ -408,6 +408,7 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
                   cardRefs.current[i] = el;
                 }}
                 className="flower-card-wrapper"
+                style={{ opacity: 0 }}
               >
                 {/* Glow behind the card */}
                 <div className="absolute inset-0 bg-white/20 blur-[50px] rounded-full pointer-events-none" />
