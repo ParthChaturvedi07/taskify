@@ -577,7 +577,7 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           margin-left: calc(-50vw + 50%);
           height: 600px;
           // overflow: hidden;
-          margin-top: 36px;
+          // margin-top: px;
           display: flex;
           justify-content: center;
           align-items: flex-end;
@@ -597,9 +597,12 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
         .flower-card-wrapper {
           position: absolute;
           bottom: 0;
-          left: -160px;
-          width: 320px;
-          height: 380px;
+          /* fluid width: 14vw clamped between 110px and 220px */
+          width: clamp(110px, 14vw, 220px);
+          left: calc(clamp(110px, 14vw, 220px) / -2);
+          /* portrait aspect ratio — height scales automatically with width */
+          aspect-ratio: 9 / 16;
+          height: auto;
           transform-origin: 50% 90%;
           will-change: transform, opacity;
           cursor: default;
@@ -609,18 +612,17 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 16px;
+          border-radius: clamp(10px, 1.2vw, 18px);
           overflow: hidden;
         }
 
         .flower-card-img {
           width: 100%;
           height: 100%;
-          object-fit: contain;
-          object-position: center bottom;
+          object-fit: cover;
+          object-position: center top;
           display: block;
           pointer-events: none;
-          filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.65));
         }
 
         .fan-fade {
@@ -640,21 +642,11 @@ export function Hero({ onRevealReady, onFlowerReady }: HeroProps = {}) {
           .hero-section { padding-top: 96px; }
           .flower-section { height: 460px; margin-top: 24px; }
           .flower-pivot { bottom: 130px; }
-          .flower-card-wrapper {
-            width: 250px;
-            height: 300px;
-            left: -125px;
-          }
         }
 
         @media (max-width: 480px) {
-          .flower-section { height: 380px; }
-          .flower-pivot { bottom: 110px; }
-          .flower-card-wrapper {
-            width: 200px;
-            height: 240px;
-            left: -100px;
-          }
+          .flower-section { height: 340px; }
+          .flower-pivot { bottom: 100px; }
         }
       `}} />
     </>

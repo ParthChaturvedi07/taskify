@@ -15,8 +15,8 @@ export function CarouselCard({ src, alt, setRef }: CarouselCardProps) {
       ref={setRef}
       src={src}
       alt={alt}
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(240px,38vw,460px)] h-[clamp(380px,38vw,800px)] object-contain pointer-events-none select-none drop-shadow-2xl transition-opacity duration-100 ease-out"
-      style={{ backfaceVisibility: "hidden" }}
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(240px,38vw,460px)] h-[clamp(380px,38vw,800px)] object-cover pointer-events-none select-none drop-shadow-2xl transition-opacity duration-100 ease-out"
+      style={{ backfaceVisibility: "hidden", borderRadius: "1.25rem", overflow: "hidden" }}
       draggable={false}
     />
   );

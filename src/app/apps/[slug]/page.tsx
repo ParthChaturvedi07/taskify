@@ -174,7 +174,7 @@ export default function AppDetailsPage({ params }: { params: { slug: string } })
         </h2>
         <div className="w-full relative mt-8">
           {/* Left fade mask */}
-          <div className="absolute top-0 left-0 bottom-0 w-24 md:w-32 bg-gradient-to-r from-[#070707] via-[#070707]/70 to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 left-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#070707] via-[#070707]/70 to-transparent z-10 pointer-events-none" />
 
           <Carousel
             items={(app.previews || []).map((src, idx) => ({
@@ -186,7 +186,7 @@ export default function AppDetailsPage({ params }: { params: { slug: string } })
           />
 
           {/* Right fade mask */}
-          <div className="absolute top-0 right-0 bottom-0 w-24 md:w-32 bg-gradient-to-l from-[#070707] via-[#070707]/70 to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#070707] via-[#070707]/70 to-transparent z-10 pointer-events-none" />
         </div>
       </section>
 

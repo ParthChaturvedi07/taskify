@@ -59,7 +59,7 @@ const rightCards = [
 ];
 
 function PhoneModel() {
-  const { scene } = useGLTF("/3D/phone model increased brightness.glb");
+  const { scene } = useGLTF("/3D/phone model increased brightness2 (1).glb");
   const ref = useRef<THREE.Group>(null);
 
   const baseRotationY = Math.PI * 0.0008;
@@ -126,7 +126,7 @@ function PhoneCard({ eventSource }: { eventSource?: React.RefObject<HTMLElement>
     <PhoneModel />
 
     <Environment
-      files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/newman_lobby_4k.hdr"
+      files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/ferndale_studio_07_4k.hdr"
       background={false}
     />
   </Suspense>
