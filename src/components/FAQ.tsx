@@ -49,7 +49,7 @@ export function FAQ() {
   };
 
   return (
-    <section className="relative w-full px-4 md:px-6 lg:px-12 py-[80px] flex flex-col items-center overflow-hidden bg-transparent">
+    <section className="relative w-full px-4 md:px-6 lg:px-12 py-[10px] flex flex-col items-center overflow-hidden bg-transparent">
       
 
 

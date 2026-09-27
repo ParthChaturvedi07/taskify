@@ -61,7 +61,7 @@ export default function Home() {
       </section>
 
       {/* ── CONTENT BELOW FOLD ── */}
-      <section id="about" className="relative w-full pt-10 md:pt-15 pb-10 md:pb-15">
+      <section id="about" className="relative w-full">
         <About />
       </section>
 

@@ -30,6 +30,84 @@ function AppCard({ app, index }: { app: (typeof apps)[0], index: number }) {
           className="relative w-full aspect-[9/13] rounded-[22px] sm:rounded-[28px] overflow-hidden z-[1] shadow-[0_20px_60px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.25)]" 
           style={{ background: app.cardBg }}
         >
+          {/* ── Decorative card patterns ── */}
+          <svg
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              {/* Diagonal grid pattern */}
+              <pattern id={`grid-${app.id}`} width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="28" stroke="rgba(255,255,255,0.055)" strokeWidth="0.8"/>
+                <line x1="0" y1="0" x2="28" y2="0" stroke="rgba(255,255,255,0.055)" strokeWidth="0.8"/>
+              </pattern>
+              {/* Glow radial for orbs */}
+              <radialGradient id={`orb1-${app.id}`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor={app.glowColor} stopOpacity="0.55"/>
+                <stop offset="100%" stopColor={app.glowColor} stopOpacity="0"/>
+              </radialGradient>
+              <radialGradient id={`orb2-${app.id}`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor={app.glowColor} stopOpacity="0.35"/>
+                <stop offset="100%" stopColor={app.glowColor} stopOpacity="0"/>
+              </radialGradient>
+              {/* Top shimmer */}
+              <linearGradient id={`shimmer-${app.id}`} x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="rgba(255,255,255,0)"/>
+                <stop offset="40%" stopColor="rgba(255,255,255,0.13)"/>
+                <stop offset="100%" stopColor="rgba(255,255,255,0)"/>
+              </linearGradient>
+            </defs>
+
+            {/* Grid fill */}
+            <rect width="100%" height="100%" fill={`url(#grid-${app.id})`}/>
+
+            {/* Top-left corner arc */}
+            <path
+              d="M -10 90 Q 60 -10 160 -10"
+              fill="none"
+              stroke="rgba(255,255,255,0.09)"
+              strokeWidth="1"
+            />
+            <path
+              d="M -10 140 Q 80 -10 200 -10"
+              fill="none"
+              stroke="rgba(255,255,255,0.055)"
+              strokeWidth="0.8"
+            />
+
+            {/* Large soft orb — top-right */}
+            <ellipse cx="88%" cy="14%" rx="55%" ry="32%" fill={`url(#orb1-${app.id})`} opacity="0.7"/>
+
+            {/* Smaller accent orb — bottom-left */}
+            <ellipse cx="18%" cy="82%" rx="38%" ry="22%" fill={`url(#orb2-${app.id})`} opacity="0.55"/>
+
+            {/* Sparkle diamonds */}
+            {/* Top-right sparkle */}
+            <g transform="translate(80%, 18%) scale(0.9)" opacity="0.7">
+              <polygon points="6,0 7.2,4.8 12,6 7.2,7.2 6,12 4.8,7.2 0,6 4.8,4.8" fill="rgba(255,255,255,0.55)"/>
+            </g>
+            {/* Bottom-right sparkle small */}
+            <g transform="translate(78%, 72%) scale(0.55)" opacity="0.45">
+              <polygon points="6,0 7.2,4.8 12,6 7.2,7.2 6,12 4.8,7.2 0,6 4.8,4.8" fill="rgba(255,255,255,0.7)"/>
+            </g>
+            {/* Left-mid sparkle tiny */}
+            <g transform="translate(8%, 50%) scale(0.4)" opacity="0.35">
+              <polygon points="6,0 7.2,4.8 12,6 7.2,7.2 6,12 4.8,7.2 0,6 4.8,4.8" fill="rgba(255,255,255,0.8)"/>
+            </g>
+
+            {/* Dot cluster — top-left */}
+            <circle cx="12%" cy="10%" r="2" fill="rgba(255,255,255,0.18)"/>
+            <circle cx="18%" cy="15%" r="1.2" fill="rgba(255,255,255,0.12)"/>
+            <circle cx="8%" cy="18%" r="1.4" fill="rgba(255,255,255,0.1)"/>
+
+            {/* Horizontal shimmer stripe across the top */}
+            <rect x="0" y="0" width="100%" height="48" fill={`url(#shimmer-${app.id})`} opacity="0.9"/>
+
+            {/* Thin glowing bottom edge line */}
+            <rect x="15%" y="97%" width="70%" height="1.5" rx="1" fill={app.glowColor} opacity="0.35"/>
+          </svg>
+
           <div className="absolute top-[10px] sm:top-[14px] left-[12px] sm:left-[16px] right-[12px] sm:right-[16px]">
             <Image
               src={app.screen}
@@ -46,14 +124,17 @@ function AppCard({ app, index }: { app: (typeof apps)[0], index: number }) {
         <Image
           src={app.logo}
           alt={`${app.name} logo`}
-          width={120}
-          height={120}
-          className="relative bottom-[50px] z-[2] w-[90px] h-[90px] sm:w-[100px] sm:h-[100px] lg:w-[120px] lg:h-[120px] rounded-[18px] sm:rounded-[22px] lg:rounded-[26px] shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-[350ms] ease-out group-hover:scale-[1.07] group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.7)] object-cover block"
-          sizes="(max-width: 520px) 90px, (max-width: 900px) 100px, 120px"
+          width={90}
+          height={90}
+          className="relative bottom-[30px] z-[2] w-[70px] h-[70px] sm:w-[80px] sm:h-[80px] lg:w-[90px] lg:h-[90px] rounded-[16px] sm:rounded-[20px] lg:rounded-[22px] backdrop-blur-md transition-all duration-[350ms] ease-out group-hover:scale-[1.07] object-cover block"
+          style={{
+            boxShadow: `0 8px 24px rgba(0,0,0,0.75), 0 2px 8px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)`,
+          }}
+          sizes="(max-width: 520px) 70px, (max-width: 900px) 80px, 90px"
         />
 
         {/* App name */}
-        <p className="font-chakra text-[clamp(22px,1.4vw,32px)] font-semibold text-[#e2e8f0] tracking-[0.05em] text-center m-0 -mt-[30px]">{app.name}</p>
+        <p className="font-chakra text-[clamp(18px,0.8vw,28px)] font-semibold text-[#e2e8f0] tracking-[0.05em] text-center m-0 -mt-[18px]">{app.name}</p>
       </Link>
     </motion.div>
   );

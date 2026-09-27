@@ -43,7 +43,7 @@ export function About() {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full min-h-[120vh] px-4 md:px-6 lg:px-8 py-[100px] flex flex-col items-center justify-center overflow-hidden"
+      className="relative w-full min-h-[100vh] px-4 md:px-6 lg:px-8 flex flex-col items-center justify-center"
     >
 
 
@@ -79,7 +79,7 @@ export function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-20px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 self-start lg:self-center"
+          className="inline-flex items-center gap-3 px-5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 self-start lg:self-center"
         >
           <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-pulse" />
           <span className="font-chakra text-[11px] md:text-[13px] uppercase tracking-widest text-white/80 font-bold">Startup India Certified Studio</span>
