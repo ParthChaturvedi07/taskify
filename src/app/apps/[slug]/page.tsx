@@ -152,7 +152,7 @@ export default function AppDetailsPage({ params }: { params: { slug: string } })
               className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-[300px] md:w-[400px] h-[300px] md:h-[400px] opacity-40 blur-[120px] rounded-full pointer-events-none"
               style={{ backgroundColor: app.glowColor || '#3dd5f3' }}
             />
-            <div ref={imageRef} className="relative z-10 w-full max-w-[400px]">
+            <div ref={imageRef} className="relative z-10 w-full max-w-[300px]">
               <Image
                 src={app.heroImage}
                 alt={app.title}
