@@ -52,7 +52,7 @@ export default function AppDetailsPage({ params }: { params: { slug: string } })
   }
 
   return (
-    <main className="relative w-full min-h-screen pt-24 md:pt-32 flex flex-col items-center overflow-x-hidden">
+    <main className="relative w-full min-h-screen pt-24 md:pt-32 flex flex-col items-center overflow-x-hidden bg-black">
       <GridBackground />
       <DotGrid />
       <Navbar />

@@ -273,7 +273,7 @@
     "logo": "/images/rb_logo.png",
     "heroImage": "/images/rewardbeast/details.png",
     "cardBg": "linear-gradient(180deg, #50549D 0%, #38356C 100%)",
-    "glowColor": "#18F7D9",
+    "glowColor": "#fcdc01",
     "previews": ["/images/rewardbeast/preview1.png", "/images/rewardbeast/preview2.png", "/images/rewardbeast/preview3.png", "/images/rewardbeast/preview4.png", "/images/rewardbeast/preview5.png"],
     "playstoreLink": "https://play.google.com/store/apps/details?id=com.taskifygames.rewardbeast&referrer=web",
     "gameplayLink": "https://taskifygames.com/rewardbeast#gameplay",
